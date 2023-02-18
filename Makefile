@@ -11,7 +11,7 @@ OBJS_BONUS = $(addprefix philo_bonus/, $(SRCS_BONUS:.c=.o))
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(CC) $(CFLAGS) -o phi $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 bonus : $(OBJS_BONUS)
 	$(CC) $(CFLAGS) -o $(NAME) $^
