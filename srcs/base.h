@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 16:57:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:15:12 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <readline/history.h>
 # include <readline/readline.h> // readline
 # include <sys/errno.h>
-
 # include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
 
@@ -36,13 +35,8 @@ typedef struct s_data
 	char	**tmp;
 	int		tmp_size;
 	char	**command;
-	int		instruction;
+	int		infile_fd;
+	int		outfile_fd;
 }	t_data;
-
-typedef struct s_pid
-{
-	int				pid;
-	struct s_pid	next;
-}	t_pid
 
 #endif
