@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = mandatory.c
+SRCS = main.c
 
 SRCS_BONUS = bonus.c
 
