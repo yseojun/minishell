@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   base.h                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 14:34:03 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/18 14:25:04 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/18 15:16:09 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BASE_H
-# define BASE_H
+#include "base.h"
 
-# include <stdio.h> // readline, 
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <sys/wait.h> // wait
-# include <readline/history.h>
-# include <readline/readline.h> // readline
-# include <sys/errno.h>
+int	main(int ac, char **av, char **envp)
+{
+	char	*str;
 
-#endif
+	ac = 1;
+	envp = 0;
+	av = 0;
+	while (1)
+	{
+		ft_putstr_fd("minishell> ", 1);
+		str = get_next_line(0);
+		if (!str)
+			break ;
+		write(1, str, ft_strlen(str));
+		free(str);
+		str = 0;
+	}
+}

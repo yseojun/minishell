@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 14:25:04 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 14:34:07 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/18 15:13:34 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "base.h"
+#ifndef BASE_H
+# define BASE_H
 
-int	main(int ac, char **av, char **envp)
-{
-	
-}
+# include <stdio.h> // readline, 
+# include <unistd.h>
+# include <stdlib.h>
+# include <fcntl.h>
+# include <sys/wait.h> // wait
+# include <readline/history.h>
+# include <readline/readline.h> // readline
+# include <sys/errno.h>
+
+# include "../gnl/get_next_line_bonus.h"
+# include "../libft/libft.h"
+
+#endif
