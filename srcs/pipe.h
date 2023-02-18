@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:14:09 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 19:15:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:43:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,8 @@ typedef struct s_pid
 
 typedef struct s_pipe
 {
-	int				ac;
-	char			**av;
-	char			**envp;
-	int				now_idx;
 	int				infile_fd;
 	int				outfile_fd;
-	int				heredoc;
 	char			*limiter;
 	char			**path;
 	struct s_pid	*pids;
@@ -45,7 +40,7 @@ void	run_command(t_pipe *info);
 void	child(int *pipefd, int prev_fd, t_pipe *info);
 void	wait_all(t_pipe *info);
 
-void	init_info(t_pipe *info, int ac, char **av, char **envp);
+void	init_info(t_pipe *info, char **envp);
 char	**find_path_in_env(char **envp);
 char	*make_real_path(char *path, char *command);
 char	*find_command_in_path(char *command, char **path);

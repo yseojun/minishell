@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 19:15:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:47:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	run_pipe(t_pipe *info)
 
 void	child(int *pipefd, int prev_fd, t_pipe *info)
 {
-	dup2(prev_fd, 0);
+	if ('<' == )
+		dup2(prev_fd, 0);
 	close(prev_fd);
 	if (info->now_idx + 2 != info->ac)
 		dup2(pipefd[1], 1);

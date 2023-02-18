@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 19:15:12 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:32:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ typedef struct s_data
 	char	**tmp;
 	int		tmp_size;
 	char	**command;
-	int		infile_fd;
-	int		outfile_fd;
 }	t_data;
 
 #endif

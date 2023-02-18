@@ -6,42 +6,19 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 19:17:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:43:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 
-void	init_info(t_pipe *info, int ac, char **av, char **envp)
+void	init_info(t_pipe *info, char **envp)
 {
-	info->ac = ac;
-	info->av = av;
-	info->envp = envp;
-	info->now_idx = 2;
-	if (info->heredoc == 1)
-	{
-		info->limiter = ft_strjoin(av[2], "\n");
-		info->now_idx++;
-		info->infile_fd = make_heredoc(info);
-	}
-	else
-		info->infile_fd = infile_chk(av[1]);
-	info->path = find_path_in_env(envp);
+	info->limiter = 0;
+	info->infile_fd = -1;
+	info->outfile_fd = -1;
+	info->path = getenv("PATH");
 	info->pids = 0;
-}
-
-char	**find_path_in_env(char **envp)
-{
-	int		idx;
-
-	idx = 0;
-	while (envp[idx])
-	{
-		if (ft_strncmp(envp[idx], "PATH=", 5) == 0)
-			return (ft_split(envp[idx] + 5, ':'));
-		idx++;
-	}
-	return (0);
 }
 
 char	*make_real_path(char *path, char *command)
