@@ -21,9 +21,11 @@ bonus : $(OBJS_BONUS)
 	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
 
 clean:
+	make clean -C $(LIBT)
 	rm -f $(OBJS) $(OBJS_BONUS)
 
 fclean: clean
+	make fclean -C $(LIBT)
 	rm -f $(NAME)
 
 re :
