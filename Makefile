@@ -1,7 +1,12 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRCS = main.c
+SRCS = main.c \
+pipe.c \
+set_pipe.c \
+pipe_info.c \
+pipe_check.c \
+_util.c
 SRCS_BONUS = bonus.c
 LIBT = libft
 GNL = gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c
@@ -19,6 +24,10 @@ bonus : $(OBJS_BONUS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
+
+test : $(OBJS)
+	make all -C $(LIBT)
+	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft
 
 clean:
 	make clean -C $(LIBT)

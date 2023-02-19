@@ -6,18 +6,20 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 19:43:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/19 15:37:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 
-void	init_info(t_pipe *info, char **envp)
+void	init_info(t_pipe *info)
 {
-	info->limiter = 0;
-	info->infile_fd = -1;
-	info->outfile_fd = -1;
-	info->path = getenv("PATH");
+	info->prev_fd = 0;
+	info->tmp_size = 0;
+	info->tmp = 0;
+	info->cmd = 0;
+	info->is_valid_cmd = 0;
+	info->path = ft_split(getenv("PATH"), ':');
 	info->pids = 0;
 }
 
@@ -51,10 +53,10 @@ char	*find_command_in_path(char *command, char **path)
 		tmp_path = make_real_path(path[idx], command);
 		if (access(tmp_path, F_OK) == 0)
 			return (tmp_path);
+		free(tmp_path);
 		idx++;
 	}
-	free(tmp_path);
-	return (0);
+	return (command);
 }
 
 void	add_pid(t_pipe *info, pid_t	pid)
