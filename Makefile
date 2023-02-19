@@ -27,7 +27,7 @@ bonus : $(OBJS_BONUS)
 
 test : $(OBJS)
 	make all -C $(LIBT)
-	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft
+	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft -lreadline
 
 clean:
 	make clean -C $(LIBT)

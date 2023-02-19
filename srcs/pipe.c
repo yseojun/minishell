@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 16:49:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/19 17:51:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	run_command(t_pipe *info)
 	path_command = find_command_in_path(info->cmd[0], info->path);
 	if (access(path_command, X_OK) == -1)
 		perror_exit(info->cmd[0]);
+	printf("path cmd: %s\n", path_command);
 	// pwd export cd unset env exit
 	execve(path_command, info->cmd, environ);
 	perror_exit(info->cmd[0]);

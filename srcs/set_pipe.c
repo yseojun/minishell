@@ -82,6 +82,7 @@ char	**set_cmd(char **tmp)
 			cmd[idx] = ft_strdup(tmp[idx]);
 		idx++;
 	}
+	cmd[idx] = 0;
 	return (cmd);
 }
 
