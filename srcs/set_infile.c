@@ -21,6 +21,8 @@ int	set_infile(char **tmp, int prev_fd)
 			fd = infile_chk(tmp[idx + 1]);
 		}
 		idx++;
+		if (fd < 0)
+			return (fd);
 	}
 	if (is_infile == 0)
 		return (prev_fd);
