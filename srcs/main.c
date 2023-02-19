@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/18 20:25:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/19 12:46:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	main(void)
 		data.tmp_size = chk_tmp_size(data.tmp);
 
 		int		pipefd[2];
-		int		prev_fd;
+		//int		prev_fd;
+		int		in_fd;
+		int		out_fd;
 		pid_t	pid;
 		while (i < data.tmp_size)
 		{
@@ -49,8 +51,8 @@ int	main(void)
 				// 실행하기⭐️
 			
 			tmp2 = ft_split(str, ' ');
-			set_infile(tmp2); // heredoc 처리
-			set_outfile(tmp2);
+			in_fd = set_infile(tmp2);
+			out_fd = set_outfile(tmp2);
 			set_command(tmp2);
 			prev_fd = info->infile_fd;
 			if (pipe(pipefd) < 0)
