@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/18 20:50:38 by seojyang         ###   ########.fr       */
+=======
+/*   Updated: 2023/02/19 12:46:35 by rolee            ###   ########.fr       */
+>>>>>>> 1c6e6dbf2bee9bc8dd3ca2185eeed6b0b1902c95
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +39,14 @@ int	main(void)
 		data.tmp = ft_split(str, '|');
 		data.tmp_size = chk_tmp_size(data.tmp);
 
+<<<<<<< HEAD
+=======
+		int		pipefd[2];
+		//int		prev_fd;
+		int		in_fd;
+		int		out_fd;
+		pid_t	pid;
+>>>>>>> 1c6e6dbf2bee9bc8dd3ca2185eeed6b0b1902c95
 		while (i < data.tmp_size)
 		{
 			// << < 가 들어왔다면 : 다음 파일이 존재하는지 확인하고 stdin으로 연결 (인덱스 두 번 넘기기)
@@ -48,8 +60,13 @@ int	main(void)
 					// 더이상 없다면 stdout을 stdout으로 연결
 				// 실행하기⭐️
 			tmp2 = ft_split(str, ' ');
+<<<<<<< HEAD
 			prev_fd = set_infile(tmp2, prev_fd); // heredoc 처리
 			set_outfile(tmp2);
+=======
+			in_fd = set_infile(tmp2);
+			out_fd = set_outfile(tmp2);
+>>>>>>> 1c6e6dbf2bee9bc8dd3ca2185eeed6b0b1902c95
 			set_command(tmp2);
 			if (pipe(pipefd) < 0)
 				perror_exit("pipe");
