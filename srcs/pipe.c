@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 17:51:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/20 12:48:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 #include "base.h"
 #include "util.h"
+
+void	transform(char **tmp);
 
 void	set_fd(t_pipe *info, int idx);
 
@@ -22,7 +24,7 @@ int	run_pipe(t_pipe *info, int idx)
 	pid_t	pid;
 
 	tmp = ft_split(info->tmp[idx], ' ');
-	// _transfrom(); "" '' $
+	transform(tmp);
 	if (set_pipe(info, tmp) < 0)
 		return (-1);
 	_pipe(info->pipefd);

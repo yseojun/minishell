@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 20:06:03 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/20 09:09:03 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_env(char *str)
 	{
 		while (environ[idx])
 		{
-			if (ft_strncmp(str, environ[idx], ft_strlen(str)))
+			if (ft_strncmp(str, environ[idx], ft_strlen(str)) == 0)
 				return (environ[idx] + ft_strlen(str) + 1);
 			idx++;
 		}
@@ -45,7 +45,7 @@ char	*get_env(char *str)
 
 int	_export(char *to_add)
 {
-	char	**new;
+	//char	**new;
 	int		idx;
 
 	idx = 0;
@@ -60,6 +60,7 @@ int	_export(char *to_add)
 	// 	new[idx] = ft_strdup(environ[idx]);
 	// 	idx++;
 	// }
+	return (0);
 }
 
 int	_unset(char *to_del)
@@ -81,4 +82,5 @@ int	_unset(char *to_del)
 		}
 		idx++;
 	}
+	return (0);
 }
