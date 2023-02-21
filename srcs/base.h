@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:59:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/21 22:04:18 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int			infile_chk(char *infile);
 
 //run_pipe.c
 int			run_pipe(t_pipe *info, t_data *data, int idx);
-
 
 //user_func
 char		*get_env(char *str);
