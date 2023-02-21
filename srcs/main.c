@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 18:03:57 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:36:01 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ void	chk_ascii(char *str)
 	}
 }
 
+void	handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
 int	main(void)
 {
 	char	*str;
@@ -34,6 +45,8 @@ int	main(void)
 	int		test;
 	// t_data	data;
 	t_pipe	pipe_info;
+
+	signal(SIGINT, handler);
 
 	init_info(&pipe_info);
 	test = 0;

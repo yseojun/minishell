@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -g3 -fsanitize=address -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -lreadline -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
 SRCS = main.c \
 pipe.c \
 set_pipe.c \
@@ -10,7 +10,7 @@ _util.c \
 data_env.c \
 transform.c
 SRCS_BONUS = bonus.c
-LIBT = libft
+LIBT = libft 
 GNL = gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c
 OBJS = $(addprefix srcs/, $(SRCS:.c=.o)) $(GNL:.c=.o)
 OBJS_BONUS = $(addprefix bonus/, $(SRCS_BONUS:.c=.o))
@@ -29,7 +29,7 @@ bonus : $(OBJS_BONUS)
 
 test : $(OBJS)
 	make all -C $(LIBT)
-	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft -lreadline
+	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft
 
 clean:
 	make clean -C $(LIBT)
