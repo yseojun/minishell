@@ -6,27 +6,45 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 20:19:23 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/21 21:52:31 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
-#include "pipe.h"
+#include "util.h"
+#include "parse.h"
 
-int	chk_tmp_size(char **tmp);
-void	free_arr(void **arr);
-
-void	chk_ascii(char *str)
+int	main(void)
 {
-	int idx = 0;
-	
-	while (str[idx])
+	t_pipe	pipe_info;
+	t_data	data;
+	char	*str;
+	int		i;
+
+	init_data(&data);
+	signal(SIGINT, handler);
+	while (1)
 	{
-		printf("%d\n", str[idx]);
-		idx++;
+		// ↓ export로 path를 바꾸면 어떻게 되는거지?ㅋㅋㅋ
+		init_pipe_info(&pipe_info);
+		str = readline("minishell> ");
+		if (!str)
+			break ;
+		add_history(str);
+		// if (error_check(str) < 0) // 에러 체크 (||, ;, >, < 중복)
+		// 	continue ;
+		parse_line(str, &pipe_info);
+		i = 0;
+		while (i < pipe_info.tmp_size)
+		{
+			if (run_pipe(&pipe_info, &data, i++) < 0)
+				break ;
+		}
+		finish_line(str, &pipe_info);
 	}
 }
 
+// handler C문자 없애기
 void	handler(int sig)
 {
 	if (sig == SIGINT)
@@ -35,66 +53,12 @@ void	handler(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		write(1, "\b\b", 2);
 	}
 }
 
-int	main(void)
+void	finish_line(char *str, t_pipe *info)
 {
-	char	*str;
-	int		i;
-	int		test;
-	// t_data	data;
-	t_pipe	pipe_info;
-
-	signal(SIGINT, handler);
-
-	init_info(&pipe_info);
-	test = 0;
-	while (1)
-	{
-		str = readline("minishell> ");
-		if (!str) // exit, ctrl C ctrl D
-			break ;
-		add_history(str);
-		// rl_redisplay();
-		// chk_ascii(str);
-		str = ft_strtrim(str, "\n");
-		pipe_info.tmp = ft_split(str, '|');
-		pipe_info.tmp_size = chk_tmp_size(pipe_info.tmp);
-		pipe_info.prev_fd = 0;
-		i = 0;
-		while (i < pipe_info.tmp_size)
-		{
-			pipe_info.infile_fd = 0;
-			pipe_info.outfile_fd = 1;
-			if (run_pipe(&pipe_info, i) < 0)
-				break ;
-			i++;
-		}
-		wait_all(&pipe_info);
-		free(str);
-		free(pipe_info.tmp);
-		test++;
-	}
-}
-
-int	chk_tmp_size(char **tmp)
-{
-	int	idx;
-
-	idx = 0;
-	while (tmp[idx])
-		idx++;
-	return (idx);
-}
-
-void	free_arr(void **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	wait_all(info);
+	free(str);
+	free(info->tmp);
 }

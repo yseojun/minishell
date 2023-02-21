@@ -1,12 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/21 21:54:27 by seojyang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include <fcntl.h>
-#include "pipe.h"
-
-int	chk_cmd(t_pipe *info);
-char	**set_cmd(char **tmp);
-int	count_cmd(char **tmp);
-int	set_in_out(t_pipe *info, char **tmp, int idx);
-int	is_redirection(char *str);
+#include "base.h"
 
 int	set_pipe(t_pipe *info, char **tmp)
 {
@@ -119,7 +125,7 @@ int	set_in_out(t_pipe *info, char **tmp, int idx)
 	if (info->infile_fd < 0 || info->outfile_fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(tmp[idx + 1]); // signal?
+		perror(tmp[idx + 1]);
 		return (-1);
 	}
 	return (0);

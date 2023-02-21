@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_check.c                                       :+:      :+:    :+:   */
+/*   pipe_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 16:51:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/21 21:57:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipe.h"
+#include "base.h"
 #include "../gnl/get_next_line_bonus.h"
 
 int	make_heredoc(char *limiter)

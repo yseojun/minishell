@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data_env.c                                         :+:      :+:    :+:   */
+/*   user_func_env_export_unset.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/20 09:09:03 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/21 22:00:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "util.h"
 
-void	init_data(t_data *data)
+void	chk_user_func(t_pipe *info, t_data *data)
 {
-	data->now = 0;
-	data->status = 0;
-	data->my_env_fd = open("./srcs/mnsh_env.txt", \
-					O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (ft_strncmp(info->cmd[0], "export", 6) == 0)
+		_export(info->cmd[1]);
+	else if (ft_strncmp(info->cmd[0], "unset", 5) == 0)
+		_unset(info->cmd[1]);
+	else if (ft_strncmp(info->cmd[0], "exit", 4) == 0)
+		exit(0);
+	data = 0;
+	// else if (ft_strncmp(info->cmd[0], "cd", 2) == 0)
+	// 	_cd(info->cmd[1]);
+	// else if (ft_strncmp(info->cmd[0], "pwd", 3) == 0)
+	// 	_pwd(info->cmd[1]);
+	// else if (ft_strncmp(info->cmd[0], "echo", 4) == 0)
+	// 	_echo(info->cmd[1]);
+	// else if (ft_strncmp(info->cmd[0], "history", 7) == 0)
+	// 	_history(info->cmd[1]);
 }
 
 char	*get_env(char *str)
@@ -45,21 +57,24 @@ char	*get_env(char *str)
 
 int	_export(char *to_add)
 {
-	//char	**new;
 	int		idx;
+	char	**check;
 
 	idx = 0;
-	while (environ[idx])
-		idx++;
-	environ[idx] = to_add; //멀록안해도 되면 이걸로
-	environ[idx + 1] = 0;
-	// new = (char **)malloc(sizeof(char *) * (idx + 1));
-	// idx = 0;
-	// while (environ[idx])
-	// {
-	// 	new[idx] = ft_strdup(environ[idx]);
-	// 	idx++;
-	// }
+	check = ft_split(to_add, '=');
+	if (check[1] && check[0])
+	{
+		while (environ[idx])
+		{
+			if (ft_strncmp(check[0], environ[idx], ft_strlen(check[0])) == 0)
+			{
+				environ[idx] = to_add;
+				free_arr((void **)check);
+				return (0);
+			}
+			idx++;
+		}
+	}
 	return (0);
 }
 

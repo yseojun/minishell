@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   pipe_run_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/20 12:48:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/21 21:59:21 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipe.h"
 #include "base.h"
 #include "util.h"
 
-void	transform(char **tmp);
+void		transform(char **tmp);
+static void	set_fd(t_pipe *info, int idx);
+static void	child(t_pipe *info, t_data *data);
+static void	run_command(t_pipe *info, t_data *data);
 
-void	set_fd(t_pipe *info, int idx);
-
-int	run_pipe(t_pipe *info, int idx)
+int	run_pipe(t_pipe *info, t_data *data, int idx)
 {
 	char	**tmp;
 	pid_t	pid;
 
+	info->infile_fd = 0;
+	info->outfile_fd = 1;
 	tmp = ft_split(info->tmp[idx], ' ');
 	transform(tmp);
 	if (set_pipe(info, tmp) < 0)
@@ -31,7 +33,7 @@ int	run_pipe(t_pipe *info, int idx)
 	set_fd(info, idx);
 	pid = _fork();
 	if (pid == 0)
-		child(info);
+		child(info, data);
 	else
 	{
 		add_pid(info, pid);
@@ -43,7 +45,7 @@ int	run_pipe(t_pipe *info, int idx)
 	return (0);
 }
 
-void	set_fd(t_pipe *info, int idx)
+static void	set_fd(t_pipe *info, int idx)
 {
 	info->in_fd = info->prev_fd;
 	if (info->infile_fd != 0)
@@ -65,7 +67,7 @@ void	set_fd(t_pipe *info, int idx)
 	}
 }
 
-void	child(t_pipe *info)
+static void	child(t_pipe *info, t_data *data)
 {
 	printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
 	dup2(info->in_fd, 0);
@@ -74,31 +76,22 @@ void	child(t_pipe *info)
 	dup2(info->out_fd, 1);
 	if (info->out_fd != 1)
 		close(info->out_fd);
-	run_command(info);
+	run_command(info, data);
 }
 
-void	run_command(t_pipe *info)
+static void	run_command(t_pipe *info, t_data *data)
 {
 	char	*path_command;
 
 	path_command = find_command_in_path(info->cmd[0], info->path);
+	// printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == -1)
-		perror_exit(info->cmd[0]);
-	printf("path cmd: %s\n", path_command);
-	// pwd export cd unset env exit
-	execve(path_command, info->cmd, environ);
-	perror_exit(info->cmd[0]);
-}
-
-void	wait_all(t_pipe *info)
-{
-	int		status;
-	t_pid	*search;
-
-	search = info->pids;
-	while (search)
 	{
-		waitpid(search->pid, &status, 0);
-		search = search->next;
+		chk_user_func(info, data);
+		// pwd export cd unset env exit
+		return ;
 	}
+	else
+		execve(path_command, info->cmd, environ);
+	perror_exit(info->cmd[0]);
 }

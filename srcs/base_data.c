@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data.h                                             :+:      :+:    :+:   */
+/*   base_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 18:10:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 18:10:50 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/21 21:13:15 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DATA_H
-# define DATA_H
+#include "base.h"
 
-
-
-#endif
+void	init_data(t_data *data)
+{
+	data->last_child_status = 0;
+	data->now_dir = getcwd(NULL, 0);
+}

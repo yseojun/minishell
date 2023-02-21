@@ -1,50 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _util.c                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:09:06 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/21 22:02:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "base.h"
 #include "util.h"
 
-void	_pipe(int *pipefd)
+void	parse_line(char *str, t_pipe *info)
 {
-	if (pipe(pipefd) < 0)
-	{
-		perror("pipe");
-		exit(1);
-	}
-}
+	char	*save;
 
-pid_t	_fork(void)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		exit(1);
-	}
-	return (pid);
-}
-
-void	_dup2(int fd1, int fd2)
-{
-	if (dup2(fd1, fd2) < 0)
-	{
-		perror("dup2");
-		exit(1);
-	}
-}
-
-void	perror_exit(char *name)
-{
-	perror(name);
-	exit(1);
+	save = str;
+	str = ft_strtrim(str, "\n");
+	// free(save); //abortㅠㅠ
+	info->tmp = ft_split(str, '|');
+	info->tmp_size = chk_arr_size(info->tmp);
+	info->prev_fd = 0;
 }

@@ -1,16 +1,19 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
-pipe.c \
-set_pipe.c \
-pipe_info.c \
-pipe_check.c \
+parse.c \
+base_data.c \
+pipe_run_pipe.c \
+pipe_set_pipe.c \
+pipe_file.c \
+pipe_util.c \
+user_func_env_export_unset.c \
+transform.c \
 _util.c \
-data_env.c \
-transform.c
+util_arr.c
 SRCS_BONUS = bonus.c
 LIBT = libft 
 GNL = gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c

@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/20 14:06:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/21 21:58:25 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
-#include "pipe.h"
-
-char	*get_env(char *str);
 
 // transform에서 해줘야 하는 작업
 // - $ 환경 변수 확장 처리하기

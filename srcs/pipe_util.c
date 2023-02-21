@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_info.c                                        :+:      :+:    :+:   */
+/*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/19 15:37:56 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/21 21:57:20 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipe.h"
+#include "util.h"
+#include "base.h"
 
-void	init_info(t_pipe *info)
+void	init_pipe_info(t_pipe *info)
 {
 	info->prev_fd = 0;
 	info->tmp_size = 0;
@@ -76,4 +77,17 @@ void	add_pid(t_pipe *info, pid_t	pid)
 	}
 	else
 		info->pids = new;
+}
+
+void	wait_all(t_pipe *info)
+{
+	int		status;
+	t_pid	*search;
+
+	search = info->pids;
+	while (search)
+	{
+		waitpid(search->pid, &status, 0);
+		search = search->next;
+	}
 }

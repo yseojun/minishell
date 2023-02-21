@@ -1,50 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _util.c                                            :+:      :+:    :+:   */
+/*   util_arr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:09:06 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/21 20:51:25 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/21 20:52:06 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 
-void	_pipe(int *pipefd)
+void	free_arr(void **arr)
 {
-	if (pipe(pipefd) < 0)
-	{
-		perror("pipe");
-		exit(1);
-	}
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
-pid_t	_fork(void)
+int	chk_arr_size(char **arr)
 {
-	pid_t	pid;
+	int	idx;
 
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		exit(1);
-	}
-	return (pid);
-}
-
-void	_dup2(int fd1, int fd2)
-{
-	if (dup2(fd1, fd2) < 0)
-	{
-		perror("dup2");
-		exit(1);
-	}
-}
-
-void	perror_exit(char *name)
-{
-	perror(name);
-	exit(1);
+	idx = 0;
+	while (arr[idx])
+		idx++;
+	return (idx);
 }
