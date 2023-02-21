@@ -1,6 +1,8 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -lreadline -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror
+RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
+RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
 pipe.c \
 set_pipe.c \
@@ -25,11 +27,11 @@ bonus : $(OBJS_BONUS)
 	$(CC) $(CFLAGS) -o $(NAME) $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $<
+	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $< $(RLIBI)
 
 test : $(OBJS)
 	make all -C $(LIBT)
-	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft
+	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft $(RLIB) $(RLIBI)
 
 clean:
 	make clean -C $(LIBT)
