@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 16:47:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:56:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ int	_export(char *to_add)
 			if (ft_strncmp(check[0], environ[idx], ft_strlen(check[0])) == 0)
 			{
 				environ[idx] = to_add;
-				free_arr((void **)check);
-				return (0);
+				break ;
 			}
 			idx++;
 		}
+		free_arr((void **)check);
 	}
 	return (0);
 }
