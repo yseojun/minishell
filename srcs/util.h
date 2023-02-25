@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 17:52:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:49:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	perror_exit(char *name);
 // util_arr.c
 int		free_arr(void **arr);
 int		chk_arr_size(char **tmp);
+void	prt_arr(char **arr); //테스트 용도. 마지막에 지우자
 
 #endif

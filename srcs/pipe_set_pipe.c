@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:31:14 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/25 21:37:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ int	set_out_fd(t_pipe *info, char **unit)
 {
 	int	idx;
 
-	if (unit의 마지막이 파이프라면)
+	// if (unit의 마지막이 파이프라면)
+	if (info->unit_size) //임시 처리
 		info->out_fd = info->pipefd[1];
 	else
 		info->out_fd = STDOUT_FILENO;

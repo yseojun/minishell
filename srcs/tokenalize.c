@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:22:21 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 22:01:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	tokenalize(char *str, t_pipe *info)
 			idx++;
 		else
 		{
-			if (!put_token(str + idx, new_arr, n++, &idx))
+			if (!put_token(str, new_arr, n++, &idx))
 				return (-1);
 		}
 	}
@@ -91,17 +91,28 @@ static size_t	count_arr_size(char *str)
 static int	put_token(char *str, char **new, int n, int *idx)
 {
 	int		i;
+	int		start;
 	int		token_size;
 
-	token_size = count_quote(str, *idx);
-	*idx += token_size;
+	token_size = 0;
+	start = *idx;
+	while (str[*idx] && str[*idx] != ' ')
+	{
+		if (str[*idx] == '\'' || str[*idx] == '\"')
+		{
+			token_size += count_quote(str, *idx);
+			*idx += token_size;
+		}
+		(*idx)++;
+		token_size++;
+	}
 	new[n] = (char *)malloc(token_size + 1);
 	if (!new[n])
 		return (0);
 	i = 0;
 	while (i < token_size)
 	{
-		new[n][i] = str[i];
+		new[n][i] = str[start + i];
 		i++;
 	}
 	new[n][i] = '\0';
