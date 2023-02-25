@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:38:11 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 22:28:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int	make_unit(t_pipe *info, int idx)
 	while (info->token_arr[idx])
 	{
 		if (is_pipe(info->token_arr[idx]))
+		{
+			info->unit_size++;
 			break ;
+		}
 		idx++;
 		info->unit_size++;
 	}
@@ -61,7 +64,7 @@ int	main(void)
 		while (idx < pipe_info.token_arr_size)
 		{
 			idx += make_unit(&pipe_info, idx);
-			if (run_unit(&pipe_info, &data, unit_num) < 0)
+			if (run_unit(&pipe_info, &data) < 0)
 				break ;
 			unit_num++;
 		}

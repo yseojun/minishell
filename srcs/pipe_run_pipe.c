@@ -6,25 +6,27 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:27:12 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 22:28:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void	set_fd(t_pipe *info, int unit_num);
+static void	set_fd(t_pipe *info);
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
-int	run_unit(t_pipe *info, t_data *data, int unit_num)
+int	run_unit(t_pipe *info, t_data *data)
 {
 	pid_t	pid;
 
+	prt_arr(info->unit);
+	printf("%d\n", info->unit_size);
 	info->infile_fd = 0;
 	info->outfile_fd = 1;
 	_pipe(info->pipefd);
-	set_fd(info, unit_num);
+	set_fd(info);
 	info->cmd_arr = set_cmd(info->unit);
 	chk_cmd(info); //to_do
 	pid = _fork();
@@ -41,17 +43,16 @@ int	run_unit(t_pipe *info, t_data *data, int unit_num)
 	return (0);
 }
 
-static void	set_fd(t_pipe *info, int unit_num)
+static void	set_fd(t_pipe *info)
 {
 	info->in_fd = info->prev_fd;
-	// 이전 파이프의 출구, 맨 처음엔 prev_fd를 0으로 세팅
 	if (info->infile_fd != STDIN_FILENO)
 	// if (is_infile())
 	{
 		close(info->prev_fd);
 		info->in_fd = info->infile_fd;
 	}
-	if (unit_num + 1 != info->unit_size)
+	if (is_pipe(info->unit[info->unit_size - 1]))
 		info->out_fd = info->pipefd[1];
 	else
 	{

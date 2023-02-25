@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:08:39 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 22:09:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			make_heredoc(char *limiter);
 int			infile_chk(char *infile);
 
 //run_pipe.c
-int			run_unit(t_pipe *info, t_data *data, int unit_num);
+int			run_unit(t_pipe *info, t_data *data);
 
 //user_func
 char		*get_env(char *str);
