@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:23:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:31:14 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,23 +108,76 @@ int	count_cmd(char **tmp)
 	return (count);
 }
 
-int	set_in_out(t_pipe *info, char **tmp, int idx) // in_out 분리
+// 세팅된 in_fd와 prev_fd가 다르다면 close(prev_fd);
+int	set_in_fd(t_pipe *info, char **unit)
 {
-	if (!ft_strncmp(tmp[idx], "<<", 3))
-		info->infile_fd = make_heredoc(tmp[idx + 1]);
-	else if (!ft_strncmp(tmp[idx], "<", 2))
-		info->infile_fd = infile_chk(tmp[idx + 1]);
-	else if (!ft_strncmp(tmp[idx], ">>", 3))
-		info->outfile_fd = \
-		open(tmp[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else if (!ft_strncmp(tmp[idx], ">", 2))
-		info->outfile_fd = \
-		open(tmp[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (info->infile_fd < 0 || info->outfile_fd < 0)
+	int	idx;
+
+	info->in_fd = info->prev_fd;
+	idx = 0;
+	while (unit[idx])
 	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(tmp[idx + 1]);
-		return (-1);
+		if (!ft_strncmp(unit[idx], "<<", 3))
+			info->in_fd = make_heredoc(unit[idx + 1]);
+		else if (!ft_strncmp(unit[idx], "<", 2))
+			info->in_fd = infile_chk(unit[idx + 1]);
+		if (info->in_fd < 0)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			perror(unit[idx + 1]);
+			return (-1);
+		}
+		idx++;
 	}
 	return (0);
 }
+
+// unit의 마지막이 파이프가 아니면 아예 pipe 함수를 사용하지 말자!
+int	set_out_fd(t_pipe *info, char **unit)
+{
+	int	idx;
+
+	if (unit의 마지막이 파이프라면)
+		info->out_fd = info->pipefd[1];
+	else
+		info->out_fd = STDOUT_FILENO;
+	idx = 0;
+	while (unit[idx])
+	{
+		if (!ft_strncmp(unit[idx], ">>", 3))
+			info->out_fd = \
+			open(unit[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (!ft_strncmp(unit[idx], ">", 2))
+			info->out_fd = \
+			open(unit[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (info->out_fd < 0)
+		{
+			ft_putstr_fd("minishell", STDERR_FILENO);
+			perror(unit[idx + 1]);
+			return (-1);
+		}
+		idx++;
+	}
+	return (0);
+}
+
+// int	set_in_out(t_pipe *info, char **tmp, int idx) // in_out 분리
+// {
+// 	if (!ft_strncmp(tmp[idx], "<<", 3))
+// 		info->infile_fd = make_heredoc(tmp[idx + 1]);
+// 	else if (!ft_strncmp(tmp[idx], "<", 2))
+// 		info->infile_fd = infile_chk(tmp[idx + 1]);
+// 	else if (!ft_strncmp(tmp[idx], ">>", 3))
+// 		info->outfile_fd = \
+// 		open(tmp[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+// 	else if (!ft_strncmp(tmp[idx], ">", 2))
+// 		info->outfile_fd = \
+// 		open(tmp[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+// 	if (info->infile_fd < 0 || info->outfile_fd < 0)
+// 	{
+// 		ft_putstr_fd("minishell: ", 2);
+// 		perror(tmp[idx + 1]);
+// 		return (-1);
+// 	}
+// 	return (0);
+// }
