@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/25 18:29:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/25 19:54:32 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	put_in_new_str(char *origin_str, char *new_str, char *env_value, int dollar
 		}
 		new_str[new_idx++] = origin_str[origin_idx++];
 	}
+	new_str[new_idx] = 0;
 	free(origin_str);
 }
 
@@ -69,7 +70,7 @@ char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx)
 	new_size = ft_strlen(origin_str) - env_name_len - 1;
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
-		exit(1);
+		exit(EXIT_FAILURE);
 	origin_idx = 0;
 	new_idx = 0;
 	while (origin_str[origin_idx])
@@ -78,6 +79,7 @@ char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx)
 			new_str[new_idx++] = origin_str[origin_idx];
 		origin_idx++;
 	}
+	new_str[new_idx] = 0;
 	free(origin_str);
 	return (new_str);
 }
@@ -93,7 +95,7 @@ char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
 	env_name_len = get_env_name_len(dollar_idx + 1, origin_str);
 	env_name = ft_substr(origin_str, dollar_idx + 1, env_name_len);
 	if (!env_name)
-		exit(1);
+		exit(EXIT_FAILURE);
 	env_value = get_env(env_name);
 	free(env_name);
 	*idx += ft_strlen(env_value);
@@ -102,7 +104,7 @@ char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
 	new_size = ft_strlen(origin_str) - env_name_len + (*idx - dollar_idx);
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
-		exit(1);
+		exit(EXIT_FAILURE);
 	put_in_new_str(origin_str, new_str, env_value, dollar_idx);
 	return (new_str);
 }
@@ -152,6 +154,63 @@ char	*expand_env(char *str)
 	return (str);
 }
 
+int	get_close_idx(int idx, char *str, char quote)
+{
+	while (str[idx] != quote && str[idx])
+		idx++;
+	if (!str[idx])
+		return (-1);
+	return (idx);
+}
+
+char	*get_str_without_quote(int open_idx, int close_idx, char *str)
+{
+	int	new_size;
+	char *new_str;
+	int	str_idx;
+	int	new_idx;
+
+	new_size = ft_strlen(str) - 2;
+	new_str = (char *)malloc(new_size + 1);
+	if (!new_str)
+		exit(EXIT_FAILURE);
+	str_idx = 0;
+	new_idx = 0;
+	while (str[str_idx])
+	{
+		if (str_idx != open_idx && str_idx != close_idx)
+			new_str[new_idx++] = str[str_idx];
+		str_idx++;
+	}
+	new_str[new_idx] = 0;
+	free(str);
+	return (new_str);
+}
+
+char	*remove_quote(char *str)
+{
+	int		idx;
+	int		open_idx;
+	int		close_idx;
+	char	*quote;
+
+	idx = 0;
+	while (str[idx])
+	{
+		if (str[idx] == '\'' || str[idx] == "\"")
+		{
+			quote = str[idx];
+			open_idx = idx;
+			close_idx = get_close_idx(idx + 1, str, quote);
+			if (close_idx == -1)
+				return (str);
+			str = get_str_without_quote(open_idx, close_idx, str);
+			idx += close_idx - open_idx;
+		}
+		idx++;
+	}
+	return (str);
+}
 
 void	transform(char **token_arr)
 {
@@ -167,3 +226,6 @@ void	transform(char **token_arr)
 		idx++;
 	}
 }
+
+// cd : . / .. / ~ / -
+// bonus : *은 와일드카드로 인식하기
