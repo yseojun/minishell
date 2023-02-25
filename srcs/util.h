@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:39:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:52:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	_dup2(int fd1, int fd2);
 void	perror_exit(char *name);
 
 // util_arr.c
-void	free_arr(void **arr);
+int		free_arr(void **arr);
 int		chk_arr_size(char **tmp);
 
 #endif

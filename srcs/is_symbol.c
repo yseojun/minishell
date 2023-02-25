@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util_arr.c                                         :+:      :+:    :+:   */
+/*   is_symbol.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 20:51:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 17:52:12 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/25 19:32:06 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/25 19:59:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "util.h"
-
-int	free_arr(void **arr)
+int	is_redirection(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-	return (0);
+	return (!ft_strncmp(str, "<<", 3) || !ft_strncmp(str, "<", 2)
+		|| !ft_strncmp(str, ">>", 3) || !ft_strncmp(str, ">", 2));
 }
 
-int	chk_arr_size(char **arr)
+int	is_pipe(char *str)
 {
-	int	idx;
+	return (!ft_strncmp(str, "|", 2));
+}
 
-	idx = 0;
-	while (arr[idx])
-		idx++;
-	return (idx);
+int	is_symbol(char *str)
+{
+	return (is_pipe(str) || is_redirection(str));
+}
+
+int	is_special_symbol(char c)
+{
+	return (c == '<' || c == '>' || c == '|' || c == '&');
 }

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 16:28:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:33:52 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_pipe
 	int				prev_fd;
 	int				unit_count;
 	char			**token_arr;
+	int				token_arr_size;
 	char			**cmd_arr;
 	int				infile_fd;
 	int				outfile_fd;
@@ -86,5 +87,10 @@ char		*get_env(char *str);
 int			_export(char *to_add);
 int			_unset(char *to_del);
 void		chk_user_func(t_pipe *info, t_data *data);
+
+//is_symbol.c
+int			is_redirection(char *str);
+int			is_pipe(char *str);
+int			is_symbol(char *str);
 
 #endif

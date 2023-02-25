@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 16:40:41 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:32:39 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,4 @@ int	set_in_out(t_pipe *info, char **tmp, int idx) // in_out 분리
 		return (-1);
 	}
 	return (0);
-}
-
-int	is_redirection(char *str)
-{
-	return (!ft_strncmp(str, "<<", 3) || !ft_strncmp(str, "<", 2)
-		|| !ft_strncmp(str, ">>", 3) || !ft_strncmp(str, ">", 2));
 }
