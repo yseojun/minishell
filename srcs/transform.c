@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/25 19:54:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/25 20:10:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 	// 작은 따옴표를 대응하는 따옴표 만날 때까지 건너뛰기
 	// 큰 따옴표를 만나면 대응하는 따옴표를 만날 때까지 건너뛰면서 $를 만나면 첫 번째처럼 처리
 
-// - 따옴표 제거하기
+// - 따옴표 제거하기 ✅
 	// 따옴표를 만나면 제거하고, 다음 대응하는 따옴표를 찾아서 제거한다.
 
 int	get_env_name_len(int env_name_idx, char *str)
@@ -192,12 +192,12 @@ char	*remove_quote(char *str)
 	int		idx;
 	int		open_idx;
 	int		close_idx;
-	char	*quote;
+	char	quote;
 
 	idx = 0;
 	while (str[idx])
 	{
-		if (str[idx] == '\'' || str[idx] == "\"")
+		if (str[idx] == '\'' || str[idx] == '\"')
 		{
 			quote = str[idx];
 			open_idx = idx;
@@ -220,9 +220,7 @@ void	transform(char **token_arr)
 	while (token_arr[idx])
 	{
 		token_arr[idx] = expand_env(token_arr[idx]);
-		//token_arr[idx] = remove_quote(token_arr[idx]);
-
-		printf("token_arr[%d]: %s\n", idx, token_arr[idx]);
+		token_arr[idx] = remove_quote(token_arr[idx]);
 		idx++;
 	}
 }
