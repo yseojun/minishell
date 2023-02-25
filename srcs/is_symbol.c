@@ -6,9 +6,11 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:32:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 19:59:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:23:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "base.h"
 
 int	is_redirection(char *str)
 {

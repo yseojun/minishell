@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 19:31:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:35:13 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	init_pipe_info(t_pipe *info)
 {
-	info->unit_count = 0;
+	info->unit_count = 1;
 	info->prev_fd = 0;
 	info->token_arr = 0;
 	info->cmd_arr = 0;

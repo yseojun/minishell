@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 19:00:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:44:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int	main(void)
 		if (!str)
 			break ;
 		add_history(str);
+		i = 0;
 		if (parse_line(str, &pipe_info) < 0)
 			continue ;
 		while (i < pipe_info.unit_count)
 		{
-			if (run_pipe(&pipe_info, &data, i++) < 0)
+			if (run_pipe(&pipe_info, &data, i) < 0)
 				break ;
 		}
 		finish_line(str, &pipe_info);
@@ -58,5 +59,5 @@ void	finish_line(char *str, t_pipe *info)
 {
 	wait_all(info);
 	free(str);
-	free_arr(info->token_arr);
+	free_arr((void **) info->token_arr);
 }

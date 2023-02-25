@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 19:33:52 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:17:21 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,8 @@ void		chk_user_func(t_pipe *info, t_data *data);
 int			is_redirection(char *str);
 int			is_pipe(char *str);
 int			is_symbol(char *str);
+
+//token
+int	tokenalize(char *str, t_pipe *info);
 
 #endif

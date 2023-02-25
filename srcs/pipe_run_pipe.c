@@ -6,26 +6,23 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 16:55:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:44:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-void		transform(char **tmp);
 static void	set_fd(t_pipe *info, int idx);
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
 int	run_pipe(t_pipe *info, t_data *data, int idx)
 {
-	char	**tmp;
 	pid_t	pid;
 
 	info->infile_fd = 0;
 	info->outfile_fd = 1;
-	// transform(tmp);
 	_pipe(info->pipefd);
 	set_fd(info, idx);
 	chk_cmd(info); //to_do
@@ -47,8 +44,8 @@ static void	set_fd(t_pipe *info, int idx)
 {
 	info->in_fd = info->prev_fd;
 	// 이전 파이프의 출구, 맨 처음엔 prev_fd를 0으로 세팅
-	// if (info->infile_fd != STDIN_FILENO)
-	if (is_infile())
+	if (info->infile_fd != STDIN_FILENO)
+	// if (is_infile())
 	{
 		close(info->prev_fd);
 		info->in_fd = info->infile_fd;
@@ -60,8 +57,8 @@ static void	set_fd(t_pipe *info, int idx)
 		close(info->pipefd[1]);
 		info->out_fd = STDOUT_FILENO;
 	}
-	// if (info->outfile_fd != STDOUT_FILENO)
-	if (is_outfile())
+	if (info->outfile_fd != STDOUT_FILENO)
+	// if (is_outfile())
 	{
 		close(info->pipefd[1]);
 		info->out_fd = info->outfile_fd;

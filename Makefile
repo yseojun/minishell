@@ -12,7 +12,9 @@ pipe_file.c \
 pipe_util.c \
 user_func_env_export_unset.c \
 transform.c \
+tokenalize.c \
 _util.c \
+is_symbol.c \
 util_arr.c
 SRCS_BONUS = bonus.c
 LIBT = libft 
@@ -32,9 +34,9 @@ bonus : $(OBJS_BONUS)
 %.o: %.c
 	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $< $(RLIBI)
 
-test : $(OBJS)
+test : $(addprefix srcs/, $(SRCS)) $(GNL)
 	make all -C $(LIBT)
-	$(CC) $(CFLAGS) -o $(NAME) $^ -L$(LIBT) -lft $(RLIB) $(RLIBI)
+	$(CC) $(CFLAGS) -g -o $(NAME) $^ -L$(LIBT) -lft $(RLIB) $(RLIBI)
 
 clean:
 	make clean -C $(LIBT)

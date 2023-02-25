@@ -6,12 +6,15 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 20:11:21 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:26:15 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
+
+void	transform(char **token_arr);
+int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_pipe *info)
 {
@@ -24,7 +27,7 @@ int	parse_line(char *str, t_pipe *info)
 	{
 		if (info->token_arr == 0)
 			return (-1);
-		free_arr(info->token_arr);
+		free_arr((void **) info->token_arr);
 		return (-1);
 	}
 	transform(info->token_arr);
