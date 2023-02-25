@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:54:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:40:41 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,32 @@
 #include <fcntl.h>
 #include "base.h"
 
-int	set_pipe(t_pipe *info, char **tmp)
-{
-	int	fd;
-	int	idx;
-	int	chk;
+// int	set_pipe(t_pipe *info, char **tmp)
+// {
+// 	int	idx;
+// 	int	chk;
 
-	idx = 0;
-	fd = 0;
-	chk = 0;
-	info->cmd = set_cmd(tmp);
-	while (tmp[idx])
-	{
-		if (is_redirection(tmp[idx]))
-		{
-			if (set_in_out(info, tmp, idx) < 0)
-				return (-1);
-			idx++;
-		}
-		else if (chk == 0)
-		{
-			if (chk_cmd(info) < 0)
-				return (-1);
-			chk = 1;
-		}
-		idx++;
-	}
-	return (0);
-}
+// 	idx = 0;
+// 	chk = 0;
+// 	info->cmd_arr = set_cmd(tmp);
+// 	while (tmp[idx])
+// 	{
+// 		if (is_redirection(tmp[idx]))
+// 		{
+// 			if (set_in_out(info, tmp, idx) < 0)
+// 				return (-1);
+// 			idx++;
+// 		}
+// 		else if (chk == 0)
+// 		{
+// 			if (chk_cmd(info) < 0) //순서
+// 				return (-1);
+// 			chk = 1;
+// 		}
+// 		idx++;
+// 	}
+// 	return (0);
+// }
 
 int	chk_cmd(t_pipe *info)
 {
@@ -51,7 +49,7 @@ int	chk_cmd(t_pipe *info)
 	idx = 0;
 	while (info->path[idx])
 	{
-		tmp_path = make_real_path(info->path[idx], info->cmd[0]);
+		tmp_path = make_real_path(info->path[idx], info->cmd_arr[0]);
 		if (access(tmp_path, F_OK) == 0)
 		{
 			free(tmp_path);
@@ -60,10 +58,10 @@ int	chk_cmd(t_pipe *info)
 		idx++;
 		free(tmp_path);
 	}
-	if (access(info->cmd[0], F_OK) == 0)
+	if (access(info->cmd_arr[0], F_OK) == 0)
 		return (0);
 	ft_putstr_fd("minishell: command not found: ", 2); // sig?
-	ft_putendl_fd(info->cmd[0], 2);
+	ft_putendl_fd(info->cmd_arr[0], 2);
 	return (-1);
 }
 
@@ -110,7 +108,7 @@ int	count_cmd(char **tmp)
 	return (count);
 }
 
-int	set_in_out(t_pipe *info, char **tmp, int idx)
+int	set_in_out(t_pipe *info, char **tmp, int idx) // in_out 분리
 {
 	if (!ft_strncmp(tmp[idx], "<<", 3))
 		info->infile_fd = make_heredoc(tmp[idx + 1]);

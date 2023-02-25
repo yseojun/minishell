@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 22:00:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:47:08 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 
 void	chk_user_func(t_pipe *info, t_data *data)
 {
-	if (ft_strncmp(info->cmd[0], "export", 6) == 0)
-		_export(info->cmd[1]);
-	else if (ft_strncmp(info->cmd[0], "unset", 5) == 0)
-		_unset(info->cmd[1]);
-	else if (ft_strncmp(info->cmd[0], "exit", 4) == 0)
+	if (ft_strncmp(info->cmd_arr[0], "export", 6) == 0)
+		_export(info->cmd_arr[1]);
+	else if (ft_strncmp(info->cmd_arr[0], "unset", 5) == 0)
+		_unset(info->cmd_arr[1]);
+	else if (ft_strncmp(info->cmd_arr[0], "exit", 4) == 0)
 		exit(0);
 	data = 0;
-	// else if (ft_strncmp(info->cmd[0], "cd", 2) == 0)
-	// 	_cd(info->cmd[1]);
-	// else if (ft_strncmp(info->cmd[0], "pwd", 3) == 0)
-	// 	_pwd(info->cmd[1]);
-	// else if (ft_strncmp(info->cmd[0], "echo", 4) == 0)
-	// 	_echo(info->cmd[1]);
-	// else if (ft_strncmp(info->cmd[0], "history", 7) == 0)
-	// 	_history(info->cmd[1]);
+	// else if (ft_strncmp(info->cmd_arr[0], "cd", 2) == 0)
+	// 	_cd(info->cmd_arr[1]);
+	// else if (ft_strncmp(info->cmd_arr[0], "pwd", 3) == 0)
+	// 	_pwd(info->cmd_arr[1]);
+	// else if (ft_strncmp(info->cmd_arr[0], "echo", 4) == 0)
+	// 	_echo(info->cmd_arr[1]);
+	// else if (ft_strncmp(info->cmd_arr[0], "history", 7) == 0)
+	// 	_history(info->cmd_arr[1]);
 }
 
 char	*get_env(char *str)

@@ -6,13 +6,13 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:52:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:53:11 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
-void	parse_line(char *str, t_pipe *info);
+int	parse_line(char *str, t_pipe *info);
 
 #endif

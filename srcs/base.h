@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 22:04:18 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:28:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef struct s_pipe
 {
 	int				pipefd[2];
 	int				prev_fd;
-	int				tmp_size;
-	char			**tmp;
-	char			**cmd;
+	int				unit_count;
+	char			**token_arr;
+	char			**cmd_arr;
 	int				infile_fd;
 	int				outfile_fd;
 	int				in_fd;
