@@ -3,31 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/21 21:58:25 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:29:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
 // transform에서 해줘야 하는 작업
-// - $ 환경 변수 확장 처리하기
-	// $ 를 만나면 특수문자가 나오기 전까지 읽어서 get_env (해당 환경 변수가 없다면 아무것도 하지 않음)
-	// 작은 따옴표를 만나면 대응하는 따옴표를 만날 때까지 인덱스를 건너뛴다.
-	// 큰 따옴표를 만나면 대응하는 따옴표를 만날 때까지 인덱스를 건너뛰면서 $ 를 만나면 첫 번째처럼 처리한다.
-	
+
+// - $ 환경 변수 확장 처리 ✅
+	// $를 만나면 숫자, 알파벳, 언더바인 데까지만 읽어서 value로 교체
+	// 작은 따옴표를 대응하는 따옴표 만날 때까지 건너뛰기
+	// 큰 따옴표를 만나면 대응하는 따옴표를 만날 때까지 건너뛰면서 $를 만나면 첫 번째처럼 처리
+
 // - 따옴표 제거하기
 	// 따옴표를 만나면 제거하고, 다음 대응하는 따옴표를 찾아서 제거한다.
 
-int	get_env_name_len(int env_name_idx, char *origin_str)
+int	get_env_name_len(int env_name_idx, char *str)
 {
 	int	env_name_len;
 
 	env_name_len = 0;
-	while (origin_str[env_name_idx++] > 47)
-		env_name_len++;	
+	while (ft_isalnum(str[env_name_idx]) || str[env_name_idx] == '_')
+	{
+		env_name_len++;
+		env_name_idx++;
+	}
 	return (env_name_len);
 }
 
@@ -47,6 +51,8 @@ void	put_in_new_str(char *origin_str, char *new_str, char *env_value, int dollar
 			while (env_value[env_idx])
 				new_str[new_idx++] = env_value[env_idx++];
 			origin_idx += get_env_name_len(origin_idx + 1, origin_str) + 1;
+			if (!origin_str[origin_idx])
+				break ;
 		}
 		new_str[new_idx++] = origin_str[origin_idx++];
 	}
@@ -64,7 +70,6 @@ char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx)
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
 		exit(1);
-	
 	origin_idx = 0;
 	new_idx = 0;
 	while (origin_str[origin_idx])
@@ -77,7 +82,7 @@ char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx)
 	return (new_str);
 }
 
-char	*get_expanded(int env_name_start, char *origin_str, int *env_value_len)
+char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
 {
 	int		env_name_len;
 	char	*env_name;
@@ -85,56 +90,80 @@ char	*get_expanded(int env_name_start, char *origin_str, int *env_value_len)
 	int		new_size;
 	char	*new_str;
 
-	// 환경변수 value 구하기
-	env_name_len = get_env_name_len(env_name_start, origin_str);
-	env_name = ft_substr(origin_str, env_name_start, env_name_len);
+	env_name_len = get_env_name_len(dollar_idx + 1, origin_str);
+	env_name = ft_substr(origin_str, dollar_idx + 1, env_name_len);
 	if (!env_name)
 		exit(1);
 	env_value = get_env(env_name);
-	*env_value_len = ft_strlen(env_value);
-	if (!env_value) // env_name에 해당하는 value가 없으면 $(env_name) 부분 제거
-		return (remove_env_name(origin_str, env_name_len, env_name_start - 1));
 	free(env_name);
-
-	// 알맞은 길이 구해서 재할당
-	new_size = ft_strlen(origin_str) - env_name_len + *env_value_len;
+	*idx += ft_strlen(env_value);
+	if (!env_value)
+		return (remove_env_name(origin_str, env_name_len, dollar_idx));
+	new_size = ft_strlen(origin_str) - env_name_len + (*idx - dollar_idx);
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
 		exit(1);
-
-	// new_str에 데이터 넣기
-	put_in_new_str(origin_str, new_str, env_value, env_name_start - 1);
-	
+	put_in_new_str(origin_str, new_str, env_value, dollar_idx);
 	return (new_str);
 }
 
-char	*expand_env(char *origin_str)
+void	handle_single_quotes(char *str, int *idx)
 {
-	int		idx;
-	int		env_value_len;
-	
-	idx = 0;
-	while (origin_str[idx])
-	{
-		if (origin_str[idx] == '$')
-		{
-			origin_str = get_expanded(idx + 1, origin_str, &env_value_len);
-			idx += env_value_len;
-		}
-		idx++;
-	}
-	return (origin_str);
+	int	new_idx;
+
+	new_idx = *idx + 1;
+	while (str[new_idx] != '\'' && str[new_idx])
+		new_idx++;
+	if (str[new_idx] == '\'')
+		*idx = new_idx;
 }
 
-// 잘못된 환경변수 이름 입력했을 때 permission denied 해결하기
-void	transform(char **tmp)
+char	*handle_double_quotes(char *str, int *idx)
+{
+	int	new_idx;
+
+	new_idx = *idx + 1;
+	while (str[new_idx] != '\"' && str[new_idx])
+	{
+		if (str[new_idx] == '$')
+			str = get_expanded(new_idx, str, &new_idx);
+		new_idx++;
+	}
+	if (str[new_idx] == '\"')
+		*idx = new_idx;
+	return (str);
+}
+
+char	*expand_env(char *str)
+{
+	int	idx;
+	
+	idx = 0;
+	while (str[idx])
+	{
+		if (str[idx] == '$')
+			str = get_expanded(idx, str, &idx);
+		if (str[idx] == '\'')
+			handle_single_quotes(str, &idx);
+		if (str[idx] == '\"')
+			str = handle_double_quotes(str, &idx);
+		idx++;
+	}
+	return (str);
+}
+
+
+void	transform(char **token_arr)
 {
 	int	idx;
 
 	idx = 0;
-	while (tmp[idx])
+	while (token_arr[idx])
 	{
-		tmp[idx] = expand_env(tmp[idx]);
+		token_arr[idx] = expand_env(token_arr[idx]);
+		//token_arr[idx] = remove_quote(token_arr[idx]);
+
+		printf("token_arr[%d]: %s\n", idx, token_arr[idx]);
 		idx++;
 	}
 }
