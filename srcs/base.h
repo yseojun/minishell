@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 20:17:21 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:08:39 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ typedef struct s_pipe
 {
 	int				pipefd[2];
 	int				prev_fd;
-	int				unit_count;
 	char			**token_arr;
 	int				token_arr_size;
+	char			**unit;
+	int				unit_size;
 	char			**cmd_arr;
 	int				infile_fd;
 	int				outfile_fd;
@@ -80,7 +81,7 @@ int			make_heredoc(char *limiter);
 int			infile_chk(char *infile);
 
 //run_pipe.c
-int			run_pipe(t_pipe *info, t_data *data, int idx);
+int			run_unit(t_pipe *info, t_data *data, int unit_num);
 
 //user_func
 char		*get_env(char *str);
@@ -94,6 +95,6 @@ int			is_pipe(char *str);
 int			is_symbol(char *str);
 
 //token
-int	tokenalize(char *str, t_pipe *info);
+int			tokenalize(char *str, t_pipe *info);
 
 #endif

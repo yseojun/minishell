@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 20:35:51 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:23:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	**set_cmd(char **tmp)
 	idx = 0;
 	while (tmp[idx])
 	{
-		if (is_redirection(tmp[idx]))
+		if (is_symbol(tmp[idx]))
 			idx++;
 		else
 			cmd[idx] = ft_strdup(tmp[idx]);
@@ -99,7 +99,7 @@ int	count_cmd(char **tmp)
 	count = 0;
 	while (tmp[idx])
 	{
-		if (is_redirection(tmp[idx]))
+		if (is_symbol(tmp[idx]))
 			idx++;
 		else
 			count++;

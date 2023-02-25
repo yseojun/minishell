@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 20:35:25 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:22:21 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int	tokenalize(char *str, t_pipe *info)
 			idx++;
 		else
 		{
-			if (!put_token(str + idx, new_arr, n, &idx))
+			if (!put_token(str + idx, new_arr, n++, &idx))
 				return (-1);
-			if (is_pipe(new_arr[n++]))
-				info->unit_count++;
 		}
 	}
 	new_arr[n] = 0;

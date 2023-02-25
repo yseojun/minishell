@@ -6,25 +6,26 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 20:44:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/25 21:27:12 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void	set_fd(t_pipe *info, int idx);
+static void	set_fd(t_pipe *info, int unit_num);
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
-int	run_pipe(t_pipe *info, t_data *data, int idx)
+int	run_unit(t_pipe *info, t_data *data, int unit_num)
 {
 	pid_t	pid;
 
 	info->infile_fd = 0;
 	info->outfile_fd = 1;
 	_pipe(info->pipefd);
-	set_fd(info, idx);
+	set_fd(info, unit_num);
+	info->cmd_arr = set_cmd(info->unit);
 	chk_cmd(info); //to_do
 	pid = _fork();
 	if (pid == 0)
@@ -40,7 +41,7 @@ int	run_pipe(t_pipe *info, t_data *data, int idx)
 	return (0);
 }
 
-static void	set_fd(t_pipe *info, int idx)
+static void	set_fd(t_pipe *info, int unit_num)
 {
 	info->in_fd = info->prev_fd;
 	// 이전 파이프의 출구, 맨 처음엔 prev_fd를 0으로 세팅
@@ -50,7 +51,7 @@ static void	set_fd(t_pipe *info, int idx)
 		close(info->prev_fd);
 		info->in_fd = info->infile_fd;
 	}
-	if (idx + 1 != info->unit_count)
+	if (unit_num + 1 != info->unit_size)
 		info->out_fd = info->pipefd[1];
 	else
 	{
