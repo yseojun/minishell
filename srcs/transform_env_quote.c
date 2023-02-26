@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:56:49 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 16:26:11 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:48:20 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_single_quotes(char *str, int *idx)
 		*idx = new_idx;
 }
 
-char	*handle_double_quotes(char *str, int *idx)
+char	*handle_double_quotes(t_data *data, char *str, int *idx)
 {
 	int	new_idx;
 
@@ -31,7 +31,7 @@ char	*handle_double_quotes(char *str, int *idx)
 	while (str[new_idx] != '\"' && str[new_idx])
 	{
 		if (str[new_idx] == '$')
-			str = get_expanded(new_idx, str, &new_idx);
+			str = get_expanded(data, new_idx, str, &new_idx);
 		new_idx++;
 	}
 	if (str[new_idx] == '\"')

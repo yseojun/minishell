@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 17:51:03 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:30:22 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:08:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ t_env	*lst_new_env(char *name, char *value)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
-	new->name = name;
-	new->value = name;
+	new->name = ft_strdup(name);
+	new->value = ft_strdup(value);
 	new->next = 0;
 	return (new);
 }
 
 void	lst_env_add_back(t_env **head, t_env *new)
 {
-	t_list	*last;
+	t_env	*last;
 
 	if (!new)
 		return ;

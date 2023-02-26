@@ -6,6 +6,7 @@ RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
 parse.c \
 base_data.c \
+list_env.c \
 pipe_run_pipe.c \
 pipe_set_pipe.c \
 pipe_file.c \

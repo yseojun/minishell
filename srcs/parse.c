@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:48:47 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 18:49:51 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	chk_grammer_valid(t_pipe *info);
 
-int	parse_line(char *str, t_pipe *info)
+int	parse_line(char *str, t_data *data, t_pipe *info)
 {
 	//공백으로 스플릿, 리다이렉션&파이프는 따로 저장?, 따옴표 안의 공백 유지
 	//파이프가 보이면 pipe_size 추가
@@ -30,7 +30,7 @@ int	parse_line(char *str, t_pipe *info)
 		return (FAILURE);
 	}
 	prt_arr(info->token_arr);
-	transform(info->token_arr);
+	transform(data, info->token_arr);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 16:22:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:11:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_str_without_quote(int open_idx, int close_idx, char *str);
 // cd : . / .. / ~ / -
 // bonus : *은 와일드카드로 인식하기
 
-void	transform(char **token_arr)
+void	transform(t_data *data, char **token_arr)
 {
 	int	idx;
 
@@ -27,7 +27,7 @@ void	transform(char **token_arr)
 	while (token_arr[idx])
 	{
 		printf("%s\n", token_arr[idx]);
-		token_arr[idx] = expand_env(token_arr[idx]);
+		token_arr[idx] = expand_env(data, token_arr[idx]);
 		token_arr[idx] = remove_quote(token_arr[idx]);
 		idx++;
 	}

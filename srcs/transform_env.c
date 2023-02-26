@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:50:59 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 16:23:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:34:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	get_env_name_len(int env_name_idx, char *str);
 static char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx);
 static void	put_in_new_str(char *origin_str, char *new_str, char *env_value, int dollar_idx);
 
-char	*expand_env(char *str)
+char	*expand_env(t_data *data, char *str)
 {
 	int	idx;
 
@@ -25,17 +25,17 @@ char	*expand_env(char *str)
 	{
 		printf("%c\n", str[idx]);
 		if (str[idx] == '$')
-			str = get_expanded(idx, str, &idx);
+			str = get_expanded(data, idx, str, &idx);
 		if (str[idx] == '\'')
 			handle_single_quotes(str, &idx);
 		if (str[idx] == '\"')
-			str = handle_double_quotes(str, &idx);
+			str = handle_double_quotes(data, str, &idx);
 		idx++;
 	}
 	return (str);
 }
 
-char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
+char	*get_expanded(t_data *data, int dollar_idx, char *origin_str, int *idx)
 {
 	int		env_name_len;
 	char	*env_name;
@@ -44,10 +44,12 @@ char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
 	char	*new_str;
 
 	env_name_len = get_env_name_len(dollar_idx + 1, origin_str);
+	if (env_name_len == 0)
+		return (origin_str);
 	env_name = ft_substr(origin_str, dollar_idx + 1, env_name_len);
 	if (!env_name)
 		exit(EXIT_FAILURE);
-	env_value = get_env(env_name);
+	env_value = get_env(data, env_name);
 	free(env_name);
 	*idx += ft_strlen(env_value) - 1;
 	if (!env_value)
@@ -65,6 +67,9 @@ static int	get_env_name_len(int env_name_idx, char *str)
 	int	env_name_len;
 
 	env_name_len = 0;
+	printf("str : %s\n", str);
+	if (ft_strncmp(&str[env_name_idx], "?", 1) == 0)
+		return (1);
 	while (ft_isalnum(str[env_name_idx]) || str[env_name_idx] == '_')
 	{
 		env_name_len++;

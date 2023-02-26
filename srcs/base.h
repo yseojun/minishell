@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:29:56 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:49:17 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,10 @@ int			tokenalize(char *str, t_pipe *info);
 
 // transform
 void		handle_single_quotes(char *str, int *idx);
-char		*handle_double_quotes(char *str, int *idx);
-char		*expand_env(char *str);
-char		*get_expanded(int dollar_idx, char *origin_str, int *idx);
-void		transform(char **token_arr);
+char		*handle_double_quotes(t_data *data, char *str, int *idx);
+char		*expand_env(t_data *data, char *str);
+char		*get_expanded(t_data *data, int dollar_idx, \
+							char *origin_str, int *idx);
+void		transform(t_data *data, char **token_arr);
 
 #endif

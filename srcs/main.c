@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 16:42:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:50:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	main(void)
 		if (!str)
 			break ;
 		add_history(str);
-		if (parse_line(str, &pipe_info) == FAILURE)
+		if (parse_line(str, &data, &pipe_info) == FAILURE)
 			continue ;
 		idx = 0;
 		while (idx < pipe_info.token_arr_size)

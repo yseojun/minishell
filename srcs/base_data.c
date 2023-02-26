@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:29:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:03:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ t_env	*init_env(void)
 	int		idx;
 
 	idx = 0;
+	head = 0;
 	while (environ[idx])
 	{
 		env_spl = ft_split(environ[idx], '=');
+		printf("%s\n", env_spl[0]);
 		lst_env_add_back(&head, lst_new_env(env_spl[0], env_spl[1]));
 		free_arr((void **)env_spl);
 		idx++;
