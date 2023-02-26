@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 22:25:16 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:48:37 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ char	**set_cmd(char **tmp)
 {
 	char	**cmd;
 	int		idx;
+	int		cmd_idx;
 	int		count;
 
 	count = count_cmd(tmp);
@@ -78,15 +79,14 @@ char	**set_cmd(char **tmp)
 	if (!cmd)
 		exit(1);
 	idx = 0;
+	cmd_idx = 0;
 	while (tmp[idx])
 	{
-		if (is_symbol(tmp[idx]))
-			idx++;
-		else
-			cmd[idx] = ft_strdup(tmp[idx]);
+		if (!is_symbol(tmp[idx]))
+			cmd[cmd_idx++] = ft_strdup(tmp[idx]);
 		idx++;
 	}
-	cmd[idx] = 0;
+	cmd[cmd_idx] = 0;
 	return (cmd);
 }
 
@@ -99,9 +99,7 @@ int	count_cmd(char **tmp)
 	count = 0;
 	while (tmp[idx])
 	{
-		if (is_symbol(tmp[idx]))
-			idx++;
-		else
+		if (!is_symbol(tmp[idx]))
 			count++;
 		idx++;
 	}

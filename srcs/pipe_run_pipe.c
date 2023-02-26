@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 12:30:52 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:44:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	run_unit(t_pipe *info, t_data *data)
 	_pipe(info->pipefd);
 	set_fd(info);
 	info->cmd_arr = set_cmd(info->unit);
+	prt_arr(info->cmd_arr);
 	chk_cmd(info); //to_do
 	pid = _fork();
 	if (pid == 0)
