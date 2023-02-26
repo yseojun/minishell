@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:29:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:45:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*get_env(t_data *data, char *str)
 	t_env	*search;
 
 	search = data->env;
+	if (ft_strncmp(str, "?", 2) == 0)
+		return (ft_itoa(data->last_child_status));
 	while (search)
 	{
 		if (ft_strncmp(search->name, str, ft_strlen(str)) == 0)
