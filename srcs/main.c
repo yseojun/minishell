@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 12:37:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 13:00:34 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	make_unit(t_pipe *info, int idx)
 	int	unit_idx;
 
 	token_start_idx = idx;
-	info->unit_size = 0;
 	while (info->token_arr[idx])
 	{
 		if (is_pipe(info->token_arr[idx]))
@@ -45,7 +44,6 @@ int	main(void)
 	t_data	data;
 	char	*str;
 	int		idx;
-	int		unit_num;
 
 	init_data(&data);
 	signal(SIGINT, handler);
@@ -60,13 +58,11 @@ int	main(void)
 		if (parse_line(str, &pipe_info) < 0)
 			continue ;
 		idx = 0;
-		unit_num = 0;
 		while (idx < pipe_info.token_arr_size)
 		{
 			idx += make_unit(&pipe_info, idx);
 			if (run_unit(&pipe_info, &data) < 0)
 				break ;
-			unit_num++;
 		}
 		finish_line(str, &pipe_info);
 	}
