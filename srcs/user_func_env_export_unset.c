@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 17:07:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:29:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 void	run_user_func(t_pipe *info, t_data *data)
 {
 	if (info->is_built_in == 1)
-		_export(info->cmd_arr[1]);
+		_export(data, info->cmd_arr[1]);
 	if (info->is_built_in == 2)
-		_unset(info->cmd_arr[1]);
+		_unset(data, info->cmd_arr[1]);
 	if (info->is_built_in == 3)
 		exit(0);
-	data = 0;
 	// else if (ft_strncmp(info->cmd_arr[0], "cd", 2) == 0)
 	// 	_cd(info->cmd_arr[1]);
 	// else if (ft_strncmp(info->cmd_arr[0], "pwd", 3) == 0)
@@ -32,70 +31,78 @@ void	run_user_func(t_pipe *info, t_data *data)
 	// 	_history(info->cmd_arr[1]);
 }
 
-char	*get_env(char *str)
+char	*get_env(t_data *data, char *str)
 {
-	int	idx;
+	t_env	*search;
 
-	idx = 0;
-	if (str == 0)
+	search = data->env;
+	while (search)
 	{
-		while (environ[idx])
-			printf("%s\n", environ[idx++]);
-		return (SUCCESS);
+		if (ft_strncmp(search->name, str, ft_strlen(str)) == 0)
+			return (search->value);
+		search = search->next;
 	}
-	else
+	return (ft_strdup(""));
+}
+
+void	_env(t_data *data)
+{
+	t_env	*search;
+
+	search = data->env;
+	while (search)
 	{
-		while (environ[idx])
-		{
-			if (ft_strncmp(str, environ[idx], ft_strlen(str)) == 0)
-				return (environ[idx] + ft_strlen(str) + 1);
-			idx++;
-		}
-		return (SUCCESS);
+		ft_putstr_fd(search->name, 1);
+		ft_putchar_fd('=', 1);
+		ft_putendl_fd(search->value, 1);
+		search = search->next;
 	}
 }
 
-int	_export(char *to_add)
+void	_export(t_data *data, char *token)
 {
-	int		idx;
-	char	**check;
+	t_env	*search;
+	t_env	*prev;
+	char	**name_val;
 
-	idx = 0;
-	check = ft_split(to_add, '=');
-	if (check[1] && check[0])
+	name_val = ft_split(token, '=');
+	// chk_valid_export(name_val);
+	search = data->env;
+	prev = search;
+	while (search)
 	{
-		while (environ[idx])
+		if (ft_strncmp(search->name, name_val[0], ft_strlen(name_val[0])) == 0)
 		{
-			if (ft_strncmp(check[0], environ[idx], ft_strlen(check[0])) == 0)
-			{
-				environ[idx] = to_add;
-				break ;
-			}
-			idx++;
+			free(search->value);
+			search->value = name_val[1];
+			break ;
 		}
-		free_arr((void **)check);
+		prev = search;
+		search = search->next;
 	}
-	return (SUCCESS);
+	lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
+	free_arr((void **) name_val);
 }
 
-int	_unset(char *to_del)
+void	_unset(t_data *data, char *name)
 {
-	int	idx;
+	t_env	*search;
+	t_env	*prev;
 
-	idx = 0;
-	while (environ[idx])
+	search = data->env;
+	prev = search;
+	while (search)
 	{
-		if (ft_strncmp(to_del, environ[idx], ft_strlen(environ[idx]) == 0))
+		if (ft_strncmp(search->name, name, ft_strlen(name)) == 0)
 		{
-			environ[idx++] = 0;
-			while (environ[idx])
-			{
-				environ[idx - 1] = environ[idx];
-				idx++;
-			}
-			environ[idx - 1] = 0;
+			if (prev == search)
+				data->env = search->next;
+			else
+				prev->next = search->next;
+			lst_env_free(search);
+			return ;
 		}
-		idx++;
+		prev = search;
+		search = search->next;
 	}
-	return (SUCCESS);
 }

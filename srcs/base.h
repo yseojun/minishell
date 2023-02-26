@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 16:50:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:29:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ typedef struct s_pid
 	struct s_pid	*next;
 }	t_pid;
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_pipe
 {
 	int				pipefd[2];
@@ -57,15 +64,25 @@ typedef struct s_pipe
 
 typedef struct s_data
 {
-	char	*now_dir;
 	int		last_child_status;
+	t_env	*env;
 }	t_data;
 
 //main.c
 void		handler(int sig);
-void		init_data(t_data *data);
 void		finish_line(char *str, t_pipe *info);
 void		wait_all(t_pipe *info);
+
+//base_data.c
+void		init_data(t_data *data);
+t_env		*init_env(void);
+
+//list_env.c
+t_env		*lst_new_env(char *name, char *value);
+void		lst_env_add_back(t_env **head, t_env *new);
+t_env		*lst_env_last(t_env *lst);
+void		lst_env_free(t_env *lst);
+
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info);
@@ -87,9 +104,9 @@ int			infile_chk(char *infile);
 int			run_unit(t_pipe *info, t_data *data);
 
 //user_func
-char		*get_env(char *str);
-int			_export(char *to_add);
-int			_unset(char *to_del);
+char		*get_env(t_data *data, char *str);
+void		_export(t_data *data, char *token);
+void		_unset(t_data *data, char *name);
 void		run_user_func(t_pipe *info, t_data *data);
 
 //is_symbol.c
