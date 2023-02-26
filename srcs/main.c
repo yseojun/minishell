@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:08:44 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:42:08 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(void)
 		{
 			idx += make_unit(&pipe_info, idx);
 			if (run_unit(&pipe_info, &data) == FAILURE)
-				break ;
+				continue ;
 		}
 		finish_line(str, &pipe_info);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:12:04 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:50:40 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,21 @@ int	run_unit(t_pipe *info, t_data *data)
 {
 	pid_t	pid;
 
-	prt_arr(info->unit); // 테스트 용도
 	printf("%d\n", info->unit_size);
 	_pipe(info->pipefd);
-	set_fd(info);
+	if (set_fd(info) == FAILURE)
+		return (FAILURE);
 	info->cmd_arr = set_cmd(info->unit);
-	prt_arr(info->cmd_arr);
-	chk_cmd(info); //to_do // pwd export cd unset env exit
+	if (chk_cmd(info) == FAILURE)
+		return (FAILURE);
+	//to_do // pwd export cd unset env exit
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
 	else
 	{
 		add_pid(info, pid);
-		close(info->pipefd[P_WRITE]); // 마지막 unit이 아닌 경우에만 닫아야 하지 않나?
+		close(info->pipefd[P_WRITE]);
 		if (info->in_fd != STDIN_FILENO)
 			close(info->in_fd);
 		info->prev_fd = info->pipefd[P_READ];
@@ -57,13 +58,12 @@ static void	run_command(t_pipe *info, t_data *data)
 {
 	char	*path_command;
 
+	if (info->is_built_in)
+		run_user_func(info, data);
 	path_command = find_command_in_path(info->cmd_arr[0], info->path);
 	// printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == FAILURE)
-	{
-		chk_user_func(info, data);
 		return ;
-	}
 	else
 		execve(path_command, info->cmd_arr, environ);
 	perror_exit(info->cmd_arr[0]);

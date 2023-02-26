@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 15:34:30 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:50:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_pipe
 	int				in_fd;
 	int				out_fd;
 	char			**path;
+	int				is_built_in;
 	struct s_pid	*pids;
 }	t_pipe;
 
@@ -70,7 +71,7 @@ void		wait_all(t_pipe *info);
 int			chk_cmd(t_pipe *info);
 char		**set_cmd(char **tmp);
 int			count_cmd(char **tmp);
-void		set_fd(t_pipe *info);
+int			set_fd(t_pipe *info);
 
 //pipe_info.c
 void		init_pipe_info(t_pipe *info);
@@ -89,7 +90,7 @@ int			run_unit(t_pipe *info, t_data *data);
 char		*get_env(char *str);
 int			_export(char *to_add);
 int			_unset(char *to_del);
-void		chk_user_func(t_pipe *info, t_data *data);
+void		run_user_func(t_pipe *info, t_data *data);
 
 //is_symbol.c
 int			is_redirection(char *str);

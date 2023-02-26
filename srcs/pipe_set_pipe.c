@@ -6,11 +6,13 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 16:00:51 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 16:56:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+
+int	is_user_func(t_pipe *info);
 
 int	chk_cmd(t_pipe *info)
 {
@@ -31,9 +33,24 @@ int	chk_cmd(t_pipe *info)
 	}
 	if (access(info->cmd_arr[0], F_OK) == SUCCESS)
 		return (SUCCESS);
+	if (is_user_func(info) == SUCCESS)
+		return (SUCCESS);
 	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO); // sig?
 	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
 	return (FAILURE);
+}
+
+int	is_user_func(t_pipe *info)
+{
+	if (ft_strncmp(info->cmd_arr[0], "export", 6) == 0)
+		info->is_built_in = 1;
+	else if (ft_strncmp(info->cmd_arr[0], "unset", 5) == 0)
+		info->is_built_in = 2;
+	else if (ft_strncmp(info->cmd_arr[0], "exit", 4) == 0)
+		info->is_built_in = 3;
+	else
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 char	**set_cmd(char **tmp)
@@ -129,10 +146,13 @@ static int	set_out_fd(t_pipe *info, char **unit)
 }
 
 // set_in_fd와 set_out_fd가 FAILURE를 뱉었을 때 처리!!
-void	set_fd(t_pipe *info)
+int	set_fd(t_pipe *info)
 {
-	set_in_fd(info, info->unit);
+	if (set_in_fd(info, info->unit) == FAILURE)
+		return (FAILURE);
 	if (info->in_fd != info->prev_fd)
 		close(info->prev_fd);
-	set_out_fd(info, info->unit);
+	if (set_out_fd(info, info->unit) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
 }

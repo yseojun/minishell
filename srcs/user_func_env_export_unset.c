@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   user_func_env_export_unset.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:22:07 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 17:07:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-void	chk_user_func(t_pipe *info, t_data *data)
+void	run_user_func(t_pipe *info, t_data *data)
 {
-	if (ft_strncmp(info->cmd_arr[0], "export", 6) == 0)
+	if (info->is_built_in == 1)
 		_export(info->cmd_arr[1]);
-	else if (ft_strncmp(info->cmd_arr[0], "unset", 5) == 0)
+	if (info->is_built_in == 2)
 		_unset(info->cmd_arr[1]);
-	else if (ft_strncmp(info->cmd_arr[0], "exit", 4) == 0)
+	if (info->is_built_in == 3)
 		exit(0);
 	data = 0;
 	// else if (ft_strncmp(info->cmd_arr[0], "cd", 2) == 0)
