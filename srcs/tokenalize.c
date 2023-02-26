@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenalize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 12:42:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:19:23 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	tokenalize(char *str, t_pipe *info)
 
 	new_arr = (char **)malloc(sizeof(char *) * count_arr_size(str));
 	if (!new_arr)
-		return (-1);
+		return (FAILURE);
 	n = 0;
 	idx = 0;
 	while (str[idx])
@@ -33,14 +33,14 @@ int	tokenalize(char *str, t_pipe *info)
 			idx++;
 		else
 		{
-			if (!put_token(str, new_arr, n++, &idx))
-				return (-1);
+			if (put_token(str, new_arr, n++, &idx) == FAILURE)
+				return (FAILURE);
 		}
 	}
 	new_arr[n] = 0;
 	info->token_arr = new_arr;
 	info->token_arr_size = n;
-	return (0);
+	return (SUCCESS);
 }
 
 static int	count_quote(char *str, int idx)
@@ -108,7 +108,7 @@ static int	put_token(char *str, char **new, int n, int *idx)
 	}
 	new[n] = (char *)malloc(token_size + 1);
 	if (!new[n])
-		return (0);
+		return (FAILURE);
 	i = 0;
 	while (i < token_size)
 	{
@@ -116,5 +116,5 @@ static int	put_token(char *str, char **new, int n, int *idx)
 		i++;
 	}
 	new[n][i] = '\0';
-	return (1);
+	return (SUCCESS);
 }

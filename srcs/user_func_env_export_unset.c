@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_func_env_export_unset.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 16:56:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:22:07 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_env(char *str)
 	{
 		while (environ[idx])
 			printf("%s\n", environ[idx++]);
-		return (0);
+		return (SUCCESS);
 	}
 	else
 	{
@@ -51,7 +51,7 @@ char	*get_env(char *str)
 				return (environ[idx] + ft_strlen(str) + 1);
 			idx++;
 		}
-		return (0);
+		return (SUCCESS);
 	}
 }
 
@@ -75,7 +75,7 @@ int	_export(char *to_add)
 		}
 		free_arr((void **)check);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	_unset(char *to_del)
@@ -97,5 +97,5 @@ int	_unset(char *to_del)
 		}
 		idx++;
 	}
-	return (0);
+	return (SUCCESS);
 }

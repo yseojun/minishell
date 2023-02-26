@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:14:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:15:41 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	init_pipe_info(t_pipe *info)
 {
 	info->unit_size = 0;
-	info->prev_fd = 0;
+	info->prev_fd = STDIN_FILENO;
 	info->token_arr = 0;
 	info->cmd_arr = 0;
 	info->is_valid_cmd = 0;
@@ -31,12 +31,12 @@ char	*make_real_path(char *path, char *command)
 	char	*str;
 
 	if (!path || !command)
-		return (0);
+		return (NULL);
 	s1_len = ft_strlen(path);
 	s2_len = ft_strlen(command);
 	str = (char *)malloc(s1_len + s2_len + 2);
 	if (!str)
-		return (0);
+		return (NULL);
 	ft_memcpy(str, path, s1_len);
 	str[s1_len] = '/';
 	ft_memcpy(str + s1_len + 1, command, s2_len + 1);
@@ -52,7 +52,7 @@ char	*find_command_in_path(char *command, char **path)
 	while (path[idx])
 	{
 		tmp_path = make_real_path(path[idx], command);
-		if (access(tmp_path, F_OK) == 0)
+		if (access(tmp_path, F_OK) == SUCCESS)
 			return (tmp_path);
 		free(tmp_path);
 		idx++;

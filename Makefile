@@ -11,7 +11,9 @@ pipe_set_pipe.c \
 pipe_file.c \
 pipe_util.c \
 user_func_env_export_unset.c \
-transform.c \
+transform_env_quote.c \
+transform_env.c \
+transform_rm_quote.c \
 tokenalize.c \
 _util.c \
 is_symbol.c \

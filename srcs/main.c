@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 13:00:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:08:44 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,18 @@ int	main(void)
 		if (!str)
 			break ;
 		add_history(str);
-		if (parse_line(str, &pipe_info) < 0)
+		if (parse_line(str, &pipe_info) == FAILURE)
 			continue ;
 		idx = 0;
 		while (idx < pipe_info.token_arr_size)
 		{
 			idx += make_unit(&pipe_info, idx);
-			if (run_unit(&pipe_info, &data) < 0)
+			if (run_unit(&pipe_info, &data) == FAILURE)
 				break ;
 		}
 		finish_line(str, &pipe_info);
 	}
+	return (SUCCESS);
 }
 
 // handler C문자 없애기

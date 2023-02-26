@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:57:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:10:26 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	make_heredoc(char *limiter)
 	int		tmp_fd;
 
 	str = 0;
-	tmp_fd = open("tmp.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	tmp_fd = open(TMP_FILE, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	while (1)
 	{
-		ft_putstr_fd("pipe heredoc> ", 1);
-		str = get_next_line(0);
+		ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
+		str = get_next_line(STDIN_FILENO);
 		if (!str || ft_strncmp(str, limiter, ft_strlen(str)) == 0)
 			break ;
 		write(tmp_fd, str, ft_strlen(str));
@@ -32,7 +32,7 @@ int	make_heredoc(char *limiter)
 	}
 	free(str);
 	close(tmp_fd);
-	tmp_fd = open("tmp.txt", O_RDONLY, 0644);
+	tmp_fd = open(TMP_FILE, O_RDONLY, 0644);
 	return (tmp_fd);
 }
 

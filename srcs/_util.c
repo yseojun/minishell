@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   _util.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/21 21:09:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:04:42 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
+#include "base.h"
 
 void	_pipe(int *pipefd)
 {
-	if (pipe(pipefd) < 0)
+	if (pipe(pipefd) == FAILURE)
 	{
 		perror("pipe");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -26,25 +27,25 @@ pid_t	_fork(void)
 	pid_t	pid;
 
 	pid = fork();
-	if (pid < 0)
+	if (pid == FAILURE)
 	{
 		perror("fork");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	return (pid);
 }
 
 void	_dup2(int fd1, int fd2)
 {
-	if (dup2(fd1, fd2) < 0)
+	if (dup2(fd1, fd2) == FAILURE)
 	{
 		perror("dup2");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }
 
 void	perror_exit(char *name)
 {
 	perror(name);
-	exit(1);
+	exit(EXIT_FAILURE);
 }

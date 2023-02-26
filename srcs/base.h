@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 12:41:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 14:24:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # include <sys/errno.h>
 # include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
+
+# define P_WRITE 1
+# define P_READ 0
+# define CMD_NOT_FOUND "minishell: command not found: "
+# define SUCCESS 0
+# define FAILURE -1
+# define TMP_FILE "tmp.txt"
 
 extern char	**environ;
 
@@ -41,8 +48,6 @@ typedef struct s_pipe
 	char			**unit;
 	int				unit_size;
 	char			**cmd_arr;
-	int				infile_fd;
-	int				outfile_fd;
 	int				in_fd;
 	int				out_fd;
 	int				is_valid_cmd;
@@ -94,5 +99,12 @@ int			is_symbol(char *str);
 
 //token
 int			tokenalize(char *str, t_pipe *info);
+
+// transform
+void		handle_single_quotes(char *str, int *idx);
+char		*handle_double_quotes(char *str, int *idx);
+char		*expand_env(char *str);
+char		*get_expanded(int dollar_idx, char *origin_str, int *idx);
+void		transform(char **token_arr);
 
 #endif
