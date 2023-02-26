@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:50:59 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 14:24:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 14:41:14 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	put_in_new_str(char *origin_str, char *new_str, char *env_value, int
 char	*expand_env(char *str)
 {
 	int	idx;
-	
+
 	idx = 0;
 	while (str[idx])
 	{

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:08:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 14:48:47 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ int	parse_line(char *str, t_pipe *info)
 	}
 	prt_arr(info->token_arr);
 	transform(info->token_arr);
-	// 환경변수, 따옴표 제거
-	// ls -l > outfile | cat -e "$FILE  asd"
-	// ls / -l / > / outfile / | / 
-	// cat / -e / "$FILE  asd"
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:24:10 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 15:34:30 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct s_pipe
 	char			**cmd_arr;
 	int				in_fd;
 	int				out_fd;
-	int				is_valid_cmd;
 	char			**path;
 	struct s_pid	*pids;
 }	t_pipe;
