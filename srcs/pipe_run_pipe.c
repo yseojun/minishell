@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 12:30:52 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:45:58 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void	set_fd(t_pipe *info);
+void		set_fd(t_pipe *info);
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
@@ -43,29 +43,29 @@ int	run_unit(t_pipe *info, t_data *data)
 	return (0);
 }
 
-static void	set_fd(t_pipe *info)
-{
-	info->in_fd = info->prev_fd;
-	if (info->infile_fd != STDIN_FILENO)
-	// if (is_infile())
-	{
-		close(info->prev_fd);
-		info->in_fd = info->infile_fd;
-	}
-	if (is_pipe(info->unit[info->unit_size - 1]))
-		info->out_fd = info->pipefd[1];
-	else
-	{
-		close(info->pipefd[1]);
-		info->out_fd = STDOUT_FILENO;
-	}
-	if (info->outfile_fd != STDOUT_FILENO)
-	// if (is_outfile())
-	{
-		close(info->pipefd[1]);
-		info->out_fd = info->outfile_fd;
-	}
-}
+// static void	set_fd(t_pipe *info)
+// {
+// 	info->in_fd = info->prev_fd;
+// 	if (info->infile_fd != STDIN_FILENO)
+// 	// if (is_infile())
+// 	{
+// 		close(info->prev_fd);
+// 		info->in_fd = info->infile_fd;
+// 	}
+// 	if (is_pipe(info->unit[info->unit_size - 1]))
+// 		info->out_fd = info->pipefd[1];
+// 	else
+// 	{
+// 		close(info->pipefd[1]);
+// 		info->out_fd = STDOUT_FILENO;
+// 	}
+// 	if (info->outfile_fd != STDOUT_FILENO)
+// 	// if (is_outfile())
+// 	{
+// 		close(info->pipefd[1]);
+// 		info->out_fd = info->outfile_fd;
+// 	}
+// }
 
 static void	child(t_pipe *info, t_data *data)
 {

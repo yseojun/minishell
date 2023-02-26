@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 22:09:05 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:41:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,10 @@ void		finish_line(char *str, t_pipe *info);
 void		wait_all(t_pipe *info);
 
 //set_pipe.c
-int			set_pipe(t_pipe *info, char **tmp);
 int			chk_cmd(t_pipe *info);
 char		**set_cmd(char **tmp);
 int			count_cmd(char **tmp);
-int			set_in_out(t_pipe *info, char **tmp, int idx);
-int			is_redirection(char *str);
+void		set_fd(t_pipe *info);
 
 //pipe_info.c
 void		init_pipe_info(t_pipe *info);

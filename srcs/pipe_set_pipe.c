@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 22:25:16 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:44:51 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ int	count_cmd(char **tmp)
 	return (count);
 }
 
-// 세팅된 in_fd와 prev_fd가 다르다면 close(prev_fd);
-int	set_in_fd(t_pipe *info, char **unit)
+static int	set_in_fd(t_pipe *info, char **unit)
 {
 	int	idx;
 
@@ -132,8 +131,7 @@ int	set_in_fd(t_pipe *info, char **unit)
 	return (0);
 }
 
-// unit의 마지막이 파이프가 아니면 아예 pipe 함수를 사용하지 말자!
-int	set_out_fd(t_pipe *info, char **unit)
+static int	set_out_fd(t_pipe *info, char **unit)
 {
 	int	idx;
 
@@ -160,6 +158,14 @@ int	set_out_fd(t_pipe *info, char **unit)
 		idx++;
 	}
 	return (0);
+}
+
+void	set_fd(t_pipe *info)
+{
+	set_in_fd(info, info->unit);
+	if (info->in_fd != info->prev_fd)
+		close(info->prev_fd);
+	set_out_fd(info, info->unit);
 }
 
 // int	set_in_out(t_pipe *info, char **tmp, int idx) // in_out 분리
