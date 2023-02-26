@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_rm_quote.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 14:01:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:22:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	transform(char **token_arr)
 	idx = 0;
 	while (token_arr[idx])
 	{
+		printf("%s\n", token_arr[idx]);
 		token_arr[idx] = expand_env(token_arr[idx]);
 		token_arr[idx] = remove_quote(token_arr[idx]);
 		idx++;
@@ -42,6 +43,7 @@ static char	*remove_quote(char *str)
 	idx = 0;
 	while (str[idx])
 	{
+		printf("in rm : %c\n", str[idx]);
 		if (str[idx] == '\'' || str[idx] == '\"')
 		{
 			quote = str[idx];
@@ -50,7 +52,7 @@ static char	*remove_quote(char *str)
 			if (close_idx == -1)
 				return (str);
 			str = get_str_without_quote(open_idx, close_idx, str);
-			idx += close_idx - open_idx;
+			idx += close_idx - open_idx - 2;
 		}
 		idx++;
 	}

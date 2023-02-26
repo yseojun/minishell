@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:50:59 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 14:41:14 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/26 16:23:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	*expand_env(char *str)
 	idx = 0;
 	while (str[idx])
 	{
+		printf("%c\n", str[idx]);
 		if (str[idx] == '$')
 			str = get_expanded(idx, str, &idx);
 		if (str[idx] == '\'')
@@ -48,7 +49,7 @@ char	*get_expanded(int dollar_idx, char *origin_str, int *idx)
 		exit(EXIT_FAILURE);
 	env_value = get_env(env_name);
 	free(env_name);
-	*idx += ft_strlen(env_value);
+	*idx += ft_strlen(env_value) - 1;
 	if (!env_value)
 		return (remove_env_name(origin_str, env_name_len, dollar_idx));
 	new_size = ft_strlen(origin_str) - env_name_len + (*idx - dollar_idx);
