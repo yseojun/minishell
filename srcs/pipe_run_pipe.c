@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 22:28:56 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 12:30:52 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	run_unit(t_pipe *info, t_data *data)
 	{
 		add_pid(info, pid);
 		close(info->pipefd[1]);
-		if (info->prev_fd != 0)
-			close(info->prev_fd);
+		if (info->in_fd != 0)
+			close(info->in_fd);
 		info->prev_fd = info->pipefd[0];
 	}
 	return (0);
