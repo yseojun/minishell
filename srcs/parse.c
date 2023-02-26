@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 19:47:23 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:50:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		return (FAILURE);
 	}
 	prt_arr(info->token_arr);
-	transform(data, info->token_arr);
+	transform(data, info);
 	return (SUCCESS);
 }
 

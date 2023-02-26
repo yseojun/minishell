@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:23:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:55:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ int	make_unit(t_pipe *info, int idx)
 	int	unit_idx;
 
 	token_start_idx = idx;
-	while (idx < info->token_arr_size)
+	info->unit_size = 0;
+	while (info->token_arr[idx])
 	{
-		if (info->token_arr[idx] && is_pipe(info->token_arr[idx]))
+		if (is_pipe(info->token_arr[idx]))
 		{
 			info->unit_size++;
 			break ;
@@ -33,7 +34,7 @@ int	make_unit(t_pipe *info, int idx)
 	info->unit = (char **)malloc(sizeof(char *) * (info->unit_size + 1));
 	unit_idx = 0;
 	while (unit_idx < info->unit_size)
-		info->unit[unit_idx++] = ft_strdup(info->token_arr[token_start_idx++]);
+		info->unit[unit_idx++] = info->token_arr[token_start_idx++];
 	info->unit[unit_idx] = 0;
 	return (unit_idx);
 }
@@ -57,11 +58,11 @@ int	main(void)
 		add_history(str);
 		if (parse_line(str, &data, &pipe_info) == FAILURE)
 			continue ;
-		// if (ft_strlen(pipe_info.token_arr[0]) == 0)
 		idx = 0;
 		while (idx < pipe_info.token_arr_size)
 		{
 			idx += make_unit(&pipe_info, idx);
+			prt_arr(pipe_info.unit);
 			if (run_unit(&pipe_info, &data) == FAILURE)
 				continue ;
 		}

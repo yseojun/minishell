@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:06:46 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:50:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void		lst_env_free(t_env *lst);
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info);
-char		**set_cmd(t_pipe *info);
-int			count_cmd(t_pipe *info);
+char		**set_cmd(char **tmp);
+int			count_cmd(char **tmp);
 int			set_fd(t_pipe *info);
 
 //pipe_info.c
@@ -119,10 +119,10 @@ int			tokenalize(char *str, t_pipe *info);
 
 // transform
 void		handle_single_quotes(char *str, int *idx);
-char		*handle_double_quotes(t_data *data, char *str, int *idx);
-char		*expand_env(t_data *data, char *str);
+char		*handle_double_quotes(t_data *data, char *str, int *idx, int *flag);
+char		*expand_env(t_data *data, char *str, int *flag);
 char		*get_expanded(t_data *data, int dollar_idx, \
 							char *origin_str, int *idx);
-void		transform(t_data *data, char **token_arr);
+void		transform(t_data *data, t_pipe *info);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:19:11 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:53:15 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,14 @@ int	is_user_func(t_pipe *info)
 	return (SUCCESS);
 }
 
-char	**set_cmd(t_pipe *info)
+char	**set_cmd(char **tmp)
 {
 	char	**cmd;
 	int		idx;
 	int		cmd_idx;
 	int		count;
 
-	count = count_cmd(info);
-	printf("%d\n", count);
+	count = count_cmd(tmp);
 	if (count == 0)
 		return (0);
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
@@ -69,26 +68,26 @@ char	**set_cmd(t_pipe *info)
 		exit(EXIT_FAILURE);
 	idx = 0;
 	cmd_idx = 0;
-	while (idx < info->unit_size)
+	while (tmp[idx])
 	{
-		if (info->unit[idx] && !is_symbol(info->unit[idx]))
-			cmd[cmd_idx++] = ft_strdup(info->unit[idx]);
+		if (!is_symbol(tmp[idx]))
+			cmd[cmd_idx++] = ft_strdup(tmp[idx]);
 		idx++;
 	}
 	cmd[cmd_idx] = 0;
 	return (cmd);
 }
 
-int	count_cmd(t_pipe *info)
+int	count_cmd(char **tmp)
 {
 	int	idx;
 	int	count;
 
 	idx = 0;
 	count = 0;
-	while (idx < info->unit_size)
+	while (tmp[idx])
 	{
-		if (info->unit[idx] && !is_symbol(info->unit[idx]))
+		if (!is_symbol(tmp[idx]))
 			count++;
 		idx++;
 	}
@@ -101,11 +100,11 @@ static int	set_in_fd(t_pipe *info, char **unit)
 
 	info->in_fd = info->prev_fd;
 	idx = 0;
-	while (idx < info->unit_size)
+	while (unit[idx])
 	{
-		if (info->unit[idx] && !ft_strncmp(unit[idx], "<<", 3))
+		if (!ft_strncmp(unit[idx], "<<", 3))
 			info->in_fd = make_heredoc(unit[idx + 1]);
-		else if (info->unit[idx] && !ft_strncmp(unit[idx], "<", 2))
+		else if (!ft_strncmp(unit[idx], "<", 2))
 			info->in_fd = infile_chk(unit[idx + 1]);
 		if (info->in_fd == FAILURE)
 		{
@@ -122,17 +121,18 @@ static int	set_out_fd(t_pipe *info, char **unit)
 {
 	int	idx;
 
-	if (info->unit[info->unit_size - 1] && is_pipe(unit[info->unit_size - 1]))
+	printf("unit_size : %d, last unit token : %s\n", info->unit_size, unit[info->unit_size - 1]);
+	if (is_pipe(unit[info->unit_size - 1]))
 		info->out_fd = info->pipefd[P_WRITE];
 	else
 		info->out_fd = STDOUT_FILENO;
 	idx = 0;
-	while (idx < info->unit_size)
+	while (unit[idx])
 	{
-		if (info->unit[idx] && !ft_strncmp(unit[idx], ">>", 3))
+		if (!ft_strncmp(unit[idx], ">>", 3))
 			info->out_fd = \
 			open(unit[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else if (info->unit[idx] && !ft_strncmp(unit[idx], ">", 2))
+		else if (!ft_strncmp(unit[idx], ">", 2))
 			info->out_fd = \
 			open(unit[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (info->out_fd == FAILURE)

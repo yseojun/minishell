@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:50:59 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 19:44:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:40:39 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	get_env_name_len(int env_name_idx, char *str);
 static char	*remove_env_name(char *origin_str, int env_name_len, int dollar_idx);
 static void	put_in_new_str(char *origin_str, char *new_str, char *env_value, int dollar_idx);
 
-char	*expand_env(t_data *data, char *str)
+char	*expand_env(t_data *data, char *str, int *flag)
 {
 	int	idx;
 
@@ -25,11 +25,14 @@ char	*expand_env(t_data *data, char *str)
 	{
 		printf("%c\n", str[idx]);
 		if (str[idx] == '$')
+		{
 			str = get_expanded(data, idx, str, &idx);
+			*flag = 1;
+		}
 		else if (str[idx] == '\'')
 			handle_single_quotes(str, &idx);
 		else if (str[idx] == '\"')
-			str = handle_double_quotes(data, str, &idx);
+			str = handle_double_quotes(data, str, &idx, flag);
 		idx++;
 	}
 	return (str);
