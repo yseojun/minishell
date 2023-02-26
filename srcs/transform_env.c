@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 13:50:59 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 19:34:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:44:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ char	*expand_env(t_data *data, char *str)
 		printf("%c\n", str[idx]);
 		if (str[idx] == '$')
 			str = get_expanded(data, idx, str, &idx);
-		if (str[idx] == '\'')
+		else if (str[idx] == '\'')
 			handle_single_quotes(str, &idx);
-		if (str[idx] == '\"')
+		else if (str[idx] == '\"')
 			str = handle_double_quotes(data, str, &idx);
 		idx++;
 	}

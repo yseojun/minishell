@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:15:17 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/26 19:11:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:14:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	transform(t_data *data, char **token_arr)
 		printf("%s\n", token_arr[idx]);
 		token_arr[idx] = expand_env(data, token_arr[idx]);
 		token_arr[idx] = remove_quote(token_arr[idx]);
+		if (ft_strlen(token_arr[idx]) == 0)
+		{
+			free(token_arr[idx]);
+			token_arr[idx] = 0;
+		}
 		idx++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:49:17 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:06:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void		lst_env_free(t_env *lst);
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info);
-char		**set_cmd(char **tmp);
-int			count_cmd(char **tmp);
+char		**set_cmd(t_pipe *info);
+int			count_cmd(t_pipe *info);
 int			set_fd(t_pipe *info);
 
 //pipe_info.c

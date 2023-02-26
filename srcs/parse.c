@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 18:49:51 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:47:23 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	chk_grammer_valid(t_pipe *info)
 	int	idx;
 
 	idx = 1;
-	if (!info->token_arr)
+	if (!info->token_arr || !info->token_arr[0])
 		return (FAILURE);
 	if (is_pipe(info->token_arr[0]))
 		return (FAILURE);

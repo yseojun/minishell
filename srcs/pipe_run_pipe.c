@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 16:50:40 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:09:53 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,16 @@ int	run_unit(t_pipe *info, t_data *data)
 	printf("%d\n", info->unit_size);
 	_pipe(info->pipefd);
 	if (set_fd(info) == FAILURE)
+	{
+		printf("fd fail\n");
 		return (FAILURE);
-	info->cmd_arr = set_cmd(info->unit);
+	}
+	info->cmd_arr = set_cmd(info);
 	if (chk_cmd(info) == FAILURE)
+	{
+		printf("cmd fail\n");
 		return (FAILURE);
+	}
 	//to_do // pwd export cd unset env exit
 	pid = _fork();
 	if (pid == 0)
