@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:50:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:52:45 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,5 @@ int			is_symbol(char *str);
 
 //token
 int			tokenalize(char *str, t_pipe *info);
-
-// transform
-void		handle_single_quotes(char *str, int *idx);
-char		*handle_double_quotes(t_data *data, char *str, int *idx, int *flag);
-char		*expand_env(t_data *data, char *str, int *flag);
-char		*get_expanded(t_data *data, int dollar_idx, \
-							char *origin_str, int *idx);
-void		transform(t_data *data, t_pipe *info);
 
 #endif

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:50:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:55:08 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
+#include "parse.h"
 
 static int	chk_grammer_valid(t_pipe *info);
 
@@ -29,7 +30,7 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		free_arr((void **) info->token_arr);
 		return (FAILURE);
 	}
-	prt_arr(info->token_arr);
+	//prt_arr(info->token_arr);
 	transform(data, info);
 	return (SUCCESS);
 }

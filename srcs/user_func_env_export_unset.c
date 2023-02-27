@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user_func_env_export_unset.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 19:43:28 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:40:26 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	run_user_func(t_pipe *info, t_data *data)
 	// 	_history(info->cmd_arr[1]);
 }
 
+// get_env 수정 - ? 처리 하지 말기, NULL 반환
 char	*get_env(t_data *data, char *str)
 {
 	t_env	*search;

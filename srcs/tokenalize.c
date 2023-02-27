@@ -6,14 +6,14 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:19:23 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:02:11 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-static int		count_quote(char *str, int idx);
-static size_t	count_arr_size(char *str);
+static int		get_quote_size(char *str, int idx);
+static size_t	get_arr_size(char *str);
 static int		put_token(char *str, char **new, int n, int *idx);
 
 int	tokenalize(char *str, t_pipe *info)
@@ -22,7 +22,7 @@ int	tokenalize(char *str, t_pipe *info)
 	int		idx;
 	int		n;
 
-	new_arr = (char **)malloc(sizeof(char *) * count_arr_size(str));
+	new_arr = (char **)malloc(sizeof(char *) * get_arr_size(str));
 	if (!new_arr)
 		return (FAILURE);
 	n = 0;
@@ -33,8 +33,10 @@ int	tokenalize(char *str, t_pipe *info)
 			idx++;
 		else
 		{
-			if (put_token(str, new_arr, n++, &idx) == FAILURE)
+			if (put_token(str, new_arr, n, &idx) == FAILURE)
 				return (FAILURE);
+			n++;
+			// 여기 원래 put_token에 넘길 때 n++ 했었는데 변경함
 		}
 	}
 	new_arr[n] = 0;
@@ -43,24 +45,27 @@ int	tokenalize(char *str, t_pipe *info)
 	return (SUCCESS);
 }
 
-static int	count_quote(char *str, int idx)
+static int	get_quote_size(char *str, int idx)
 {
 	int		quote_size;
-	char	qoute;
+	char	quote;
 
 	quote_size = 0;
-	qoute = str[idx];
+	quote = str[idx];
 	idx++;
 	quote_size++;
-	while (str[idx] && str[idx] != qoute)
+	while (str[idx] && str[idx] != quote)
 	{
 		idx++;
 		quote_size++;
 	}
+	// 닫는 따옴표가 없는 경우에는 quote size로 0을 반환!
+	if (!str[idx])
+		return (0);
 	return (quote_size);
 }
 
-static size_t	count_arr_size(char *str)
+static size_t	get_arr_size(char *str)
 {
 	size_t	count;
 	int		idx;
@@ -79,7 +84,7 @@ static size_t	count_arr_size(char *str)
 			while (str[idx] && str[idx] != ' ')
 			{
 				if (str[idx] == '\'' || str[idx] == '\"')
-					idx += count_quote(str, idx);
+					idx += get_quote_size(str, idx);
 				idx++;
 			}
 			count++;
@@ -100,7 +105,7 @@ static int	put_token(char *str, char **new, int n, int *idx)
 	{
 		if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			token_size += count_quote(str, *idx);
+			token_size += get_quote_size(str, *idx);
 			*idx += token_size;
 		}
 		(*idx)++;
