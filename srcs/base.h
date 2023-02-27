@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 13:52:45 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:53:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int			infile_chk(char *infile);
 int			run_unit(t_pipe *info, t_data *data);
 
 //user_func
-char		*get_env(t_data *data, char *str);
+char		*get_env(t_data *data, char *key);
 void		_export(t_data *data, char *token);
 void		_unset(t_data *data, char *name);
 void		run_user_func(t_pipe *info, t_data *data);

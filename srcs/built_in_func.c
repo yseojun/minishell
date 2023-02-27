@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 13:40:26 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:53:07 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,20 @@ void	run_user_func(t_pipe *info, t_data *data)
 	// 	_history(info->cmd_arr[1]);
 }
 
-// get_env 수정 - ? 처리 하지 말기, NULL 반환
-char	*get_env(t_data *data, char *str)
+// transform_expand 에 필요한 함수는 따로 만들었음 (get_value)
+// 물음표 처리 안 하고, NULL 반환하게끔 변경!
+char	*get_env(t_data *data, char *key)
 {
 	t_env	*search;
 
 	search = data->env;
-	if (ft_strncmp(str, "?", 2) == 0)
-		return (ft_itoa(data->last_child_status));
 	while (search)
 	{
-		if (ft_strncmp(search->name, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(search->name, key, ft_strlen(key)) == 0)
 			return (search->value);
 		search = search->next;
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 void	_env(t_data *data)

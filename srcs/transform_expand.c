@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/27 15:30:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 15:52:57 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ static int	get_key_len(int key_idx, char *str)
 	return (key_len);
 }
 
-static char	*get_value(t_data *data, char *str)
+static char	*get_value(t_data *data, char *key)
 {
 	t_env	*search;
 
-	if (ft_strncmp(str, "?", 2) == 0)
+	if (ft_strncmp(key, "?", 2) == 0)
 		return (ft_itoa(data->last_child_status));
 	search = data->env;
 	while (search)
 	{
-		if (ft_strncmp(search->name, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(search->name, key, ft_strlen(key)) == 0)
 			return (search->value);
 		search = search->next;
 	}
