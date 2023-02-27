@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   user_func_env_export_unset.c                       :+:      :+:    :+:   */
+/*   built_in_func.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 15:53:07 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:07:04 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	run_user_func(t_pipe *info, t_data *data)
 	// 	_history(info->cmd_arr[1]);
 }
 
-// transform_expand 에 필요한 함수는 따로 만들었음 (get_value)
-// 물음표 처리 안 하고, NULL 반환하게끔 변경!
 char	*get_env(t_data *data, char *key)
 {
 	t_env	*search;

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/27 15:39:10 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:12:32 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 			str = get_expanded(data, new_idx, str, &new_idx);
 		new_idx++;
 	}
-	// 큰 따옴표를 만나면 expand하다가, 닫는 따옴표를 만나든 끝을 만나든 인덱스 교체!
 	*idx = new_idx - 1;
 	return (str);
 }

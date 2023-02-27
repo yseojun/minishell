@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 15:02:11 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:10:19 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	tokenalize(char *str, t_pipe *info)
 			if (put_token(str, new_arr, n, &idx) == FAILURE)
 				return (FAILURE);
 			n++;
-			// 여기 원래 put_token에 넘길 때 n++ 했었는데 변경함
 		}
 	}
 	new_arr[n] = 0;
@@ -59,7 +58,6 @@ static int	get_quote_size(char *str, int idx)
 		idx++;
 		quote_size++;
 	}
-	// 닫는 따옴표가 없는 경우에는 quote size로 0을 반환!
 	if (!str[idx])
 		return (0);
 	return (quote_size);
