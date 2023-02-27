@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 18:25:12 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 18:35:06 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define UNSET 3
 # define EXIT 4
 // # define CD 5
-# define PWD 6
+// # define PWD 6
 // # define ECHO 7
 
 extern char	**environ;
