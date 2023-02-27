@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 15:53:18 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 18:25:12 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,16 @@
 # define CMD_NOT_FOUND "minishell: command not found: "
 # define SUCCESS 0
 # define FAILURE -1
+# define TRUE 1
+# define FALSE 0
 # define TMP_FILE "tmp.txt"
+# define EXPORT 1
+# define ENV 2
+# define UNSET 3
+# define EXIT 4
+// # define CD 5
+# define PWD 6
+// # define ECHO 7
 
 extern char	**environ;
 
@@ -103,11 +112,9 @@ int			infile_chk(char *infile);
 //run_pipe.c
 int			run_unit(t_pipe *info, t_data *data);
 
-//user_func
-char		*get_env(t_data *data, char *key);
-void		_export(t_data *data, char *token);
-void		_unset(t_data *data, char *name);
-void		run_user_func(t_pipe *info, t_data *data);
+//builtin_func.c
+void		run_builtin_func(t_pipe *info, t_data *data);
+void		builtin_exit(int status, t_data *data);
 
 //is_symbol.c
 int			is_redirection(char *str);

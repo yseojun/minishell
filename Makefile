@@ -11,7 +11,7 @@ pipe_run_pipe.c \
 pipe_set_pipe.c \
 pipe_file.c \
 pipe_util.c \
-built_in_func.c \
+builtin_func.c \
 transform.c \
 transform_expand.c \
 transform_rm_quote.c \

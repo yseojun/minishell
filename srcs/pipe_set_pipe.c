@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:53:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:25:07 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-int	is_user_func(t_pipe *info);
+static int	is_builin_func(t_pipe *info);
 
 int	chk_cmd(t_pipe *info)
 {
@@ -33,21 +33,32 @@ int	chk_cmd(t_pipe *info)
 	}
 	if (access(info->cmd_arr[0], F_OK) == SUCCESS)
 		return (SUCCESS);
-	if (is_user_func(info) == SUCCESS)
+	if (is_builin_func(info) == SUCCESS)
 		return (SUCCESS);
 	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO); // sig?
 	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
 	return (FAILURE);
 }
 
-int	is_user_func(t_pipe *info)
+static int	is_builin_func(t_pipe *info)
 {
+	printf("is_builtin_func\n");
 	if (ft_strncmp(info->cmd_arr[0], "export", 6) == 0)
-		info->is_built_in = 1;
+		info->is_built_in = EXPORT;
+	else if (ft_strncmp(info->cmd_arr[0], "env", 3) == 0)
+		info->is_built_in = ENV;
 	else if (ft_strncmp(info->cmd_arr[0], "unset", 5) == 0)
-		info->is_built_in = 2;
+		info->is_built_in = UNSET;
 	else if (ft_strncmp(info->cmd_arr[0], "exit", 4) == 0)
-		info->is_built_in = 3;
+		info->is_built_in = EXIT;
+	// else if (ft_strncmp(info->cmd_arr[0], "cd", 2) == 0)
+	// 	info->is_built_in = CD;
+	else if (ft_strncmp(info->cmd_arr[0], "pwd", 3) == 0)
+		info->is_built_in = PWD;
+	// else if (ft_strncmp(info->cmd_arr[0], "echo", 4) == 0)
+	// 	info->is_built_in = ECHO;
+	// else if (ft_strncmp(info->cmd_arr[0], "history", 7) == 0)
+	// 	info->is_built_in = HISTORY;
 	else
 		return (FAILURE);
 	return (SUCCESS);

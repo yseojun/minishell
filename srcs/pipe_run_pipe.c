@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:53:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:23:37 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,15 @@ static void	run_command(t_pipe *info, t_data *data)
 	char	*path_command;
 
 	if (info->is_built_in)
-		run_user_func(info, data);
+		run_builtin_func(info, data);
 	path_command = find_command_in_path(info->cmd_arr[0], info->path);
 	// printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == FAILURE)
 		return ;
 	else
-		execve(path_command, info->cmd_arr, environ);
+	{
+		printf("path_cmd: %s\n", path_command);
+		execve(path_command, info->cmd_arr, environ);	
+	}
 	perror_exit(info->cmd_arr[0]);
 }
