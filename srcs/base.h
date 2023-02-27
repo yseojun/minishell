@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 18:35:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 19:36:30 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct s_pipe
 	char			**cmd_arr;
 	int				in_fd;
 	int				out_fd;
-	char			**path;
 	int				is_built_in;
 	struct s_pid	*pids;
 }	t_pipe;
@@ -80,7 +79,6 @@ typedef struct s_data
 //main.c
 void		handler(int sig);
 void		finish_line(char *str, t_pipe *info);
-void		wait_all(t_pipe *info);
 
 //base_data.c
 void		init_data(t_data *data);
@@ -94,7 +92,7 @@ void		lst_env_free(t_env *lst);
 
 
 //set_pipe.c
-int			chk_cmd(t_pipe *info);
+int			chk_cmd(t_pipe *info, t_data *data);
 char		**set_cmd(char **tmp);
 int			count_cmd(char **tmp);
 int			set_fd(t_pipe *info);
@@ -102,8 +100,10 @@ int			set_fd(t_pipe *info);
 //pipe_info.c
 void		init_pipe_info(t_pipe *info);
 char		*make_real_path(char *path, char *command);
-char		*find_command_in_path(char *command, char **path);
+char		**get_paths(t_data *data);
+char		*find_command_in_path(char *command, t_data *data);
 void		add_pid(t_pipe *info, pid_t	pid);
+void		wait_all(t_pipe *info);
 
 //pipe_infile.c
 int			make_heredoc(char *limiter);

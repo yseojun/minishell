@@ -6,14 +6,13 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 18:34:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 19:44:37 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-// static char	*get_env(t_data *data, char *key); // 필요한가..?
 static void	_env(t_data *data);
 static void	_export(t_data *data, char *token);
 static void	_unset(t_data *data, char *name);
@@ -40,20 +39,6 @@ void	run_builtin_func(t_pipe *info, t_data *data)
 	// if (info->is_built_in == HISTORY)
 	// 	printf("history 실행");
 }
-
-// static char	*get_env(t_data *data, char *key)
-// {
-// 	t_env	*search;
-
-// 	search = data->env;
-// 	while (search)
-// 	{
-// 		if (ft_strncmp(search->name, key, ft_strlen(key)) == 0)
-// 			return (search->value);
-// 		search = search->next;
-// 	}
-// 	return (NULL);
-// }
 
 static void	_env(t_data *data)
 {

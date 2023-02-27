@@ -6,23 +6,26 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 18:34:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 19:43:07 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "util.h"
 
 static int	is_builin_func(t_pipe *info);
 
-int	chk_cmd(t_pipe *info)
+int	chk_cmd(t_pipe *info, t_data *data)
 {
+	char	**paths;
 	int		idx;
 	char	*tmp_path;
 
+	paths = get_paths(data);
 	idx = 0;
-	while (info->path[idx])
+	while (paths && paths[idx])
 	{
-		tmp_path = make_real_path(info->path[idx], info->cmd_arr[0]);
+		tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
 		if (access(tmp_path, F_OK) == SUCCESS)
 		{
 			free(tmp_path);
@@ -31,6 +34,8 @@ int	chk_cmd(t_pipe *info)
 		idx++;
 		free(tmp_path);
 	}
+	if (paths)
+		free_arr((void **)paths);
 	if (access(info->cmd_arr[0], F_OK) == SUCCESS)
 		return (SUCCESS);
 	if (is_builin_func(info) == SUCCESS)
@@ -42,7 +47,6 @@ int	chk_cmd(t_pipe *info)
 
 static int	is_builin_func(t_pipe *info)
 {
-	printf("is_builtin_func\n");
 	if (ft_strncmp(info->cmd_arr[0], "export", 6) == 0)
 		info->is_built_in = EXPORT;
 	else if (ft_strncmp(info->cmd_arr[0], "env", 3) == 0)

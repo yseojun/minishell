@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 15:17:02 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/27 19:37:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_pipe_info(t_pipe *info)
 	info->prev_fd = STDIN_FILENO;
 	info->token_arr = 0;
 	info->cmd_arr = 0;
-	info->path = ft_split(getenv("PATH"), ':');
 	info->pids = 0;
 }
 
@@ -42,20 +41,53 @@ char	*make_real_path(char *path, char *command)
 	return (str);
 }
 
-char	*find_command_in_path(char *command, char **path)
+char	*get_env(t_data *data, char *key)
 {
+	t_env	*search;
+
+	search = data->env;
+	while (search)
+	{
+		if (ft_strncmp(search->name, key, ft_strlen(key)) == 0)
+			return (search->value);
+		search = search->next;
+	}
+	return (NULL);
+}
+
+char	**get_paths(t_data *data)
+{
+	char	*path_value;
+	char	**paths;
+
+	path_value = get_env(data, "PATH");
+	if (!path_value)
+		return (NULL);
+	paths = ft_split(get_env(data, "PATH"), ':');
+	if (!paths)
+		exit(EXIT_FAILURE);
+	return (paths);
+}
+
+char	*find_command_in_path(char *command, t_data *data)
+{
+	char	**paths;
 	int		idx;
 	char	*tmp_path;
 
+	paths = get_paths(data);
+	if (!paths)
+		return (command);
 	idx = 0;
-	while (path[idx])
+	while (paths[idx])
 	{
-		tmp_path = make_real_path(path[idx], command);
+		tmp_path = make_real_path(paths[idx], command);
 		if (access(tmp_path, F_OK) == SUCCESS)
 			return (tmp_path);
 		free(tmp_path);
 		idx++;
 	}
+	free_arr((void **)paths);
 	return (command);
 }
 
