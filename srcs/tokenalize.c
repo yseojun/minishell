@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenalize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 16:10:19 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/28 13:45:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,14 @@ static size_t	get_arr_size(char *str)
 		{
 			while (str[idx] && str[idx] != ' ')
 			{
-				if (str[idx] == '\'' || str[idx] == '\"')
+				if (is_redir_pipr_chr(str[idx]))
+				{
+					if (str[idx + 1] == str[idx])
+						idx++;
+					idx++;
+					break ;
+				}
+				else if (str[idx] == '\'' || str[idx] == '\"')
 					idx += get_quote_size(str, idx);
 				idx++;
 			}
@@ -101,7 +108,18 @@ static int	put_token(char *str, char **new, int n, int *idx)
 	start = *idx;
 	while (str[*idx] && str[*idx] != ' ')
 	{
-		if (str[*idx] == '\'' || str[*idx] == '\"')
+		if (is_redir_pipr_chr(str[*idx]))
+		{
+			if (str[*idx + 1] == str[*idx])
+			{
+				token_size++;
+				(*idx)++;
+			}
+			(*idx)++;
+			token_size++;
+			break ;
+		}
+		else if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
 			token_size += get_quote_size(str, *idx);
 			*idx += token_size;

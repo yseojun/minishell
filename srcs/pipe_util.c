@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 19:37:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/28 18:26:47 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_pipe_info(t_pipe *info)
 	info->token_arr = 0;
 	info->cmd_arr = 0;
 	info->pids = 0;
+	info->is_pipe = 0;
 }
 
 char	*make_real_path(char *path, char *command)

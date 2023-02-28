@@ -7,7 +7,7 @@ SRCS = main.c \
 parse.c \
 base_data.c \
 list_env.c \
-pipe_run_pipe.c \
+pipe_run_unit.c \
 pipe_set_pipe.c \
 pipe_file.c \
 pipe_util.c \

@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   base_data.c                                        :+:      :+:    :+:   */
+/*   bonus_tokenalize.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 18:30:24 by seojyang         ###   ########.fr       */
+/*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
+/*   Updated: 2023/02/28 13:28:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
-#include "util.h"
+#include "parse.h"
 
-void	init_data(t_data *data)
+int	bonus_tokenalize(char *str, t_pipe *info)
 {
-	data->last_child_status = 0;
-	data->env = init_env();
-}
-
-t_env	*init_env(void)
-{
-	t_env	*head;
-	char	**env_spl;
+	t_token	*head;
+	t_token	*new;
+	char	**new_arr;
 	int		idx;
+	int		n;
 
+	head = (t_token *)malloc(sizeof(t_token));
+	head->left = 0;
+	head->right = 0;
+	head->token = 0;
 	idx = 0;
-	head = 0;
-	while (environ[idx])
+	while (str[idx])
 	{
-		env_spl = ft_split(environ[idx], '=');
-		lst_env_add_back(&head, lst_new_env(env_spl[0], env_spl[1]));
-		free_arr((void **)env_spl);
-		idx++;
+		if (str[idx] == ' ')
+			idx++;
+		else
+		{
+			if (put_token(str, new_arr, n, &idx) == FAILURE)
+				return (FAILURE);
+			n++;
+		}
 	}
-	return (head);
+	return (SUCCESS);
 }

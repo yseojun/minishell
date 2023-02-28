@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 20:55:27 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/28 20:34:17 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	make_unit(t_pipe *info, int idx)
 
 int	main(void)
 {
-	t_pipe	pipe_info;
+	t_pipe	line_info;
 	t_data	data;
 	char	*str;
 	int		idx;
@@ -50,23 +50,25 @@ int	main(void)
 	signal(SIGINT, handler);
 	while (1)
 	{
+		init_pipe_info(&line_info);
 		// ↓ export로 path를 바꾸면 어떻게 되는거지?ㅋㅋㅋ
-		init_pipe_info(&pipe_info);
 		str = readline("minishell> ");
 		if (!str)
 			break ;
 		add_history(str);
-		if (parse_line(str, &data, &pipe_info) == FAILURE)
+		if (parse_line(str, &data, &line_info) == FAILURE)
 			continue ;
 		idx = 0;
-		while (idx < pipe_info.token_arr_size)
+		prt_arr(line_info.token_arr);
+		printf("\n");
+		while (idx < line_info.token_arr_size)
 		{
-			idx += make_unit(&pipe_info, idx);
-			prt_arr(pipe_info.unit);
-			if (run_unit(&pipe_info, &data) == FAILURE)
+			idx += make_unit(&line_info, idx);
+			prt_arr(line_info.unit);
+			if (run_unit(&line_info, &data) == FAILURE)
 				continue ;
 		}
-		finish_line(str, &pipe_info);
+		finish_line(str, &line_info);
 	}
 	return (SUCCESS);
 }
@@ -85,6 +87,11 @@ void	handler(int sig)
 
 void	finish_line(char *str, t_pipe *info)
 {
+	if (info->is_pipe)
+	{
+		close(info->pipefd[1]);
+		close(info->pipefd[0]);
+	}
 	wait_all(info);
 	free(str);
 	free_arr((void **) info->token_arr);

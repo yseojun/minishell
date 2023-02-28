@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 19:44:37 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/28 12:55:09 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	run_builtin_func(t_pipe *info, t_data *data)
 {
 	if (info->is_built_in == EXPORT)
 		_export(data, info->cmd_arr[1]);
-	if (info->is_built_in == ENV)
+	else if (info->is_built_in == ENV)
 		_env(data);
-	if (info->is_built_in == UNSET)
+	else if (info->is_built_in == UNSET)
 		_unset(data, info->cmd_arr[1]);
-	if (info->is_built_in == EXIT)
+	else if (info->is_built_in == EXIT)
 		builtin_exit(EXIT_SUCCESS, data);
 	// if (info->is_built_in == CD)
 	// 	builtin_cd(info->cmd_arr[1], data);
@@ -66,7 +66,8 @@ static void	_export(t_data *data, char *token)
 	prev = search;
 	while (search)
 	{
-		if (ft_strncmp(search->name, name_val[0], ft_strlen(name_val[0])) == 0)
+		printf("%s, %s\n", search->name, name_val[0]);
+		if (ft_strncmp(search->name, name_val[0], ft_strlen(name_val[0]) + 1) == 0)
 		{
 			free(search->value);
 			search->value = name_val[1];
@@ -75,7 +76,8 @@ static void	_export(t_data *data, char *token)
 		prev = search;
 		search = search->next;
 	}
-	lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
+	if (search == NULL)
+		lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
 	free_arr((void **) name_val);
 }
 

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:32:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 21:17:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:35:16 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_symbol(char *str)
 	return (is_pipe(str) || is_redirection(str));
 }
 
-int	is_special_symbol(char c)
+int	is_redir_pipr_chr(char c)
 {
-	return (c == '<' || c == '>' || c == '|' || c == '&');
+	return (c == '<' || c == '>' || c == '|');
 }

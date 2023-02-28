@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 19:36:30 by rolee            ###   ########.fr       */
+/*   Updated: 2023/02/28 18:25:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_token
+{
+	char			*token;
+	int				type;
+	struct s_token	*left;
+	struct s_token	*right;
+}	t_token;
+
 typedef struct s_pipe
 {
 	int				pipefd[2];
 	int				prev_fd;
+	t_token			*head;
 	char			**token_arr;
 	int				token_arr_size;
 	char			**unit;
@@ -66,7 +75,10 @@ typedef struct s_pipe
 	char			**cmd_arr;
 	int				in_fd;
 	int				out_fd;
+	int				infile_fd;
+	int				outfile_fd;
 	int				is_built_in;
+	int				is_pipe;
 	struct s_pid	*pids;
 }	t_pipe;
 
@@ -120,6 +132,7 @@ void		builtin_exit(int status, t_data *data);
 int			is_redirection(char *str);
 int			is_pipe(char *str);
 int			is_symbol(char *str);
+int			is_redir_pipr_chr(char c);
 
 //token
 int			tokenalize(char *str, t_pipe *info);
