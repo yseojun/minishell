@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 17:04:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:35:36 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ typedef struct s_pipe
 
 typedef struct s_data
 {
-	int		exit_status;
-	t_env	*env;
+	int				exit_status;
+	t_env			*env;
+	struct termios	termios;
 }	t_data;
 
 //main.c
@@ -136,6 +137,6 @@ int			is_symbol(char *str);
 int			is_redir_pipr_chr(char c);
 
 //token
-int			tokenalize(char *str, t_pipe *info);
+int			tokenize(char *str, t_pipe *info);
 
 #endif

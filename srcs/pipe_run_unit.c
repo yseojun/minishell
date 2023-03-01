@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 16:07:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:23:21 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	run_unit(t_pipe *info, t_data *data)
 	if (set_fd(info) == FAILURE)
 		return (FAILURE);
 	info->cmd_arr = set_cmd(info->unit);
-	if (chk_cmd(info, data) == FAILURE)
+	if (info->cmd_arr != 0 && chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
-	printf("%d\n", info->is_built_in);
+	// printf("%d\n", info->is_built_in);
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
@@ -45,7 +45,7 @@ int	run_unit(t_pipe *info, t_data *data)
 
 static void	child(t_pipe *info, t_data *data)
 {
-	printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
+	// printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
 	dup2(info->in_fd, STDIN_FILENO);
 	if (info->in_fd != STDIN_FILENO)
 		close(info->in_fd);
@@ -64,7 +64,8 @@ static void	run_command(t_pipe *info, t_data *data)
 		run_builtin_func(info, data);
 		return ;
 	}
-	path_command = find_command_in_path(info->cmd_arr[0], data);
+	if (info->cmd_arr)
+		path_command = find_command_in_path(info->cmd_arr[0], data);
 	//printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == FAILURE)
 		return ;

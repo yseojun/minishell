@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 15:41:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:36:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
 {
-	if (tokenalize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE)
+	if (tokenize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE)
 	{
 		if (info->token_arr == 0)
 			return (FAILURE);

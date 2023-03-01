@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenalize.c                                       :+:      :+:    :+:   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 13:45:57 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:27:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		get_quote_size(char *str, int idx);
 static size_t	get_arr_size(char *str);
 static int		put_token(char *str, char **new, int n, int *idx);
 
-int	tokenalize(char *str, t_pipe *info)
+int	tokenize(char *str, t_pipe *info)
 {
 	char	**new_arr;
 	int		idx;
@@ -103,11 +103,13 @@ static int	put_token(char *str, char **new, int n, int *idx)
 	int		i;
 	int		start;
 	int		token_size;
+	int		qoute_size;
 
 	token_size = 0;
 	start = *idx;
 	while (str[*idx] && str[*idx] != ' ')
 	{
+		qoute_size = 0;
 		if (is_redir_pipr_chr(str[*idx]))
 		{
 			if (str[*idx + 1] == str[*idx])
@@ -121,8 +123,9 @@ static int	put_token(char *str, char **new, int n, int *idx)
 		}
 		else if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			token_size += get_quote_size(str, *idx);
-			*idx += token_size;
+			qoute_size = get_quote_size(str, *idx);
+			*idx += qoute_size;
+			token_size += qoute_size;
 		}
 		(*idx)++;
 		token_size++;

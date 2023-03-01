@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 16:34:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:24:25 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_data(t_data *data)
 {
 	data->exit_status = 0;
 	data->env = init_env();
+	tcgetattr(0, &data->termios);
 }
 
 t_env	*init_env(void)

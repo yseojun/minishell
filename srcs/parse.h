@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/27 15:29:27 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/01 19:35:36 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 // parse.c
 int		parse_line(char *str, t_data *data, t_pipe *info);
 
-// tokenalize.c
-int		tokenalize(char *str, t_pipe *info);
+// tokenize.c
+int		tokenize(char *str, t_pipe *info);
 
 // transform.c
 void	transform(t_data *data, t_pipe *info);

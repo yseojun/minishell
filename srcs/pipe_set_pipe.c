@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 16:52:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:13:10 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,29 @@ int	chk_cmd(t_pipe *info, t_data *data)
 	int		idx;
 	char	*tmp_path;
 
-	paths = get_paths(data);
-	idx = 0;
-	info->is_built_in = 0;
-	if (is_builin_func(info) == SUCCESS)
-		return (SUCCESS);
-	while (paths && paths[idx])
+	if (ft_strlen(info->cmd_arr[0]) != 0)
 	{
-		tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
-		if (access(tmp_path, F_OK) == SUCCESS)
-		{
-			free(tmp_path);
+		paths = get_paths(data);
+		idx = 0;
+		info->is_built_in = 0;
+		if (is_builin_func(info) == SUCCESS)
 			return (SUCCESS);
+		while (paths && paths[idx])
+		{
+			tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
+			if (access(tmp_path, F_OK) == SUCCESS)
+			{
+				free(tmp_path);
+				return (SUCCESS);
+			}
+			idx++;
+			free(tmp_path);
 		}
-		idx++;
-		free(tmp_path);
+		if (paths)
+			free_arr((void **)paths);
+		if (access(info->cmd_arr[0], F_OK) == SUCCESS)
+			return (SUCCESS);
 	}
-	if (paths)
-		free_arr((void **)paths);
-	if (access(info->cmd_arr[0], F_OK) == SUCCESS)
-		return (SUCCESS);
 	data->exit_status = 127;
 	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO);
 	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
@@ -190,7 +193,7 @@ int	set_fd(t_pipe *info)
 			close(info->prev_fd);
 		info->in_fd = info->infile_fd;
 	}
-	printf("last unit : %s\n", info->unit[info->unit_size - 1]);
+	// printf("last unit : %s\n", info->unit[info->unit_size - 1]);
 	if (is_pipe(info->unit[info->unit_size - 1]))
 	{
 		_pipe(info->pipefd);
