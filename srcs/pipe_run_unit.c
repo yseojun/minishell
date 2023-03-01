@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 20:34:57 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:07:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	run_unit(t_pipe *info, t_data *data)
 	info->cmd_arr = set_cmd(info->unit);
 	if (chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
+	printf("%d\n", info->is_built_in);
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
@@ -59,7 +60,10 @@ static void	run_command(t_pipe *info, t_data *data)
 	char	*path_command;
 
 	if (info->is_built_in)
+	{
 		run_builtin_func(info, data);
+		return ;
+	}
 	path_command = find_command_in_path(info->cmd_arr[0], data);
 	//printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == FAILURE)

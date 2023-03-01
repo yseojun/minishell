@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 20:52:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:52:06 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	chk_cmd(t_pipe *info, t_data *data)
 	paths = get_paths(data);
 	idx = 0;
 	info->is_built_in = 0;
+	if (is_builin_func(info) == SUCCESS)
+		return (SUCCESS);
 	while (paths && paths[idx])
 	{
 		tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
@@ -39,9 +41,8 @@ int	chk_cmd(t_pipe *info, t_data *data)
 		free_arr((void **)paths);
 	if (access(info->cmd_arr[0], F_OK) == SUCCESS)
 		return (SUCCESS);
-	if (is_builin_func(info) == SUCCESS)
-		return (SUCCESS);
-	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO); // sig?
+	data->exit_status = 127;
+	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO);
 	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
 	return (FAILURE);
 }
@@ -56,13 +57,13 @@ static int	is_builin_func(t_pipe *info)
 		info->is_built_in = UNSET;
 	else if (ft_strncmp(info->cmd_arr[0], "exit", 5) == 0)
 		info->is_built_in = EXIT;
-	// else if (ft_strncmp(info->cmd_arr[0], "cd", 2) == 0)
-	// 	info->is_built_in = CD;
-	// else if (ft_strncmp(info->cmd_arr[0], "pwd", 3) == 0)
-	// 	info->is_built_in = PWD;
-	// else if (ft_strncmp(info->cmd_arr[0], "echo", 4) == 0)
+	else if (ft_strncmp(info->cmd_arr[0], "cd", 3) == 0)
+		info->is_built_in = CD;
+	else if (ft_strncmp(info->cmd_arr[0], "pwd", 4) == 0)
+		info->is_built_in = PWD;
+	// else if (ft_strncmp(info->cmd_arr[0], "echo", 5) == 0)
 	// 	info->is_built_in = ECHO;
-	// else if (ft_strncmp(info->cmd_arr[0], "history", 7) == 0)
+	// else if (ft_strncmp(info->cmd_arr[0], "history", 8) == 0)
 	// 	info->is_built_in = HISTORY;
 	else
 		return (FAILURE);

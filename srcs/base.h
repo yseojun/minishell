@@ -6,14 +6,14 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 18:25:38 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:04:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BASE_H
 # define BASE_H
 
-# include <stdio.h> // readline, 
+# include <stdio.h> 
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -21,6 +21,7 @@
 # include <readline/history.h>
 # include <readline/readline.h> // readline
 # include <sys/errno.h>
+# include <termios.h> // tcgetattr
 # include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
 
@@ -36,8 +37,8 @@
 # define ENV 2
 # define UNSET 3
 # define EXIT 4
-// # define CD 5
-// # define PWD 6
+# define CD 5
+# define PWD 6
 // # define ECHO 7
 
 extern char	**environ;
@@ -61,6 +62,7 @@ typedef struct s_token
 	int				type;
 	struct s_token	*left;
 	struct s_token	*right;
+	struct s_token	*next;
 }	t_token;
 
 typedef struct s_pipe
@@ -84,13 +86,13 @@ typedef struct s_pipe
 
 typedef struct s_data
 {
-	int		last_child_status;
+	int		exit_status;
 	t_env	*env;
 }	t_data;
 
 //main.c
 void		handler(int sig);
-void		finish_line(char *str, t_pipe *info);
+void		finish_line(char *str, t_pipe *info, t_data *data);
 
 //base_data.c
 void		init_data(t_data *data);
@@ -101,7 +103,6 @@ t_env		*lst_new_env(char *name, char *value);
 void		lst_env_add_back(t_env **head, t_env *new);
 t_env		*lst_env_last(t_env *lst);
 void		lst_env_free(t_env *lst);
-
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info, t_data *data);
@@ -115,7 +116,7 @@ char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 char		*find_command_in_path(char *command, t_data *data);
 void		add_pid(t_pipe *info, pid_t	pid);
-void		wait_all(t_pipe *info);
+void		wait_all(t_pipe *info, t_data *data);
 
 //pipe_infile.c
 int			make_heredoc(char *limiter);

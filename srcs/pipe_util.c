@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 18:26:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:52:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,16 @@ void	add_pid(t_pipe *info, pid_t	pid)
 		info->pids = new;
 }
 
-void	wait_all(t_pipe *info)
+void	wait_all(t_pipe *info, t_data *data)
 {
-	int		status;
 	t_pid	*search;
 
 	search = info->pids;
 	while (search)
 	{
-		waitpid(search->pid, &status, 0);
+		waitpid(search->pid, &data->exit_status, 0);
+		// 시그널 종료시 128 + 시그널 번호
+		data->exit_status = WEXITSTATUS(data->exit_status);
 		search = search->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 20:34:17 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:21:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	main(void)
 
 	init_data(&data);
 	signal(SIGINT, handler);
+	signal(SIGQUIT, handler); // ctrl + \ 눌렀을 때
 	while (1)
 	{
 		init_pipe_info(&line_info);
-		// ↓ export로 path를 바꾸면 어떻게 되는거지?ㅋㅋㅋ
 		str = readline("minishell> ");
 		if (!str)
 			break ;
@@ -68,7 +68,7 @@ int	main(void)
 			if (run_unit(&line_info, &data) == FAILURE)
 				continue ;
 		}
-		finish_line(str, &line_info);
+		finish_line(str, &line_info, &data);
 	}
 	return (SUCCESS);
 }
@@ -85,14 +85,11 @@ void	handler(int sig)
 	}
 }
 
-void	finish_line(char *str, t_pipe *info)
+void	finish_line(char *str, t_pipe *info, t_data *data)
 {
 	if (info->is_pipe)
-	{
-		close(info->pipefd[1]);
-		close(info->pipefd[0]);
-	}
-	wait_all(info);
+		close(info->pipefd[P_READ]);
+	wait_all(info, data);
 	free(str);
 	free_arr((void **) info->token_arr);
 }

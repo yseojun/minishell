@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 20:57:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:41:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
 {
-	// 파이프가 맨 앞뒤에 있을 때, 정의되지 않은 기호들 파이프 & 라디이렉션
-	// 리다이렉션 뒤에 기호가 올 떄
 	if (tokenalize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE)
 	{
 		if (info->token_arr == 0)
@@ -28,6 +26,7 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		return (FAILURE);
 	}
 	transform(data, info);
+	// make_tree(info);
 	return (SUCCESS);
 }
 
@@ -42,6 +41,16 @@ static int	chk_grammer_valid(t_pipe *info)
 		return (FAILURE);
 	while (info->token_arr[idx])
 	{
+		// if (is_redirection(info->token_arr[idx]))
+		// {
+		// 	if (is_redirection(info->token_arr[idx - 1]))
+		// 		return (FAILURE);
+		// 	if (info->token_arr[idx + 1] == 0)
+		// 		return (FAILURE);
+		// 	if (is_redirection(info->token_arr[idx + 1]))
+		// 		return (FAILURE);
+		// 	idx++;
+		// }
 		if (is_symbol(info->token_arr[idx])
 			&& is_symbol(info->token_arr[idx - 1]))
 		{

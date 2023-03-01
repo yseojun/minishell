@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 12:55:09 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:34:24 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 static void	_env(t_data *data);
 static void	_export(t_data *data, char *token);
 static void	_unset(t_data *data, char *name);
-// static void builtin_cd(char *dir, t_data *data);
-// static void	builtin_pwd(t_data *data);
+static void builtin_cd(char *dir, t_data *data);
+static void	builtin_pwd(t_data *data);
 // static void	builtin_echo(t_pipe *info);
 
 void	run_builtin_func(t_pipe *info, t_data *data)
@@ -30,10 +30,10 @@ void	run_builtin_func(t_pipe *info, t_data *data)
 		_unset(data, info->cmd_arr[1]);
 	else if (info->is_built_in == EXIT)
 		builtin_exit(EXIT_SUCCESS, data);
-	// if (info->is_built_in == CD)
-	// 	builtin_cd(info->cmd_arr[1], data);
-	// if (info->is_built_in == PWD)
-	// 	builtin_pwd(data);
+	else if (info->is_built_in == CD)
+		builtin_cd(info->cmd_arr[1], data);
+	else if (info->is_built_in == PWD)
+		builtin_pwd(data);
 	// if (info->is_built_in == ECHO)
 	// 	builtin_echo(info);
 	// if (info->is_built_in == HISTORY)
@@ -106,33 +106,34 @@ static void	_unset(t_data *data, char *name)
 
 void	builtin_exit(int status, t_data *data)
 {
-	data->last_child_status = status;
+	data->exit_status = status;
 	exit(status);
 }
 
-// static void builtin_cd(char *dir, t_data *data)
-// {
-// 	// 오류 처리
-// 	// 존재하지 않은 디렉토리 또는 파일인 경우
-// 	// 디렉토리가 아닌 경우
+static void builtin_cd(char *dir, t_data *data)
+{
+	// 오류 처리
+	// 존재하지 않은 디렉토리 또는 파일인 경우
+	// 디렉토리가 아닌 경우
 
-// 	if (chdir(dir) == FAILURE)
-// 	{
-// 		perror("minishell: cd");
-// 		builtin_exit(EXIT_FAILURE, data); // 1 말고 다른 값으로 exit 해야 하나?	
-// 	}
-// }
+	if (chdir(dir) == FAILURE)
+	{
+		perror("minishell: cd");
+		builtin_exit(EXIT_FAILURE, data); // 1 말고 다른 값으로 exit 해야 하나?	
+	}
+	printf("dir: %s", getcwd(NULL, 0));
+}
 
-// static void	builtin_pwd(t_data *data)
-// {
-// 	char	*curr_dir;
+static void	builtin_pwd(t_data *data)
+{
+	char	*curr_dir;
 
-// 	curr_dir = getcwd(NULL, 0);
-// 	if (!curr_dir)
-// 		builtin_exit(EXIT_FAILURE, data);
-// 	ft_putendl_fd(curr_dir, STDOUT_FILENO);
-// 	free(curr_dir);
-// }
+	curr_dir = getcwd(NULL, 0);
+	if (!curr_dir)
+		builtin_exit(EXIT_FAILURE, data);
+	ft_putendl_fd(curr_dir, STDOUT_FILENO);
+	free(curr_dir);
+}
 
 // static void	builtin_echo(t_pipe *info)
 // {

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/28 18:30:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:34:24 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	init_data(t_data *data)
 {
-	data->last_child_status = 0;
+	data->exit_status = 0;
 	data->env = init_env();
 }
 
