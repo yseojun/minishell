@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:46:03 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/04 18:53:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ t_token *find_logic()
 		{
 			search->left = make_tree(search->left);
 			search->right = make_tree(tail(search));
-			cut();
 			retrun(search);
 		}
 	}

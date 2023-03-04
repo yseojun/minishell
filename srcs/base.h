@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 19:35:36 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/04 18:55:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@
 # define CD 5
 # define PWD 6
 // # define ECHO 7
+# define BRACE 1
+# define AND 2
+# define OR 3
+# define PIPE 4
+# define CMD 5
+# define REDIRECTION 6
 
 extern char	**environ;
 
@@ -62,7 +68,6 @@ typedef struct s_token
 	int				type;
 	struct s_token	*left;
 	struct s_token	*right;
-	struct s_token	*next;
 }	t_token;
 
 typedef struct s_pipe
