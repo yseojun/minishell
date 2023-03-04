@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/27 16:12:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/04 19:27:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,37 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 	return (str);
 }
 
-void	pull_token(char **token_arr, int idx)
+// void	pull_token(char **token_arr, int idx)
+// {
+// 	free(token_arr[idx]);
+// 	while (token_arr[idx])
+// 	{
+// 		if (token_arr[idx + 1] == 0)
+// 			break ;
+// 		token_arr[idx] = token_arr[idx + 1];
+// 		idx++;
+// 	}
+// 	token_arr[idx] = 0;
+// }
+
+void	pull_token(t_token *head, t_token *remove)
 {
-	free(token_arr[idx]);
-	while (token_arr[idx])
+	t_token	*search;
+	t_token	*temp;
+
+	search = head;
+	while (search)
 	{
-		if (token_arr[idx + 1] == 0)
-			break ;
-		token_arr[idx] = token_arr[idx + 1];
-		idx++;
+		if (search == remove)
+		{
+			search->left->right = search->right;
+			search->right->left = search->left;
+			search = search->right;
+			free(search->left->token);
+			free(search->left);
+			search->left = NULL;
+		}
+		else
+			search = search->right;
 	}
-	token_arr[idx] = 0;
 }
