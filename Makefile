@@ -17,6 +17,7 @@ transform_expand.c \
 transform_rm_quote.c \
 transform_util.c \
 tokenize.c \
+list_token.c \
 _util.c \
 is_symbol.c \
 util_arr.c

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:56:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/04 21:32:23 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,25 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 
 static int	chk_grammer_valid(t_pipe *info)
 {
-	int	idx;
+	t_token	*search;
 
-	idx = 1;
-	if (!info->token_arr || !info->token_arr[0])
+	search = info->head;
+	if (!search)
 		return (FAILURE);
-	if (is_pipe(info->token_arr[0]))
+	if (search->type == PIPE)
 		return (FAILURE);
-	while (info->token_arr[idx])
+	while (search)
 	{
-		// if (is_redirection(info->token_arr[idx]))
-		// {
-		// 	if (is_redirection(info->token_arr[idx - 1]))
-		// 		return (FAILURE);
-		// 	if (info->token_arr[idx + 1] == 0)
-		// 		return (FAILURE);
-		// 	if (is_redirection(info->token_arr[idx + 1]))
-		// 		return (FAILURE);
-		// 	idx++;
-		// }
+		if (is_redirection(search->token))
+		{
+			if (is_redirection())
+				return (FAILURE);
+			if (info->token_arr[idx + 1] == 0)
+				return (FAILURE);
+			if (is_redirection(info->token_arr[idx + 1]))
+				return (FAILURE);
+			idx++;
+		}
 		if (is_symbol(info->token_arr[idx])
 			&& is_symbol(info->token_arr[idx - 1]))
 		{
@@ -58,9 +58,9 @@ static int	chk_grammer_valid(t_pipe *info)
 			return (FAILURE);
 		}
 		// chk_grammer(info->token_arr[idx]);
-		idx++;
+		search = search->right;
 	}
-	if (ft_strncmp(info->token_arr[idx - 1], "|", 2) == 0)
+	if (search->type == PIPE)
 		return (FAILURE);
 	return (SUCCESS);
 }

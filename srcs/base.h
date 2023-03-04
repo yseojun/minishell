@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:55:02 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/04 20:28:21 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,16 @@ void		builtin_exit(int status, t_data *data);
 int			is_redirection(char *str);
 int			is_pipe(char *str);
 int			is_symbol(char *str);
-int			is_redir_pipr_chr(char c);
+int			is_special_chr(char c);
+int			is_brace(char *str);
 
 //token
 int			tokenize(char *str, t_pipe *info);
+t_token		*lst_new_token(char *str);
+int			token_add_back(t_token **head, t_token *new);
+t_token		*lst_token_last(t_token *lst);
+void		lst_token_free(t_token *lst);
+void		token_prt(t_token *head);
+
 
 #endif

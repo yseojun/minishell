@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:45:31 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/04 19:57:53 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_pipe_info(t_pipe *info)
 	info->cmd_arr = 0;
 	info->pids = 0;
 	info->is_pipe = 0;
+	info->head = 0;
 }
 
 char	*make_real_path(char *path, char *command)
