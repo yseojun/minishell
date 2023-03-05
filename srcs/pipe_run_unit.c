@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:43:16 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 16:52:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	run_command(t_pipe *info, t_data *data);
 // 		run_unit(top, info, data);
 // }
 
-int	run_unit(t_pipe *info, t_data *data)
+int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
 	pid_t	pid;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 20:13:10 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 17:37:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,95 +118,178 @@ int	count_cmd(char **tmp)
 	return (count);
 }
 
-static int	set_infile(t_pipe *info, char **unit)
-{
-	int	idx;
+//
 
-	idx = 0;
-	while (unit[idx])
+int	set_in_fd(t_token *unit, t_pipe *info)
+{
+	t_token	*search;
+
+	search = unit;
+	while (search)
 	{
-		if (!ft_strncmp(unit[idx], "<<", 3))
+		if (!ft_strncmp(search, "<<", 3))
 		{
-			if (info->infile_fd != STDIN_FILENO)
-				close(info->infile_fd);
-			info->infile_fd = make_heredoc(unit[idx + 1]);
+			if (info->in_fd != STDIN_FILENO)
+				close(info->in_fd);
+			info->in_fd = make_heredoc(search->right);
 		}
-		else if (!ft_strncmp(unit[idx], "<", 2))
+		else if (!ft_strncmp(search, "<", 2))
 		{
-			if (info->infile_fd != STDIN_FILENO)
-				close(info->infile_fd);
-			info->infile_fd = infile_chk(unit[idx + 1]);
+			if (info->in_fd != STDIN_FILENO)
+				close(info->in_fd);
+			info->in_fd = infile_chk(search->right);
 		}
-		if (info->infile_fd == FAILURE)
+		if (info->in_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			perror(unit[idx + 1]);
+			perror(search->right);
 			return (FAILURE);
 		}
-		idx++;
+		search = search->left;
 	}
 	return (SUCCESS);
 }
 
-static int	set_outfile(t_pipe *info, char **unit)
+int	set_out_fd(t_token *unit, t_pipe *info)
 {
-	int	idx;
+	t_token	*search;
 
-	idx = 0;
-	while (unit[idx])
+	search = unit;
+	while (search)
 	{
-		if (!ft_strncmp(unit[idx], ">>", 3))
+		if (!ft_strncmp(search, ">>", 3))
 		{
-			if (info->outfile_fd != STDOUT_FILENO)
-				close(info->outfile_fd);
-			info->outfile_fd = \
-			open(unit[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (info->out_fd != STDOUT_FILENO)
+				close(info->out_fd);
+			info->out_fd = open(search->right, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		}
-		else if (!ft_strncmp(unit[idx], ">", 2))
+		else if (!ft_strncmp(search, ">", 2))
 		{
-			if (info->outfile_fd != STDOUT_FILENO)
-				close(info->outfile_fd);
-			info->outfile_fd = \
-			open(unit[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (info->out_fd != STDOUT_FILENO)
+				close(info->out_fd);
+			info->out_fd = open(search->right, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
-		if (info->outfile_fd == FAILURE)
+		if (info->out_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell", STDERR_FILENO);
-			perror(unit[idx + 1]);
+			perror(search->right);
 			return (FAILURE);
 		}
-		idx++;
+		search = search->left;
 	}
 	return (SUCCESS);
 }
 
-int	set_fd(t_pipe *info)
+int	set_fd(t_token *unit, t_pipe *info)
 {
-	info->infile_fd = STDIN_FILENO;
-	info->outfile_fd = STDOUT_FILENO;
-	if (set_infile(info, info->unit) < 0 || set_outfile(info, info->unit) < 0)
+	// 리다이렉션 연결하기
+	// in_fd
+	info->in_fd = info->prev_fd; // pipe 또는 STDIN으로 기본 세팅
+	if (set_in_fd(unit, info) == FAILURE) // unit left를 보며 재세팅
 		return (FAILURE);
-	info->in_fd = info->prev_fd;
-	if (info->infile_fd != STDIN_FILENO)
-	{
-		if (info->prev_fd != STDIN_FILENO)
-			close(info->prev_fd);
-		info->in_fd = info->infile_fd;
-	}
-	// printf("last unit : %s\n", info->unit[info->unit_size - 1]);
-	if (is_pipe(info->unit[info->unit_size - 1]))
+	// out_fd
+	if (info->is_pipe) // pipe 또는 STDOUT으로 기본 세팅
 	{
 		_pipe(info->pipefd);
-		info->is_pipe = 1;
-		info->out_fd = info->pipefd[1];
+		info->is_pipe--;
+		info->out_fd = info->pipefd[P_WRITE];
 	}
 	else
 		info->out_fd = STDOUT_FILENO;
-	if (info->outfile_fd != STDOUT_FILENO)
-	{
-		if (info->is_pipe)
-			close(info->pipefd[1]);
-		info->out_fd = info->outfile_fd;
-	}
+	if (set_out_fd(unit, info) == FAILURE) // unit left를 보며 재세팅
+		return (FAILURE);
 	return (SUCCESS);
 }
+
+// int	set_fd(t_pipe *info)
+// {
+// 	info->infile_fd = STDIN_FILENO;
+// 	info->outfile_fd = STDOUT_FILENO;
+// 	if (set_infile(info, info->unit) < 0 || set_outfile(info, info->unit) < 0)
+// 		return (FAILURE);
+// 	info->in_fd = info->prev_fd;
+// 	if (info->infile_fd != STDIN_FILENO)
+// 	{
+// 		if (info->prev_fd != STDIN_FILENO)
+// 			close(info->prev_fd);
+// 		info->in_fd = info->infile_fd;
+// 	}
+// 	// printf("last unit : %s\n", info->unit[info->unit_size - 1]);
+// 	if (is_pipe(info->unit[info->unit_size - 1]))
+// 	{
+// 		_pipe(info->pipefd);
+// 		info->is_pipe = 1;
+// 		info->out_fd = info->pipefd[1];
+// 	}
+// 	else
+// 		info->out_fd = STDOUT_FILENO;
+// 	if (info->outfile_fd != STDOUT_FILENO)
+// 	{
+// 		if (info->is_pipe)
+// 			close(info->pipefd[1]);
+// 		info->out_fd = info->outfile_fd;
+// 	}
+// 	return (SUCCESS);
+// }
+
+// static int	set_infile(t_pipe *info, char **unit)
+// {
+// 	int	idx;
+
+// 	idx = 0;
+// 	while (unit[idx])
+// 	{
+// 		if (!ft_strncmp(unit[idx], "<<", 3))
+// 		{
+// 			if (info->infile_fd != STDIN_FILENO)
+// 				close(info->infile_fd);
+// 			info->infile_fd = make_heredoc(unit[idx + 1]);
+// 		}
+// 		else if (!ft_strncmp(unit[idx], "<", 2))
+// 		{
+// 			if (info->infile_fd != STDIN_FILENO)
+// 				close(info->infile_fd);
+// 			info->infile_fd = infile_chk(unit[idx + 1]);
+// 		}
+// 		if (info->infile_fd == FAILURE)
+// 		{
+// 			ft_putstr_fd("minishell: ", STDERR_FILENO);
+// 			perror(unit[idx + 1]);
+// 			return (FAILURE);
+// 		}
+// 		idx++;
+// 	}
+// 	return (SUCCESS);
+// }
+
+// static int	set_outfile(t_pipe *info, char **unit)
+// {
+// 	int	idx;
+
+// 	idx = 0;
+// 	while (unit[idx])
+// 	{
+// 		if (!ft_strncmp(unit[idx], ">>", 3))
+// 		{
+// 			if (info->outfile_fd != STDOUT_FILENO)
+// 				close(info->outfile_fd);
+// 			info->outfile_fd = \
+// 			open(unit[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+// 		}
+// 		else if (!ft_strncmp(unit[idx], ">", 2))
+// 		{
+// 			if (info->outfile_fd != STDOUT_FILENO)
+// 				close(info->outfile_fd);
+// 			info->outfile_fd = \
+// 			open(unit[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+// 		}
+// 		if (info->outfile_fd == FAILURE)
+// 		{
+// 			ft_putstr_fd("minishell", STDERR_FILENO);
+// 			perror(unit[idx + 1]);
+// 			return (FAILURE);
+// 		}
+// 		idx++;
+// 	}
+// 	return (SUCCESS);
+// }
