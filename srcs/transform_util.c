@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/27 16:12:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 11:48:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,36 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 	return (str);
 }
 
-void	pull_token(char **token_arr, int idx)
+// void	pull_token(char **token_arr, int idx)
+// {
+// 	free(token_arr[idx]);
+// 	while (token_arr[idx])
+// 	{
+// 		if (token_arr[idx + 1] == 0)
+// 			break ;
+// 		token_arr[idx] = token_arr[idx + 1];
+// 		idx++;
+// 	}
+// 	token_arr[idx] = 0;
+// }
+
+t_token	*pull_token(t_token *head, t_token *remove)
 {
-	free(token_arr[idx]);
-	while (token_arr[idx])
+	t_token	*temp;
+
+	temp = remove->right;
+	if (remove->left)
+		remove->left->right = remove->right;
+	if (remove->right)
 	{
-		if (token_arr[idx + 1] == 0)
-			break ;
-		token_arr[idx] = token_arr[idx + 1];
-		idx++;
+		if (head == remove)
+			head = remove->right;
+		remove->right->left = remove->left;
 	}
-	token_arr[idx] = 0;
+	if (!remove->left && !remove->right)
+		head = 0;
+	free(remove->token);
+	// token_free(remove);
+	remove = NULL;
+	return (temp);
 }
