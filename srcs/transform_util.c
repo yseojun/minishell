@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/05 11:48:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 11:56:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 // 	token_arr[idx] = 0;
 // }
 
-t_token	*pull_token(t_token *head, t_token *remove)
+t_token	*pull_token(t_token **head, t_token *remove)
 {
 	t_token	*temp;
 
@@ -61,12 +61,12 @@ t_token	*pull_token(t_token *head, t_token *remove)
 		remove->left->right = remove->right;
 	if (remove->right)
 	{
-		if (head == remove)
-			head = remove->right;
+		if (*head == remove)
+			*head = remove->right;
 		remove->right->left = remove->left;
 	}
 	if (!remove->left && !remove->right)
-		head = 0;
+		*head = 0;
 	free(remove->token);
 	// token_free(remove);
 	remove = NULL;
