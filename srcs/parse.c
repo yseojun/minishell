@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 11:16:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 11:27:41 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "util.h"
 #include "parse.h"
 
-int	chk_condition(t_token *now, int *brace_opened);
+int			chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
@@ -57,13 +57,13 @@ static int	chk_grammer_valid(t_pipe *info)
 int	chk_condition(t_token *now, int *brace_opened)
 {
 	if (now->type == PIPE && (!now->left || !now->right
-			|| is_symbol(now->left->token) || is_symbol(now->right->token)))
+			|| is_symbol(now->left->token)))
 		return (FAILURE);
 	else if (now->type == REDIRECTION
 		&& (!now->right || is_symbol(now->right->token)))
 		return (FAILURE);
 	else if (now->type == BRACE && now->token[0] == ')')
-		return ((*brace_opened)--);
+		return (--(*brace_opened));
 	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	return (SUCCESS);
