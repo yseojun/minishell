@@ -17,9 +17,11 @@ transform_expand.c \
 transform_rm_quote.c \
 transform_util.c \
 tokenize.c \
+list_token.c \
 _util.c \
 is_symbol.c \
-util_arr.c
+util_arr.c \
+bonus_tokenize.c
 SRCS_BONUS = bonus.c
 LIBT = libft 
 GNL = gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c

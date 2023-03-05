@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:43:40 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:43:28 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,14 @@ int	main(void)
 		if (parse_line(str, &data, &line_info) == FAILURE)
 			continue ;
 		idx = 0;
-		prt_arr(line_info.token_arr);
-		printf("\n");
-		while (idx < line_info.token_arr_size)
-		{
-			idx += make_unit(&line_info, idx);
-			prt_arr(line_info.unit);
-			if (run_unit(&line_info, &data) == FAILURE)
-				continue ;
-		}
-		finish_line(str, &line_info, &data);
+		//excute_tree();
+		// while ()
+		// {
+		// 	line_info.unit = make_unit();
+		// 	if (run_unit(&line_info, &data) == FAILURE)
+		// 		continue ;
+		// }
+		//finish_line(str, &line_info, &data);
 	}
 	return (SUCCESS);
 }

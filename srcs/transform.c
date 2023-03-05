@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/04 19:04:26 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 11:56:24 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ void	transform(t_data *data, t_pipe *info)
 		search->token = expand(data, search->token, &is_expanded);
 		search->token = remove_quote(search->token);
 		if (is_expanded && ft_strlen(search->token) == 0)
-		{
-			pull_token(info->head, search);
-			info->token_arr_size--;
-		}
-		search = search->right;
+			search = pull_token(&info->head, search);
+		else
+			search = search->right;
 	}
 }
 

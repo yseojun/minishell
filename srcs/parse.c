@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 18:56:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 15:28:57 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "util.h"
 #include "parse.h"
 
+int			chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
@@ -26,41 +27,49 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		return (FAILURE);
 	}
 	transform(data, info);
-	// make_tree(info);
+	// token_prt(info->head);
+	info->head = make_tree(lst_token_last(info->head));
+	printf("%p\n", info->head);
+	prt_tree(info->head);
 	return (SUCCESS);
 }
 
 static int	chk_grammer_valid(t_pipe *info)
 {
-	int	idx;
+	t_token	*search;
+	int		brace_opened;
 
-	idx = 1;
-	if (!info->token_arr || !info->token_arr[0])
+	search = info->head;
+	brace_opened = 0;
+	if (!search)
 		return (FAILURE);
-	if (is_pipe(info->token_arr[0]))
-		return (FAILURE);
-	while (info->token_arr[idx])
+	while (search)
 	{
-		// if (is_redirection(info->token_arr[idx]))
-		// {
-		// 	if (is_redirection(info->token_arr[idx - 1]))
-		// 		return (FAILURE);
-		// 	if (info->token_arr[idx + 1] == 0)
-		// 		return (FAILURE);
-		// 	if (is_redirection(info->token_arr[idx + 1]))
-		// 		return (FAILURE);
-		// 	idx++;
-		// }
-		if (is_symbol(info->token_arr[idx])
-			&& is_symbol(info->token_arr[idx - 1]))
+		if (chk_condition(search, &brace_opened) == FAILURE)
 		{
-			printf("syntax error near unexpected token '%s'\n", info->token_arr[idx]);
+			printf("syntax error near unexpected token '%s'\n", search->token);
 			return (FAILURE);
 		}
-		// chk_grammer(info->token_arr[idx]);
-		idx++;
+		if (search->type == REDIRECTION)
+			search = search->right;
+		if (search->type == BRACE && search->token[0] == '(')
+			brace_opened++;
+		search = search->right;
 	}
-	if (ft_strncmp(info->token_arr[idx - 1], "|", 2) == 0)
+	return (SUCCESS);
+}
+
+int	chk_condition(t_token *now, int *brace_opened)
+{
+	if (now->type == PIPE && (!now->left || !now->right
+			|| is_symbol(now->left->token)))
+		return (FAILURE);
+	else if (now->type == REDIRECTION
+		&& (!now->right || is_symbol(now->right->token)))
+		return (FAILURE);
+	else if (now->type == BRACE && now->token[0] == ')')
+		return (--(*brace_opened));
+	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	return (SUCCESS);
 }

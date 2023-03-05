@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/04 19:28:52 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 15:13:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ char	*get_expanded(t_data *data, int dollar_idx, char *origin_str, int *idx);
 // transform_util.c
 void	handle_single_quote(char *str, int *idx);
 char	*handle_double_quote(t_data *data, char *str, int *idx);
-void	pull_token(t_token *head, t_token *remove);
+t_token	*pull_token(t_token **head, t_token *remove);
 
 // transform_rm_quote.c
 char	*remove_quote(char *str);
+
+t_token *make_tree(t_token *tail);
 
 #endif

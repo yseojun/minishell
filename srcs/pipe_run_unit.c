@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 20:23:21 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:43:16 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
+
+// int excute_tree(t_token *top, t_pipe *info, t_data *data)
+// {
+// 	if (top->type == AND)
+// 		if (excute_tree(top->left, info, data))
+// 			excute_tree(top->right, info, data);
+// 	else if (top->type == CMD || top->type == REDIRECTION)
+// 		run_unit(top, info, data);
+// }
 
 int	run_unit(t_pipe *info, t_data *data)
 {
