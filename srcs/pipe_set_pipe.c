@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 17:37:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:57:15 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,47 +73,43 @@ static int	is_builin_func(t_pipe *info)
 	return (SUCCESS);
 }
 
-char	**set_cmd(char **tmp)
+char	**set_cmd(t_token *unit)
 {
 	char	**cmd;
-	int		idx;
 	int		cmd_idx;
 	int		count;
+	t_token	*search;
 
-	count = count_cmd(tmp);
+	count = count_cmd(unit);
 	if (count == 0)
 		return (0);
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
 		exit(EXIT_FAILURE);
-	idx = 0;
 	cmd_idx = 0;
-	while (tmp[idx])
+	search = unit;
+	while (search)
 	{
-		if (is_redirection(tmp[idx]))
-			idx++;
-		else if (!is_pipe(tmp[idx]))
-			cmd[cmd_idx++] = ft_strdup(tmp[idx]);
-		idx++;
+		cmd[cmd_idx++] = ft_strdup(search->token);
+		search = search->right;
 	}
 	cmd[cmd_idx] = 0;
 	return (cmd);
 }
 
-int	count_cmd(char **tmp)
+int	count_cmd(t_token *unit)
 {
-	int	idx;
-	int	count;
+	t_token	*search;
+	int		count;
 
-	idx = 0;
+	if (unit->type == REDIRECTION)
+		return (0);
 	count = 0;
-	while (tmp[idx])
+	search = unit;
+	while (search)
 	{
-		if (is_redirection(tmp[idx]))
-			idx++;
-		else if (!is_pipe(tmp[idx]))
-			count++;
-		idx++;
+		count++;
+		search = search->right;
 	}
 	return (count);
 }

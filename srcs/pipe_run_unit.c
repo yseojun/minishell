@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:52:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:50:41 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,16 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	else
 	{
 		add_pid(info, pid);
-		if (info->is_pipe)
+		if (info->is_pipe > 0)
+		{
+			info->is_pipe--;
 			close(info->pipefd[P_WRITE]);
+			info->prev_fd = info->pipefd[P_READ];
+		}
 		if (info->in_fd != STDIN_FILENO)
 			close(info->in_fd);
 		if (info->out_fd != STDOUT_FILENO)
 			close(info->out_fd);
-		info->prev_fd = info->pipefd[P_READ];
 	}
 	return (SUCCESS);
 }
