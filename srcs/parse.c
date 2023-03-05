@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 15:28:57 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 16:54:08 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "util.h"
 #include "parse.h"
 
-int			chk_condition(t_token *now, int *brace_opened);
+static int	chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
@@ -27,7 +27,7 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		return (FAILURE);
 	}
 	transform(data, info);
-	// token_prt(info->head);
+	token_prt(info->head);
 	info->head = make_tree(lst_token_last(info->head));
 	printf("%p\n", info->head);
 	prt_tree(info->head);
@@ -59,7 +59,7 @@ static int	chk_grammer_valid(t_pipe *info)
 	return (SUCCESS);
 }
 
-int	chk_condition(t_token *now, int *brace_opened)
+static int	chk_condition(t_token *now, int *brace_opened)
 {
 	if (now->type == PIPE && (!now->left || !now->right
 			|| is_symbol(now->left->token)))

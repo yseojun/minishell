@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 15:23:07 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:16:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int			is_pipe(char *str);
 int			is_symbol(char *str);
 int			is_special_chr(char c);
 int			is_brace(char *str);
+int			is_brace_chr(char c);
 
 //token
 int			tokenize(char *str, t_pipe *info);
@@ -148,6 +149,7 @@ t_token		*lst_new_token(char *str);
 int			token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
+t_token		*make_token(char *str, int *idx);
 void		token_prt(t_token *head);
 void		prt_tree(t_token *head);
 

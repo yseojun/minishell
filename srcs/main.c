@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:43:28 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:34:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	finish_line(char *str, t_pipe *info, t_data *data)
 {
 	if (info->is_pipe)
 		close(info->pipefd[P_READ]);
-	wait_all(info, data);
 	free(str);
 	free_arr((void **) info->token_arr);
 }

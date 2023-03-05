@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:43:16 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:39:49 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,25 @@
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
-// int excute_tree(t_token *top, t_pipe *info, t_data *data)
-// {
-// 	if (top->type == AND)
-// 		if (excute_tree(top->left, info, data))
-// 			excute_tree(top->right, info, data);
-// 	else if (top->type == CMD || top->type == REDIRECTION)
-// 		run_unit(top, info, data);
-// }
+int excute_tree(t_token *top, t_pipe *info, t_data *data)
+{
+	if (top->type == AND)
+		if (excute_tree(top->left, info, data) > 0)
+			return (excute_tree(top->right, info, data));
+	else if (top->type == OR)
+		if (excute_tree(top->left, info, data) == 0)
+			return (excute_tree(top->right, info, data));
+	else if (top->type == PIPE)
+	{
+		info->is_pipe++;
+		excute_tree(top->left, info, data);
+		excute_tree(top->right, info, data);
+		wait_all(info, data);
+		return (data->exit_status == 0);
+	}
+	else if (top->type == CMD || top->type == REDIRECTION)
+		run_unit(top, info, data);
+}
 
 int	run_unit(t_pipe *info, t_data *data)
 {

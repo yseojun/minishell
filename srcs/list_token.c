@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   list_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 15:25:18 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 17:16:49 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+
+t_token	*make_token(char *str, int *idx)
+{
+	t_token	*new;
+
+	new = (t_token *)malloc(sizeof(t_token));
+	new->left = 0;
+	new->right = 0;
+	new->token = put_token(str, idx);
+	new->type = set_type(new->token);
+	return (new);
+}
 
 int	token_add_back(t_token **head, t_token *new)
 {
