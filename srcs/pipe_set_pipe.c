@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 17:57:15 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 18:25:51 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,22 +123,22 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 	search = unit;
 	while (search)
 	{
-		if (!ft_strncmp(search, "<<", 3))
+		if (!ft_strncmp(search->token, "<<", 3))
 		{
 			if (info->in_fd != STDIN_FILENO)
 				close(info->in_fd);
-			info->in_fd = make_heredoc(search->right);
+			info->in_fd = make_heredoc(search->right->token);
 		}
-		else if (!ft_strncmp(search, "<", 2))
+		else if (!ft_strncmp(search->token, "<", 2))
 		{
 			if (info->in_fd != STDIN_FILENO)
 				close(info->in_fd);
-			info->in_fd = infile_chk(search->right);
+			info->in_fd = infile_chk(search->right->token);
 		}
 		if (info->in_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			perror(search->right);
+			perror(search->right->token);
 			return (FAILURE);
 		}
 		search = search->left;
@@ -153,22 +153,22 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 	search = unit;
 	while (search)
 	{
-		if (!ft_strncmp(search, ">>", 3))
+		if (!ft_strncmp(search->token, ">>", 3))
 		{
 			if (info->out_fd != STDOUT_FILENO)
 				close(info->out_fd);
-			info->out_fd = open(search->right, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			info->out_fd = open(search->right->token, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		}
-		else if (!ft_strncmp(search, ">", 2))
+		else if (!ft_strncmp(search->token, ">", 2))
 		{
 			if (info->out_fd != STDOUT_FILENO)
 				close(info->out_fd);
-			info->out_fd = open(search->right, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			info->out_fd = open(search->right->token, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
 		if (info->out_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell", STDERR_FILENO);
-			perror(search->right);
+			perror(search->right->token);
 			return (FAILURE);
 		}
 		search = search->left;
@@ -187,7 +187,6 @@ int	set_fd(t_token *unit, t_pipe *info)
 	if (info->is_pipe) // pipe 또는 STDOUT으로 기본 세팅
 	{
 		_pipe(info->pipefd);
-		info->is_pipe--;
 		info->out_fd = info->pipefd[P_WRITE];
 	}
 	else

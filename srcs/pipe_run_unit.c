@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 17:50:41 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 18:13:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,38 @@
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 
-// int excute_tree(t_token *top, t_pipe *info, t_data *data)
-// {
-// 	if (top->type == AND)
-// 		if (excute_tree(top->left, info, data))
-// 			excute_tree(top->right, info, data);
-// 	else if (top->type == CMD || top->type == REDIRECTION)
-// 		run_unit(top, info, data);
-// }
+int excute_tree(t_token *top, t_pipe *info, t_data *data)
+{
+	if (top->type == AND)
+	{
+		if (excute_tree(top->left, info, data) > 0)
+			return (excute_tree(top->right, info, data));
+	}
+	else if (top->type == OR)
+	{
+		if (excute_tree(top->left, info, data) == 0)
+			return (excute_tree(top->right, info, data));
+	}
+	else if (top->type == PIPE)
+	{
+		info->is_pipe++;
+		excute_tree(top->left, info, data);
+		excute_tree(top->right, info, data);
+		wait_all(info, data);
+		return (data->exit_status == 0);
+	}
+	else if (top->type == CMD || top->type == REDIRECTION)
+		return (run_unit(top, info, data));
+	return (0);
+}
 
 int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
 	pid_t	pid;
 
-	if (set_fd(info) == FAILURE)
+	if (set_fd(unit, info) == FAILURE)
 		return (FAILURE);
-	info->cmd_arr = set_cmd(info->unit);
+	info->cmd_arr = set_cmd(unit);
 	if (info->cmd_arr != 0 && chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	// printf("%d\n", info->is_built_in);

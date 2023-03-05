@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 15:23:07 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 18:17:08 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_pipe
 	t_token			*head;
 	char			**token_arr;
 	int				token_arr_size;
-	char			**unit;
+	t_token			**unit;
 	int				unit_size;
 	char			**cmd_arr;
 	int				in_fd;
@@ -98,7 +98,7 @@ typedef struct s_data
 
 //main.c
 void		handler(int sig);
-void		finish_line(char *str, t_pipe *info, t_data *data);
+void		finish_line(char *str, t_pipe *info);
 
 //base_data.c
 void		init_data(t_data *data);
@@ -112,9 +112,9 @@ void		lst_env_free(t_env *lst);
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info, t_data *data);
-char		**set_cmd(char **tmp);
-int			count_cmd(char **tmp);
-int			set_fd(t_pipe *info);
+char		**set_cmd(t_token *unit);
+int			count_cmd(t_token *unit);
+int			set_fd(t_token *unit, t_pipe *info);
 
 //pipe_info.c
 void		init_pipe_info(t_pipe *info);
@@ -129,7 +129,9 @@ int			make_heredoc(char *limiter);
 int			infile_chk(char *infile);
 
 //run_pipe.c
-int			run_unit(t_pipe *info, t_data *data);
+int 	excute_tree(t_token *top, t_pipe *info, t_data *data);
+int		run_unit(t_token *unit, t_pipe *info, t_data *data);
+
 
 //builtin_func.c
 void		run_builtin_func(t_pipe *info, t_data *data);
@@ -141,6 +143,7 @@ int			is_pipe(char *str);
 int			is_symbol(char *str);
 int			is_special_chr(char c);
 int			is_brace(char *str);
+int			is_brace_chr(char c);
 
 //token
 int			tokenize(char *str, t_pipe *info);
@@ -148,8 +151,11 @@ t_token		*lst_new_token(char *str);
 int			token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
+t_token		*make_token(char *str, int *idx);
 void		token_prt(t_token *head);
 void		prt_tree(t_token *head);
+char		*put_token(char *str, int *idx);
+int			set_type(char *token);
 
 
 #endif

@@ -6,38 +6,13 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:43:28 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/05 18:20:45 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 #include "parse.h"
-
-int	make_unit(t_pipe *info, int idx)
-{
-	int	token_start_idx;
-	int	unit_idx;
-
-	token_start_idx = idx;
-	info->unit_size = 0;
-	while (info->token_arr[idx])
-	{
-		if (is_pipe(info->token_arr[idx]))
-		{
-			info->unit_size++;
-			break ;
-		}
-		idx++;
-		info->unit_size++;
-	}
-	info->unit = (char **)malloc(sizeof(char *) * (info->unit_size + 1));
-	unit_idx = 0;
-	while (unit_idx < info->unit_size)
-		info->unit[unit_idx++] = info->token_arr[token_start_idx++];
-	info->unit[unit_idx] = 0;
-	return (unit_idx);
-}
 
 int	main(void)
 {
@@ -59,14 +34,8 @@ int	main(void)
 		if (parse_line(str, &data, &line_info) == FAILURE)
 			continue ;
 		idx = 0;
-		//excute_tree();
-		// while ()
-		// {
-		// 	line_info.unit = make_unit();
-		// 	if (run_unit(&line_info, &data) == FAILURE)
-		// 		continue ;
-		// }
-		//finish_line(str, &line_info, &data);
+		excute_tree(line_info.head, &line_info, &data);
+		finish_line(str, &line_info);
 	}
 	return (SUCCESS);
 }
@@ -83,11 +52,9 @@ void	handler(int sig)
 	}
 }
 
-void	finish_line(char *str, t_pipe *info, t_data *data)
+void	finish_line(char *str, t_pipe *info)
 {
 	if (info->is_pipe)
 		close(info->pipefd[P_READ]);
-	wait_all(info, data);
 	free(str);
-	free_arr((void **) info->token_arr);
 }
