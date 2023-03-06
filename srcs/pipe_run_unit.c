@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 18:13:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:15:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		if (info->is_pipe > 0)
 		{
 			info->is_pipe--;
-			close(info->pipefd[P_WRITE]);
 			info->prev_fd = info->pipefd[P_READ];
 		}
 		if (info->in_fd != STDIN_FILENO)
@@ -73,7 +72,9 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 
 static void	child(t_pipe *info, t_data *data)
 {
-	// printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
+	//printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
+	if  (info->is_pipe > 0)
+		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);
 	if (info->in_fd != STDIN_FILENO)
 		close(info->in_fd);
