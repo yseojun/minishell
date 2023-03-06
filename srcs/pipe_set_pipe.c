@@ -6,14 +6,14 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 12:19:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 14:20:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static int	is_builin_func(t_pipe *info);
+static int	is_builtin_func(t_pipe *info);
 
 int	chk_cmd(t_pipe *info, t_data *data)
 {
@@ -25,8 +25,7 @@ int	chk_cmd(t_pipe *info, t_data *data)
 	{
 		paths = get_paths(data);
 		idx = 0;
-		info->is_built_in = 0;
-		if (is_builin_func(info) == SUCCESS)
+		if (is_builtin_func(info) == SUCCESS)
 			return (SUCCESS);
 		while (paths && paths[idx])
 		{
@@ -50,7 +49,7 @@ int	chk_cmd(t_pipe *info, t_data *data)
 	return (FAILURE);
 }
 
-static int	is_builin_func(t_pipe *info)
+static int	is_builtin_func(t_pipe *info)
 {
 	if (ft_strncmp(info->cmd_arr[0], "export", 7) == 0)
 		info->is_built_in = EXPORT;
@@ -113,8 +112,6 @@ int	count_cmd(t_token *unit)
 	}
 	return (count);
 }
-
-//
 
 int	set_in_fd(t_token *unit, t_pipe *info)
 {
@@ -195,96 +192,3 @@ int	set_fd(t_token *unit, t_pipe *info)
 		return (FAILURE);
 	return (SUCCESS);
 }
-
-// int	set_fd(t_pipe *info)
-// {
-// 	info->infile_fd = STDIN_FILENO;
-// 	info->outfile_fd = STDOUT_FILENO;
-// 	if (set_infile(info, info->unit) < 0 || set_outfile(info, info->unit) < 0)
-// 		return (FAILURE);
-// 	info->in_fd = info->prev_fd;
-// 	if (info->infile_fd != STDIN_FILENO)
-// 	{
-// 		if (info->prev_fd != STDIN_FILENO)
-// 			close(info->prev_fd);
-// 		info->in_fd = info->infile_fd;
-// 	}
-// 	// printf("last unit : %s\n", info->unit[info->unit_size - 1]);
-// 	if (is_pipe(info->unit[info->unit_size - 1]))
-// 	{
-// 		_pipe(info->pipefd);
-// 		info->is_pipe = 1;
-// 		info->out_fd = info->pipefd[1];
-// 	}
-// 	else
-// 		info->out_fd = STDOUT_FILENO;
-// 	if (info->outfile_fd != STDOUT_FILENO)
-// 	{
-// 		if (info->is_pipe)
-// 			close(info->pipefd[1]);
-// 		info->out_fd = info->outfile_fd;
-// 	}
-// 	return (SUCCESS);
-// }
-
-// static int	set_infile(t_pipe *info, char **unit)
-// {
-// 	int	idx;
-
-// 	idx = 0;
-// 	while (unit[idx])
-// 	{
-// 		if (!ft_strncmp(unit[idx], "<<", 3))
-// 		{
-// 			if (info->infile_fd != STDIN_FILENO)
-// 				close(info->infile_fd);
-// 			info->infile_fd = make_heredoc(unit[idx + 1]);
-// 		}
-// 		else if (!ft_strncmp(unit[idx], "<", 2))
-// 		{
-// 			if (info->infile_fd != STDIN_FILENO)
-// 				close(info->infile_fd);
-// 			info->infile_fd = infile_chk(unit[idx + 1]);
-// 		}
-// 		if (info->infile_fd == FAILURE)
-// 		{
-// 			ft_putstr_fd("minishell: ", STDERR_FILENO);
-// 			perror(unit[idx + 1]);
-// 			return (FAILURE);
-// 		}
-// 		idx++;
-// 	}
-// 	return (SUCCESS);
-// }
-
-// static int	set_outfile(t_pipe *info, char **unit)
-// {
-// 	int	idx;
-
-// 	idx = 0;
-// 	while (unit[idx])
-// 	{
-// 		if (!ft_strncmp(unit[idx], ">>", 3))
-// 		{
-// 			if (info->outfile_fd != STDOUT_FILENO)
-// 				close(info->outfile_fd);
-// 			info->outfile_fd = \
-// 			open(unit[idx + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-// 		}
-// 		else if (!ft_strncmp(unit[idx], ">", 2))
-// 		{
-// 			if (info->outfile_fd != STDOUT_FILENO)
-// 				close(info->outfile_fd);
-// 			info->outfile_fd = \
-// 			open(unit[idx + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-// 		}
-// 		if (info->outfile_fd == FAILURE)
-// 		{
-// 			ft_putstr_fd("minishell", STDERR_FILENO);
-// 			perror(unit[idx + 1]);
-// 			return (FAILURE);
-// 		}
-// 		idx++;
-// 	}
-// 	return (SUCCESS);
-// }

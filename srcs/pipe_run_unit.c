@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 12:15:10 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 14:19:52 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int excute_tree(t_token *top, t_pipe *info, t_data *data)
 		info->is_pipe++;
 		excute_tree(top->left, info, data);
 		excute_tree(top->right, info, data);
-		wait_all(info, data);
 		return (data->exit_status == 0);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
@@ -48,6 +47,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	if (set_fd(unit, info) == FAILURE)
 		return (FAILURE);
 	info->cmd_arr = set_cmd(unit);
+	info->is_built_in = 0;
 	if (info->cmd_arr != 0 && chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	// printf("%d\n", info->is_built_in);
@@ -97,7 +97,7 @@ static void	run_command(t_pipe *info, t_data *data)
 		path_command = find_command_in_path(info->cmd_arr[0], data);
 	//printf("path cmd: %s\n", path_command);
 	if (access(path_command, X_OK) == FAILURE)
-		return ;
+		exit(EXIT_FAILURE);
 	else
 		execve(path_command, info->cmd_arr, environ);
 	perror_exit(info->cmd_arr[0]);

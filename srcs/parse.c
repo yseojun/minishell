@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:54:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/06 13:51:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	parse_line(char *str, t_data *data, t_pipe *info)
 		return (FAILURE);
 	}
 	transform(data, info);
-	token_prt(info->head);
+	//token_prt(info->head);
 	info->head = make_tree(lst_token_last(info->head));
-	printf("%p\n", info->head);
-	prt_tree(info->head);
+	//printf("%p\n", info->head);
+	//prt_tree(info->head);
 	return (SUCCESS);
 }
 
