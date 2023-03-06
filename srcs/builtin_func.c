@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/01 16:34:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:18:53 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	_export(t_data *data, char *token);
 static void	_unset(t_data *data, char *name);
 static void builtin_cd(char *dir, t_data *data);
 static void	builtin_pwd(t_data *data);
-// static void	builtin_echo(t_pipe *info);
+static void	builtin_echo(t_pipe *info);
 
 void	run_builtin_func(t_pipe *info, t_data *data)
 {
@@ -34,8 +34,8 @@ void	run_builtin_func(t_pipe *info, t_data *data)
 		builtin_cd(info->cmd_arr[1], data);
 	else if (info->is_built_in == PWD)
 		builtin_pwd(data);
-	// if (info->is_built_in == ECHO)
-	// 	builtin_echo(info);
+	if (info->is_built_in == _ECHO)
+		builtin_echo(info);
 	// if (info->is_built_in == HISTORY)
 	// 	printf("history 실행");
 }
@@ -135,24 +135,39 @@ static void	builtin_pwd(t_data *data)
 	free(curr_dir);
 }
 
-// static void	builtin_echo(t_pipe *info)
-// {
-// 	int	remove_nl;
-// 	int	idx;
+static int	is_n_option(char *str)
+{
+	int	idx;
+	
+	if (str[0] != '-')
+		return (FALSE);
+	idx = 1;
+	while (str[idx])
+	{
+		if (str[idx] != 'n')
+			return (FALSE);
+		idx++;
+	}
+	return (TRUE);
+}
 
-// 	remove_nl = FALSE;
-// 	idx = 1;
-// 	if (ft_strncmp(info->cmd_arr[1], "-n", 2) == 0)
-// 	{
-// 		remove_nl = TRUE;
-// 		idx = 2;
-// 	}
-// 	while (info->cmd_arr[idx])
-// 	{
-// 		ft_putstr_fd(info->cmd_arr[idx], STDOUT_FILENO);
-// 		ft_putchar_fd(' ', STDOUT_FILENO);
-// 		idx++;
-// 	}
-// 	if (remove_nl == FALSE)
-// 		ft_putchar_fd('\n', STDOUT_FILENO);
-// }
+static void	builtin_echo(t_pipe *info)
+{
+	int	remove_nl;
+	int	idx;
+
+	remove_nl = is_n_option(info->cmd_arr[1]);
+	if (remove_nl == TRUE)
+		idx = 2;
+	else
+		idx = 1;
+	while (info->cmd_arr[idx])
+	{
+		ft_putstr_fd(info->cmd_arr[idx], STDOUT_FILENO);
+		if (info->cmd_arr[idx + 1] != NULL)
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		idx++;
+	}
+	if (remove_nl == FALSE)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+}

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 18:17:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:19:13 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define EXIT 4
 # define CD 5
 # define PWD 6
-// # define ECHO 7
+# define _ECHO 7
 # define BRACE 1
 # define AND 2
 # define OR 3

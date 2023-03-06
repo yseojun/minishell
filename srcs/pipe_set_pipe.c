@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 18:25:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:19:06 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static int	is_builin_func(t_pipe *info)
 		info->is_built_in = CD;
 	else if (ft_strncmp(info->cmd_arr[0], "pwd", 4) == 0)
 		info->is_built_in = PWD;
-	// else if (ft_strncmp(info->cmd_arr[0], "echo", 5) == 0)
-	// 	info->is_built_in = ECHO;
+	else if (ft_strncmp(info->cmd_arr[0], "echo", 5) == 0)
+		info->is_built_in = _ECHO;
 	// else if (ft_strncmp(info->cmd_arr[0], "history", 8) == 0)
 	// 	info->is_built_in = HISTORY;
 	else
