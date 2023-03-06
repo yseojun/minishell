@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 12:19:13 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 12:59:08 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,6 @@ typedef struct s_data
 	t_env			*env;
 	struct termios	termios;
 }	t_data;
-
-//main.c
-void		handler(int sig);
-void		finish_line(char *str, t_pipe *info);
 
 //base_data.c
 void		init_data(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 18:20:45 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 13:29:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 #include "util.h"
 #include "parse.h"
 
+static void	manage_signals(void);
+static void	handler(int sig);
+static void	finish_line(char *str);
+
 int	main(void)
 {
 	t_pipe	line_info;
 	t_data	data;
 	char	*str;
 	int		idx;
-
+	
+	manage_signals();
 	init_data(&data);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN); // ctrl + \ 눌렀을 때
 	while (1)
 	{
 		init_pipe_info(&line_info);
@@ -35,13 +38,21 @@ int	main(void)
 			continue ;
 		idx = 0;
 		excute_tree(line_info.head, &line_info, &data);
-		finish_line(str, &line_info);
+		finish_line(str);
 	}
 	return (SUCCESS);
 }
 
-// handler C문자 없애기
-void	handler(int sig)
+static void	manage_signals(void)
+{
+	extern int	rl_catch_signals;
+	
+	rl_catch_signals = 0;
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	handler(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -52,9 +63,7 @@ void	handler(int sig)
 	}
 }
 
-void	finish_line(char *str, t_pipe *info)
+static void	finish_line(char *str)
 {
-	if (info->is_pipe)
-		close(info->pipefd[P_READ]);
 	free(str);
 }
