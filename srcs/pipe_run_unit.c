@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 14:19:52 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/06 15:56:13 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,18 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	else
 	{
 		add_pid(info, pid);
+		if (info->in_fd != STDIN_FILENO)
+			close(info->in_fd);
+		if (info->out_fd != STDOUT_FILENO)
+			close(info->out_fd);
+		if (info->is_pipe == 0)
+			wait_all(info, data);
+		info->prev_fd = STDIN_FILENO;
 		if (info->is_pipe > 0)
 		{
 			info->is_pipe--;
 			info->prev_fd = info->pipefd[P_READ];
 		}
-		if (info->in_fd != STDIN_FILENO)
-			close(info->in_fd);
-		if (info->out_fd != STDOUT_FILENO)
-			close(info->out_fd);
 	}
 	return (SUCCESS);
 }
@@ -91,7 +94,7 @@ static void	run_command(t_pipe *info, t_data *data)
 	if (info->is_built_in)
 	{
 		run_builtin_func(info, data);
-		return ;
+		exit(EXIT_FAILURE); // 임시
 	}
 	if (info->cmd_arr)
 		path_command = find_command_in_path(info->cmd_arr[0], data);
