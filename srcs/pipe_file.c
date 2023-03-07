@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 17:00:03 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:40:15 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	make_heredoc(char *limiter, t_pipe *info)
 	info->heredoc_tmp = tmp_name;
 	write_heredoc(heredoc_fd, limiter);
 	close(heredoc_fd);
-	heredoc_fd = open(TMP_FILE, O_RDONLY, 0644);
+	heredoc_fd = open(tmp_name, O_RDONLY, 0644);
 	return (heredoc_fd);
 }
 
