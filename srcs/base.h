@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 12:59:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/07 16:59:29 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,9 @@ typedef struct s_pipe
 	char			**cmd_arr;
 	int				in_fd;
 	int				out_fd;
-	int				infile_fd;
-	int				outfile_fd;
 	int				is_built_in;
 	int				is_pipe;
+	char			*heredoc_tmp;
 	struct s_pid	*pids;
 }	t_pipe;
 
@@ -121,7 +120,7 @@ void		add_pid(t_pipe *info, pid_t	pid);
 void		wait_all(t_pipe *info, t_data *data);
 
 //pipe_infile.c
-int			make_heredoc(char *limiter);
+int			make_heredoc(char *limiter, t_pipe *info);
 int			infile_chk(char *infile);
 
 //run_pipe.c

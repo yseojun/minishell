@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 13:29:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/07 17:22:25 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	manage_signals(void);
 static void	handler(int sig);
-static void	finish_line(char *str);
+static void	finish_line(char *str, t_pipe *info);
 
 int	main(void)
 {
@@ -24,7 +24,7 @@ int	main(void)
 	t_data	data;
 	char	*str;
 	int		idx;
-	
+
 	manage_signals();
 	init_data(&data);
 	while (1)
@@ -38,7 +38,7 @@ int	main(void)
 			continue ;
 		idx = 0;
 		excute_tree(line_info.head, &line_info, &data);
-		finish_line(str);
+		finish_line(str, &line_info);
 	}
 	return (SUCCESS);
 }
@@ -46,7 +46,7 @@ int	main(void)
 static void	manage_signals(void)
 {
 	extern int	rl_catch_signals;
-	
+
 	rl_catch_signals = 0;
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -63,7 +63,13 @@ static void	handler(int sig)
 	}
 }
 
-static void	finish_line(char *str)
+static void	finish_line(char *str, t_pipe *info)
 {
+	if (info->heredoc_tmp)
+	{
+		unlink(info->heredoc_tmp);
+		free(info->heredoc_tmp);
+		info->heredoc_tmp = 0;
+	}
 	free(str);
 }
