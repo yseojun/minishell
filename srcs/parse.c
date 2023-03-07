@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 13:51:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/07 19:48:03 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ static int	chk_grammer_valid(t_pipe *info);
 
 int	parse_line(char *str, t_data *data, t_pipe *info)
 {
-	if (tokenize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE)
+	if (tokenize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE
+		|| transform(data, info))
 	{
 		if (info->head == 0)
 			return (FAILURE);
 		// free_list(head);
 		return (FAILURE);
 	}
-	transform(data, info);
+	// 타입이 리다이렉션이고, 와일드 카드의 결과가 여러 개면 오류(ambiguous redirect)
+	// 왼쪽이 히어독 리다이렉션일 때 와일드 카드 하지 말기
 	//token_prt(info->head);
 	info->head = make_tree(lst_token_last(info->head));
 	//printf("%p\n", info->head);

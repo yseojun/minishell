@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 16:59:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:06:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <dirent.h>
 # include <sys/wait.h> // wait
 # include <readline/history.h>
 # include <readline/readline.h> // readline
@@ -55,6 +56,12 @@ typedef struct s_pid
 	struct s_pid	*next;
 }	t_pid;
 
+typedef struct s_wildcard
+{
+	char				*name;
+	struct s_wildcard	*next;
+}	t_wildcard;
+
 typedef struct s_env
 {
 	char			*name;
@@ -79,6 +86,7 @@ typedef struct s_pipe
 	int				token_arr_size;
 	t_token			**unit;
 	int				unit_size;
+	t_wildcard		*wildcard;
 	char			**cmd_arr;
 	int				in_fd;
 	int				out_fd;
