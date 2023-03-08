@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/08 12:59:10 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 15:52:32 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,26 @@
 int	wildcard(t_pipe *info, t_token *now)
 {
 	char			**to_find;
-	int				idx;
-	int				find_idx;
 	
-	if (ft_strncmp("<<", now->left->token, 3) == 0)
+	if (now->left && ft_strncmp("<<", now->left->token, 3) == 0)
 		return (SUCCESS);
 	if (!ft_strchr(now->token, '*'))
 		return (SUCCESS);
 	to_find = ft_split(now->token, '*');
-	idx = 0;
-	find_idx = 0;
-	info->wildcard = make_wildcard(info);
-	cmp_wildcard(info, now, to_find);
-	if (attach_token(info, now) == FAILURE)
-		return (FAILURE);
+	// info->wildcard = make_wildcard(info);
+	cmp_wildcard(info, to_find);
+	// if (attach_token(info, now) == FAILURE)
+	// 	return (FAILURE);
+	return (SUCCESS);
 }
 
-t_wildcard *make_wildcard(t_pipe *info)
-{
-	DIR				*dp;
-	struct dirent	*fp;
-	dp = opendir(getcwd(0, 0));
+// t_wildcard *make_wildcard(t_pipe *info)
+// {
+// 	DIR				*dp;
+// 	struct dirent	*fp;
+// 	dp = opendir(getcwd(0, 0));
 	
-}
+// }
 
 int	transform(t_data *data, t_pipe *info)
 {
@@ -55,9 +52,9 @@ int	transform(t_data *data, t_pipe *info)
 	{
 		is_expanded = 0;
 		search->token = expand(data, search->token, &is_expanded);
-		if (is_expanded)
+		if (!is_expanded)
 		{
-			if (wildcard(info) == FAILURE)
+			if (wildcard(info, search) == FAILURE)
 				return (FAILURE);
 		}
 		search->token = remove_quote(search->token);

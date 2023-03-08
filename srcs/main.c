@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 19:11:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:39:36 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	main(void)
 {
 	t_pipe	line_info;
 	t_data	data;
-	struct dirent	*dir;
 	char	*str;
-	int		idx;
 
 	manage_signals();
 	init_data(&data);
@@ -39,7 +37,6 @@ int	main(void)
 		add_history(str);
 		if (parse_line(str, &data, &line_info) == FAILURE)
 			continue ;
-		idx = 0;
 		excute_tree(line_info.head, &line_info, &data);
 		finish_line(str, &line_info);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 15:13:09 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/08 15:50:33 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		parse_line(char *str, t_data *data, t_pipe *info);
 int		tokenize(char *str, t_pipe *info);
 
 // transform.c
-void	transform(t_data *data, t_pipe *info);
+int		transform(t_data *data, t_pipe *info);
 
 // transform_expand.c
 char	*expand(t_data *data, char *str, int *flag);
@@ -37,5 +37,8 @@ t_token	*pull_token(t_token **head, t_token *remove);
 char	*remove_quote(char *str);
 
 t_token *make_tree(t_token *tail);
+
+//wildcard.c
+void	cmp_wildcard(t_pipe *info, char **to_find);
 
 #endif

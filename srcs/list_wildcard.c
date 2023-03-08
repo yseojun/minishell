@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:26:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 14:51:54 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 15:51:29 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_wildcard	*make_wildcard(char *name)
 	t_wildcard	*new;
 
 	new = (t_wildcard *)malloc(sizeof(t_wildcard));
-	new->name = set_type(name);
+	new->name = name;
 	return (new);
 }
 
@@ -27,7 +27,7 @@ int	wildcard_add_back(t_wildcard **head, t_wildcard *new)
 
 	if (!new)
 		return (0);
-	last = lst_token_last(*head);
+	last = lst_wildcard_last(*head);
 	if (!last)
 		*head = new;
 	else
@@ -60,7 +60,7 @@ void	wildcard_prt(t_wildcard *head)
 	search = head;
 	while (search)
 	{
-		printf("name : %s type : %d\n", search->name);
+		printf("name : %s\n", search->name);
 		search = search->next;
 	}
 }

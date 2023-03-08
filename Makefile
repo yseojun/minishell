@@ -3,10 +3,13 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 RLIBI = -I $(HOME)/.brew/opt/readline/include
+RLIB_FOR_HOME = -L /opt/homebrew/opt/readline/lib -lreadline
+RLIBI_FOR_HOME = -I /opt/homebrew/opt/readline/include
 SRCS = main.c \
 parse.c \
 base_data.c \
 list_env.c \
+list_wildcard.c \
 pipe_run_unit.c \
 pipe_set_pipe.c \
 pipe_file.c \
@@ -16,6 +19,7 @@ transform.c \
 transform_expand.c \
 transform_rm_quote.c \
 transform_util.c \
+wildcard_cmp.c \
 tokenize.c \
 list_token.c \
 _util.c \
@@ -39,6 +43,10 @@ bonus : $(OBJS_BONUS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $(<:.c=.o) -c $< $(RLIBI)
+
+home : $(addprefix srcs/, $(SRCS)) $(GNL)
+	make all -C $(LIBT)
+	$(CC) $(CFLAGS) -g -o $(NAME) $^ -L$(LIBT) -lft $(RLIB_FOR_HOME) $(RLIBI_FOR_HOME)
 
 test : $(addprefix srcs/, $(SRCS)) $(GNL)
 	make all -C $(LIBT)

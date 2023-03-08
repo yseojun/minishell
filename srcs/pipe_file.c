@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 18:40:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:41:22 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	make_heredoc(char *limiter, t_pipe *info)
 	int		heredoc_fd;
 	char	*tmp_name;
 
-	tmp_name = ft_itoa((int) &tmp_name);
+	tmp_name = ft_itoa((long long) &tmp_name);
 	heredoc_fd = open(tmp_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (heredoc_fd == -1)
 	{

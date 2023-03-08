@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 14:46:17 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 15:48:22 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define FAILURE -1
 # define TRUE 1
 # define FALSE 0
-# define TMP_FILE "tmp.txt"
+// # define TMP_FILE "tmp.txt"
 # define EXPORT 1
 # define ENV 2
 # define UNSET 3
@@ -118,6 +118,7 @@ t_wildcard	*make_wildcard(char *name);
 int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
 t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
+t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remove);
 
 
 

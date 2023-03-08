@@ -6,13 +6,33 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/08 14:55:15 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 15:48:39 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-int	find_str(char *to_find_str, char *name, int *idx)
+static int	find_str(char *to_find_str, char *name, int *idx);
+static int	check_wildcard(char *name, char **to_find);
+
+void	cmp_wildcard(t_pipe *info, char **to_find)
+{
+	t_wildcard	*search;
+	t_wildcard	*prev;
+	
+	if (info->wildcard == 0)
+		return ;
+	search = info->wildcard;
+	prev = search;
+	while (search)
+	{
+		if (check_wildcard(search->name, to_find) == -1)
+			search = remove_wildcard(info, prev, search);
+		search = search->next;
+	}
+}
+
+static int	find_str(char *to_find_str, char *name, int *idx)
 {
 	while (name[*idx])
 	{
@@ -26,7 +46,7 @@ int	find_str(char *to_find_str, char *name, int *idx)
 	return (FAILURE);
 }
 
-int	check_wildcard(char *name, char **to_find)
+static int	check_wildcard(char *name, char **to_find)
 {
 	int	idx;
 	int	to_find_idx;
@@ -52,21 +72,4 @@ t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remov
 		prev->next = to_remove->next;
 	lst_wildcard_free(to_remove);
 	return (prev);
-}
-
-int	cmp_wildcard(t_pipe *info, t_token *now, char **to_find)
-{
-	t_wildcard	*search;
-	t_wildcard	*prev;
-	
-	if (info->wildcard == 0)
-		return (SUCCESS);
-	search = info->wildcard;
-	prev = search;
-	while (search)
-	{
-		if (check_wildcard(search->name, to_find) == -1)
-			search = remove_wildcard(info, prev, search);
-		search = search->next;
-	}
 }

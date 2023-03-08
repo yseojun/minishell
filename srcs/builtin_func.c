@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/06 12:18:53 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/08 15:41:56 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,11 @@ static void	_env(t_data *data)
 static void	_export(t_data *data, char *token)
 {
 	t_env	*search;
-	t_env	*prev;
 	char	**name_val;
 
 	name_val = ft_split(token, '=');
 	// chk_valid_export(name_val);
 	search = data->env;
-	prev = search;
 	while (search)
 	{
 		printf("%s, %s\n", search->name, name_val[0]);
@@ -73,7 +71,6 @@ static void	_export(t_data *data, char *token)
 			search->value = name_val[1];
 			break ;
 		}
-		prev = search;
 		search = search->next;
 	}
 	if (search == NULL)
