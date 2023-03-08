@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list_wildcard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:26:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 20:29:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:51:54 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-t_wildcard	*make_token(char *name)
+t_wildcard	*make_wildcard(char *name)
 {
 	t_wildcard	*new;
 
@@ -21,7 +21,7 @@ t_wildcard	*make_token(char *name)
 	return (new);
 }
 
-int	token_add_back(t_wildcard **head, t_wildcard *new)
+int	wildcard_add_back(t_wildcard **head, t_wildcard *new)
 {
 	t_wildcard	*last;
 
@@ -35,7 +35,7 @@ int	token_add_back(t_wildcard **head, t_wildcard *new)
 	return (1);
 }
 
-t_wildcard	*lst_token_last(t_wildcard *lst)
+t_wildcard	*lst_wildcard_last(t_wildcard *lst)
 {
 	t_wildcard	*search;
 
@@ -47,13 +47,13 @@ t_wildcard	*lst_token_last(t_wildcard *lst)
 	return (search);
 }
 
-void	lst_token_free(t_wildcard *lst)
+void	lst_wildcard_free(t_wildcard *lst)
 {
 	free(lst->name);
 	free(lst);
 }
 
-void	token_prt(t_wildcard *head)
+void	wildcard_prt(t_wildcard *head)
 {
 	t_wildcard	*search;
 

@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/08 12:51:46 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 14:55:15 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ int	find_str(char *to_find_str, char *name, int *idx)
 {
 	while (name[*idx])
 	{
-		if (ft_strncmp(name + *idx, to_find_str, ft_strlen(to_find_str)))
+		if (ft_strncmp(name + *idx, to_find_str, ft_strlen(to_find_str)) == 0)
+		{
+			(*idx)++;
 			return (SUCCESS);
+		}
 		(*idx)++;
 	}
 	return (FAILURE);
@@ -41,17 +44,29 @@ int	check_wildcard(char *name, char **to_find)
 	return (FAILURE);
 }
 
+t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remove)
+{
+	if (prev==to_remove)
+		info->wildcard = to_remove->next;
+	else
+		prev->next = to_remove->next;
+	lst_wildcard_free(to_remove);
+	return (prev);
+}
+
 int	cmp_wildcard(t_pipe *info, t_token *now, char **to_find)
 {
 	t_wildcard	*search;
+	t_wildcard	*prev;
 	
 	if (info->wildcard == 0)
 		return (SUCCESS);
 	search = info->wildcard;
+	prev = search;
 	while (search)
 	{
 		if (check_wildcard(search->name, to_find) == -1)
-			remove_wildcard(info, search);
+			search = remove_wildcard(info, prev, search);
 		search = search->next;
 	}
 }

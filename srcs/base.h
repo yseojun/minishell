@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 20:06:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/08 14:46:17 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,14 @@ t_env		*lst_new_env(char *name, char *value);
 void		lst_env_add_back(t_env **head, t_env *new);
 t_env		*lst_env_last(t_env *lst);
 void		lst_env_free(t_env *lst);
+
+//list_wildcard.c
+t_wildcard	*make_wildcard(char *name);
+int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
+t_wildcard	*lst_wildcard_last(t_wildcard *lst);
+void		lst_wildcard_free(t_wildcard *lst);
+
+
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info, t_data *data);
