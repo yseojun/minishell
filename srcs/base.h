@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 15:48:22 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/08 16:04:57 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <readline/readline.h> // readline
 # include <sys/errno.h>
+# include <sys/stat.h> // stat
 # include <termios.h> // tcgetattr
 # include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
@@ -119,8 +120,6 @@ int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
 t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
 t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remove);
-
-
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info, t_data *data);
