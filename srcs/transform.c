@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/07 20:29:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/08 12:59:10 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	wildcard(t_pipe *info, t_token *now)
 	idx = 0;
 	find_idx = 0;
 	info->wildcard = make_wildcard(info);
-	cmp_wildcard(info, now);
+	cmp_wildcard(info, now, to_find);
 	if (attach_token(info, now) == FAILURE)
 		return (FAILURE);
 }
@@ -42,11 +42,6 @@ t_wildcard *make_wildcard(t_pipe *info)
 	DIR				*dp;
 	struct dirent	*fp;
 	dp = opendir(getcwd(0, 0));
-	
-}
-
-int	cmp_wildcard()
-{
 	
 }
 
