@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:43:20 by rolee            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/03/11 19:52:17 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "base.h"
 #include "util.h"
@@ -98,7 +99,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 static void	child(t_pipe *info, t_data *data)
 {
 	//printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
-	if  (info->pipe_count > 0)
+	if  (info->is_pipe > 0)
 		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);
 	if (info->in_fd != STDIN_FILENO)
@@ -123,8 +124,9 @@ static void	run_command(t_pipe *info, t_data *data)
 			execve(path_command, info->cmd_arr, environ);
 		else
 		{
-			errno = 21; // is a directory
-			data->exit_status = 126;
+			ft_putstr_fd("minishell: ", 2);
+			ft_putendl_fd(strerror(21), 2);
+			exit(126);	
 		}
 	}
 	perror_exit(info->cmd_arr[0]);

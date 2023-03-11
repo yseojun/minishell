@@ -6,14 +6,15 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:38:22 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 19:48:11 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BASE_H
 # define BASE_H
 
-# include <stdio.h> 
+# include <stdio.h>
+# include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
