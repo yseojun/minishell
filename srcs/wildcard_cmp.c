@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_cmp.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/08 15:48:39 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 12:05:55 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	cmp_wildcard(t_pipe *info, char **to_find)
 {
 	t_wildcard	*search;
 	t_wildcard	*prev;
-	
+
 	if (info->wildcard == 0)
 		return ;
 	search = info->wildcard;
@@ -60,13 +60,13 @@ static int	check_wildcard(char *name, char **to_find)
 		to_find_idx++;
 	}
 	if (to_find[to_find_idx] == 0)
-		return(SUCCESS);
+		return (SUCCESS);
 	return (FAILURE);
 }
 
 t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remove)
 {
-	if (prev==to_remove)
+	if (prev == to_remove)
 		info->wildcard = to_remove->next;
 	else
 		prev->next = to_remove->next;
