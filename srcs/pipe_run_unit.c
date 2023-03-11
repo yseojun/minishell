@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 16:27:34 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 16:35:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 static void	child(t_pipe *info, t_data *data)
 {
 	//printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
-	if  (info->is_pipe > 0)
+	if (info->is_pipe > 0)
 		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);
 	if (info->in_fd != STDIN_FILENO)
@@ -107,7 +107,12 @@ static void	run_command(t_pipe *info, t_data *data)
 		if (chk_stat(path_command) == SUCCESS)	
 			execve(path_command, info->cmd_arr, environ);
 		else
-			errno = 21; // is a directory
+		{
+			ft_putstr_fd("minishell: ", 2);
+			strerror(21);
+			data->exit_status = 126;
+			exit(FAILURE);
+		}
 	}
 	perror_exit(info->cmd_arr[0]);
 }
