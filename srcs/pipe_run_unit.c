@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 20:02:19 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:12:27 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	if (set_fd(unit, info) == FAILURE)
 		return (FAILURE);
 	info->cmd_arr = set_cmd(unit);
+	if (info->cmd_arr == 0)
+		return (FAILURE);
 	info->is_built_in = 0;
-	if (info->cmd_arr != 0 && chk_cmd(info, data) == FAILURE)
+	if (chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	if (run_single_builtin(info, data))
 		return (data->exit_status);
