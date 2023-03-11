@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:20:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:38:55 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	builtin_export(t_data *data, char **cmd_arr)
 		return (builtin_env(cmd_arr, data));
 	exit_status = EXIT_SUCCESS;
 	idx = 1;
-	prt_arr(cmd_arr);
 	while (cmd_arr[idx])
 	{
 		if (ft_strchr(cmd_arr[idx], '='))
