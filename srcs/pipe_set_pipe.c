@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 16:59:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:38:17 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int	set_fd(t_token *unit, t_pipe *info)
 	if (set_in_fd(unit, info) == FAILURE) // unit left를 보며 재세팅
 		return (FAILURE);
 	// out_fd
-	if (info->is_pipe) // pipe 또는 STDOUT으로 기본 세팅
+	if (info->pipe_count) // pipe 또는 STDOUT으로 기본 세팅
 	{
 		_pipe(info->pipefd);
 		info->out_fd = info->pipefd[P_WRITE];

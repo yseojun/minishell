@@ -3,133 +3,203 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 15:41:56 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 19:20:33 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void	_env(t_data *data);
-static void	_export(t_data *data, char *token);
-static void	_unset(t_data *data, char *name);
-static void builtin_cd(char *dir, t_data *data);
-static void	builtin_pwd(t_data *data);
-static void	builtin_echo(t_pipe *info);
+static int	builtin_env(char **cmd_arr, t_data *data);
+static void	chk_valid_export(char *str, int *exit_status);
+static int	is_number(char *str);
+static int	builtin_pwd(void);
+static int	builtin_echo(t_pipe *info);
 
-void	run_builtin_func(t_pipe *info, t_data *data)
+int	run_builtin_func(t_pipe *info, t_data *data)
 {
 	if (info->is_built_in == EXPORT)
-		_export(data, info->cmd_arr[1]);
+		return (builtin_export(data, info->cmd_arr));
 	else if (info->is_built_in == ENV)
-		_env(data);
+		return (builtin_env(info->cmd_arr, data));
 	else if (info->is_built_in == UNSET)
-		_unset(data, info->cmd_arr[1]);
+		return (builtin_unset(data, info->cmd_arr));
 	else if (info->is_built_in == EXIT)
-		builtin_exit(EXIT_SUCCESS, data);
+		return (builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		builtin_cd(info->cmd_arr[1], data);
+		return (builtin_cd(info->cmd_arr[1]));
 	else if (info->is_built_in == PWD)
-		builtin_pwd(data);
-	if (info->is_built_in == _ECHO)
-		builtin_echo(info);
-	// if (info->is_built_in == HISTORY)
-	// 	printf("history 실행");
+		return (builtin_pwd());
+	else
+		return (builtin_echo(info));
 }
 
-static void	_env(t_data *data)
+static int	builtin_env(char **cmd_arr, t_data *data)
 {
 	t_env	*search;
 
+	if (cmd_arr[1])
+	{
+		ft_putendl_fd("minishell: env: invaild env arguments", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
 	search = data->env;
 	while (search)
 	{
 		ft_putstr_fd(search->name, 1);
 		ft_putchar_fd('=', 1);
-		ft_putendl_fd(search->value, 1);
+		ft_putstr_fd(search->value, 1);
+		ft_putchar_fd('\n', 1);
 		search = search->next;
 	}
+	return (EXIT_SUCCESS);
 }
 
-static void	_export(t_data *data, char *token)
+int	builtin_export(t_data *data, char **cmd_arr)
 {
-	t_env	*search;
+	int		exit_status;
+	int		idx;
+	t_env	*env;
 	char	**name_val;
-
-	name_val = ft_split(token, '=');
-	// chk_valid_export(name_val);
-	search = data->env;
-	while (search)
+	
+	if (!cmd_arr[1])
+		return (builtin_env(cmd_arr, data));
+	exit_status = EXIT_SUCCESS;
+	idx = 1;
+	prt_arr(cmd_arr);
+	while (cmd_arr[idx])
 	{
-		printf("%s, %s\n", search->name, name_val[0]);
-		if (ft_strncmp(search->name, name_val[0], ft_strlen(name_val[0]) + 1) == 0)
+		if (ft_strchr(cmd_arr[idx], '='))
 		{
-			free(search->value);
-			search->value = name_val[1];
-			break ;
+			chk_valid_export(cmd_arr[idx], &exit_status);
+			name_val = ft_split(cmd_arr[idx], '=');
+			env = data->env;
+			while (env)
+			{
+				if (ft_strncmp(env->name, name_val[0], ft_strlen(name_val[0]) + 1) == 0)
+				{
+					free(env->value);
+					env->value = ft_strdup(name_val[1]);
+					break ;
+				}
+				env = env->next;
+			}
+			if (!env)
+				lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
+			free_arr((void **) name_val);
 		}
-		search = search->next;
+		idx++;
 	}
-	if (search == NULL)
-		lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
-	free_arr((void **) name_val);
+	return (exit_status);
 }
 
-static void	_unset(t_data *data, char *name)
+static void	chk_valid_export(char *str, int *exit_status)
 {
-	t_env	*search;
+	if (str[0] == '=')
+	{
+		*exit_status = EXIT_FAILURE;
+		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);	
+	}
+}
+
+int	builtin_unset(t_data *data, char **cmd_arr)
+{
+	int		idx;
+	t_env	*env;
 	t_env	*prev;
 
-	search = data->env;
-	prev = search;
-	while (search)
+	if (!cmd_arr[1])
+		return (EXIT_SUCCESS);
+	idx = 1;
+	while (cmd_arr[idx])
 	{
-		if (ft_strncmp(search->name, name, ft_strlen(name)) == 0)
+		env = data->env;
+		prev = env;
+		while (env)
 		{
-			if (prev == search)
-				data->env = search->next;
-			else
-				prev->next = search->next;
-			lst_env_free(search);
-			return ;
+			if (ft_strncmp(env->name, cmd_arr[idx], ft_strlen(cmd_arr[idx])) == 0)
+			{
+				if (data->env == env)
+				{
+					data->env = env->next;
+					lst_env_free(env);
+					env = data->env;
+					continue;
+				}
+				prev->next = env->next;
+				lst_env_free(env);
+				env = prev;
+			}
+			prev = env;
+			env = env->next;
 		}
-		prev = search;
-		search = search->next;
+		idx++;
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	builtin_exit(int status, t_data *data)
+int	builtin_exit(char **cmd_arr)
 {
-	data->exit_status = status;
-	exit(status);
+	if (cmd_arr[1] && cmd_arr[2])
+	{
+		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	if (cmd_arr[1])
+	{
+		if (!is_number(cmd_arr[1]))
+		{
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(cmd_arr[1], STDERR_FILENO);
+			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+			exit(255);
+		}
+		exit((unsigned char)ft_atoi(cmd_arr[1]));
+	}
+	exit(EXIT_SUCCESS);
 }
 
-static void builtin_cd(char *dir, t_data *data)
+static int	is_number(char *str)
 {
-	// 오류 처리
-	// 존재하지 않은 디렉토리 또는 파일인 경우
-	// 디렉토리가 아닌 경우
+	int	idx;
 
+	idx = 0;
+	if (str[0] == '-' || str[0] == '+')
+		idx++;
+	while (str[idx])
+	{
+		if (!ft_isdigit(str[idx]))
+			return (FALSE);
+		idx++;
+	}
+	return (TRUE);
+}
+
+int	builtin_cd(char *dir) // ~ 처리
+{
 	if (chdir(dir) == FAILURE)
 	{
 		perror("minishell: cd");
-		builtin_exit(EXIT_FAILURE, data); // 1 말고 다른 값으로 exit 해야 하나?	
+		return (EXIT_FAILURE);
 	}
-	printf("dir: %s", getcwd(NULL, 0));
+	return (EXIT_SUCCESS);
 }
 
-static void	builtin_pwd(t_data *data)
+static int	builtin_pwd(void)
 {
 	char	*curr_dir;
 
 	curr_dir = getcwd(NULL, 0);
 	if (!curr_dir)
-		builtin_exit(EXIT_FAILURE, data);
+		return (EXIT_FAILURE);
 	ft_putendl_fd(curr_dir, STDOUT_FILENO);
 	free(curr_dir);
+	return (EXIT_SUCCESS);
 }
 
 static int	is_n_option(char *str)
@@ -148,7 +218,7 @@ static int	is_n_option(char *str)
 	return (TRUE);
 }
 
-static void	builtin_echo(t_pipe *info)
+static int	builtin_echo(t_pipe *info)
 {
 	int	remove_nl;
 	int	idx;
@@ -167,4 +237,5 @@ static void	builtin_echo(t_pipe *info)
 	}
 	if (remove_nl == FALSE)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }

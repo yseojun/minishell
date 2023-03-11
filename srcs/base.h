@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 14:35:37 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 19:38:22 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_pipe
 	int				in_fd;
 	int				out_fd;
 	int				is_built_in;
+	int				pipe_count;
 	int				is_pipe;
 	char			*heredoc_tmp;
 	struct s_pid	*pids;
@@ -142,13 +143,16 @@ int			make_heredoc(char *limiter, t_pipe *info);
 int			infile_chk(char *infile);
 
 //run_pipe.c
-int 	excute_tree(t_token *top, t_pipe *info, t_data *data);
-int		run_unit(t_token *unit, t_pipe *info, t_data *data);
+int			excute_tree(t_token *top, t_pipe *info, t_data *data);
+int			run_unit(t_token *unit, t_pipe *info, t_data *data);
 
 
 //builtin_func.c
-void		run_builtin_func(t_pipe *info, t_data *data);
-void		builtin_exit(int status, t_data *data);
+int			run_builtin_func(t_pipe *info, t_data *data);
+int			builtin_exit(char **cmd_arr);
+int			builtin_export(t_data *data, char **cmd_arr);
+int			builtin_unset(t_data *data, char **cmd_arr);
+int 		builtin_cd(char *dir);
 
 //is_symbol.c
 int			is_redirection(char *str);

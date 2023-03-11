@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/10 20:55:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 19:42:33 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_pipe_info(t_pipe *info)
 	info->wildcard = 0;
 	info->cmd_arr = 0;
 	info->pids = 0;
+	info->pipe_count = 0;
 	info->is_pipe = 0;
 	info->head = 0;
 }

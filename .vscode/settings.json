@@ -1,5 +1,7 @@
 {
 	"files.associations": {
-		"base.h": "c"
+		"base.h": "c",
+		"complex": "c",
+		"algorithm": "c"
 	}
 }
