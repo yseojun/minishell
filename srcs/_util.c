@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   _util.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/26 14:04:42 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/08 16:13:13 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	_dup2(int fd1, int fd2)
 
 void	perror_exit(char *name)
 {
+	ft_putstr_fd("minishell: ", 2);
 	perror(name);
 	exit(EXIT_FAILURE);
 }

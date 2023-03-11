@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_make.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/11 13:25:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:36:11 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 	if (!ft_strchr(now->token, '*'))
 		return ;
 	dp = opendir(getcwd(0, 0)); // 실패할 경우 처리
-	while ((fp = readdir(dp)) != NULL)
+	while ((fp = readdir(dp)) != NULL) // 여기 수정
 		wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
 	to_find = ft_split(now->token, '*');
 	cmp_wildcard(info, to_find);
@@ -85,7 +85,7 @@ static int	check_wildcard(char *name, char **to_find)
 			break ;
 		to_find_idx++;
 	}
-	if (to_find[to_find_idx] == 0 && name[idx] == 0) // 추가
+	if (to_find[to_find_idx] == 0)
 		return (SUCCESS);
 	return (FAILURE);
 }

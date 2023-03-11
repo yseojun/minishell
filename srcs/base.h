@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 13:11:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:35:37 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <readline/readline.h> // readline
 # include <sys/errno.h>
+# include <sys/stat.h> // stat
 # include <termios.h> // tcgetattr
 # include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
