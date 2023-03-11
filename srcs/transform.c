@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/08 15:52:32 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 12:53:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,6 @@
 
 // cd 명령에서 expand해줘야 할 게 있을 수도(~, -)
 // bonus에서 * 와일드카드
-
-int	wildcard(t_pipe *info, t_token *now)
-{
-	char			**to_find;
-	
-	if (now->left && ft_strncmp("<<", now->left->token, 3) == 0)
-		return (SUCCESS);
-	if (!ft_strchr(now->token, '*'))
-		return (SUCCESS);
-	to_find = ft_split(now->token, '*');
-	// info->wildcard = make_wildcard(info);
-	cmp_wildcard(info, to_find);
-	// if (attach_token(info, now) == FAILURE)
-	// 	return (FAILURE);
-	return (SUCCESS);
-}
-
-// t_wildcard *make_wildcard(t_pipe *info)
-// {
-// 	DIR				*dp;
-// 	struct dirent	*fp;
-// 	dp = opendir(getcwd(0, 0));
-	
-// }
 
 int	transform(t_data *data, t_pipe *info)
 {
@@ -54,40 +30,19 @@ int	transform(t_data *data, t_pipe *info)
 		search->token = expand(data, search->token, &is_expanded);
 		if (!is_expanded)
 		{
-			if (wildcard(info, search) == FAILURE)
-				return (FAILURE);
+			make_wildcard_lst(info, search);
+			if (info->wildcard)
+			{
+				if (merge_wildcard_lst(info, &search) == FAILURE)
+					return (FAILURE);
+				continue ;
+			}
 		}
 		search->token = remove_quote(search->token);
 		if (is_expanded && ft_strlen(search->token) == 0)
 			search = pull_token(&info->head, search);
 		else
 			search = search->right;
-	}
+	}	
 	return (SUCCESS);
 }
-
-
-
-// 토큰에 *이 있으면
-	// 해당 토큰에 있는 별 이외의 문자를 연결리스트로 저장
-	// readdir 하면서 읽어온 이름에서 
-
-// void	transform(t_data *data, t_pipe *info)
-// {
-// 	int	idx;
-// 	int	is_expanded;
-
-// 	idx = 0;
-// 	while (info->token_arr[idx])
-// 	{
-// 		is_expanded = 0;
-// 		info->token_arr[idx] = expand(data, info->token_arr[idx], &is_expanded);
-// 		info->token_arr[idx] = remove_quote(info->token_arr[idx]);
-// 		if (is_expanded && ft_strlen(info->token_arr[idx]) == 0)
-// 		{
-// 			pull_token(info->token_arr, idx);
-// 			info->token_arr_size--;
-// 		}
-// 		idx++;
-// 	}
-// }

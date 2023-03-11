@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 15:48:22 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 13:11:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,12 @@ t_env		*lst_env_last(t_env *lst);
 void		lst_env_free(t_env *lst);
 
 //list_wildcard.c
-t_wildcard	*make_wildcard(char *name);
+t_wildcard	*lst_new_wildcard(char *name);
 int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
 t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
-t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, t_wildcard *to_remove);
-
+void		lst_wildcard_free_all(t_wildcard *lst);
+void		wildcard_prt(t_wildcard *head);
 
 
 //set_pipe.c
@@ -160,7 +160,7 @@ int			is_brace_chr(char c);
 //token
 int			tokenize(char *str, t_pipe *info);
 t_token		*lst_new_token(char *str);
-int			token_add_back(t_token **head, t_token *new);
+int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
 t_token		*make_token(char *str, int *idx);

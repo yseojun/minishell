@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   list_wildcard.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:26:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 15:51:29 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 13:03:47 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-t_wildcard	*make_wildcard(char *name)
+t_wildcard	*lst_new_wildcard(char *name)
 {
 	t_wildcard	*new;
 
 	new = (t_wildcard *)malloc(sizeof(t_wildcard));
-	new->name = name;
+	new->name = ft_strdup(name);
+	new->next = 0;
 	return (new);
 }
 
@@ -51,6 +52,21 @@ void	lst_wildcard_free(t_wildcard *lst)
 {
 	free(lst->name);
 	free(lst);
+	lst = 0;
+}
+
+void	lst_wildcard_free_all(t_wildcard *lst)
+{
+	t_wildcard	*search;
+	t_wildcard	*next;
+
+	search = lst;
+	while (search)
+	{
+		next = search->next;
+		lst_wildcard_free(search);
+		search = next;
+	}
 }
 
 void	wildcard_prt(t_wildcard *head)

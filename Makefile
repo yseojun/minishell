@@ -19,7 +19,8 @@ transform.c \
 transform_expand.c \
 transform_rm_quote.c \
 transform_util.c \
-wildcard_cmp.c \
+wildcard_make.c \
+wildcard_merge.c \
 tokenize.c \
 list_token.c \
 _util.c \

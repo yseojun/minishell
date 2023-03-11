@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 17:16:49 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 12:41:04 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_token	*make_token(char *str, int *idx)
 	return (new);
 }
 
-int	token_add_back(t_token **head, t_token *new)
+int	lst_token_add_back(t_token **head, t_token *new)
 {
 	t_token	*last;
 

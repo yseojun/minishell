@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 18:17:34 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 12:40:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	tokenize(char *str, t_pipe *info)
 		else
 		{
 			new = make_token(str, &idx);
-			if (!new || token_add_back(&info->head, new) == FAILURE)
+			if (!new || lst_token_add_back(&info->head, new) == FAILURE)
 				return (FAILURE);
 			if (new->type == 0)
 			{
