@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/11 15:46:01 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 16:06:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 		wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
 	}
 	to_find = ft_split(now->token, '*');
-	cmp_wildcard(info, to_find, now);
+	if (to_find)
+		cmp_wildcard(info, to_find, now);
 }
 
 static void	cmp_wildcard(t_pipe *info, char **to_find, t_token *now)
@@ -45,14 +46,14 @@ static void	cmp_wildcard(t_pipe *info, char **to_find, t_token *now)
 	t_wildcard	*search;
 	t_wildcard	*prev;
 
-	if (info->wildcard == 0)
+	if (!info->wildcard)
 		return ;
 	search = info->wildcard;
 	prev = search;
-	wildcard_prt(info->wildcard);
+	// wildcard_prt(info->wildcard);
 	while (search)
 	{
-		printf("search name : %s\n", search->name);
+		// printf("search name : %s\n", search->name);
 		if (check_wildcard(search->name, to_find, now) == FAILURE)
 			search = remove_wildcard(info, prev, search);
 		else
