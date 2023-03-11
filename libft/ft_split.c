@@ -3,98 +3,126 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 21:19:56 by seojyang          #+#    #+#             */
-/*   Updated: 2023/02/25 17:43:21 by seojyang         ###   ########.fr       */
+/*   Created: 2022/11/12 09:33:45 by rolee             #+#    #+#             */
+/*   Updated: 2023/03/11 16:15:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	is_sep(char check, char c)
+static int	get_word_count(char const *s, char c)
 {
-	return (check == c);
-}
-
-static int	count_str(char *str, char c)
-{
+	int	flag;
+	int	idx;
 	int	count;
 
+	flag = 0;
+	idx = 0;
 	count = 0;
-	while (*str)
+	if (!s)
+		return (0);
+	while (s[idx])
 	{
-		if (is_sep(*str, c))
+		if (s[idx] == c)
+			flag = 0;
+		else
 		{
-			while (is_sep(*str, c))
-				str++;
+			if (flag == 0)
+				count++;
+			flag = 1;
 		}
-		else if (!is_sep(*str, c))
-		{
-			while (*str && !is_sep(*str, c))
-				str++;
-			count++;
-		}
+		idx++;
 	}
-	return (count + 1);
+	return (count);
 }
 
-static int	split_put(char *str, char c, char **output, int n)
+static int	get_word_len(char const *s, char c)
+{
+	int	idx;
+	int	len;
+
+	idx = 0;
+	while (s[idx] == c)
+		idx++;
+	len = 0;
+	while (s[idx] != c && s[idx])
+	{
+		len++;
+		idx++;
+	}
+	return (len);
+}
+
+static int	alloc_put_word(char **result, char const *s, char c, int i)
 {
 	int	idx;
 
-	idx = 0;
-	while (str[idx] && !is_sep(str[idx], c))
-		idx++;
-	output[n] = (char *)malloc(idx + 1);
-	if (!output[n])
-		return (0);
-	idx = 0;
-	while (str[idx] && !is_sep(str[idx], c))
+	result[i] = (char *)malloc(get_word_len(s, c) + 1);
+	if (!result[i])
 	{
-		output[n][idx] = str[idx];
+		idx = 0;
+		while (idx < i)
+		{
+			free(result[idx]);
+			idx++;
+		}
+		free(result);
+		return (-1);
+	}
+	idx = 0;
+	while (s[idx] == c)
+		idx++;
+	while (s[idx] != c && s[idx])
+	{
+		result[i][idx] = s[idx];
 		idx++;
 	}
-	output[n][idx] = '\0';
-	return (1);
+	result[i][idx] = 0;
+	return (0);
 }
 
-static char	**free_split(char **output)
+static int	set_result(char **result, char const *s, char c)
 {
-	size_t	idx;
+	int	word_idx;
+	int	str_idx;
 
-	idx = 0;
-	while (output[idx])
-		free(output[idx++]);
-	free(output);
+	str_idx = 0;
+	if (!s)
+	{
+		result[0] = 0;
+		return (0);
+	}
+	while (s[str_idx] == c && s[str_idx])
+		str_idx++;
+	word_idx = 0;
+	while (word_idx < get_word_count(s, c))
+	{
+		if (alloc_put_word(result, &s[str_idx], c, word_idx) == -1)
+			return (-1);
+		while (s[str_idx] != c && word_idx + 1 != get_word_count(s, c))
+			str_idx++;
+		while (s[str_idx] == c && word_idx + 1 != get_word_count(s, c))
+			str_idx++;
+		word_idx++;
+	}
+	result[word_idx] = 0;
 	return (0);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**output;
-	int		n;
-	int		idx;
+	int		word_count;
+	char	**result;
 
-	n = 0;
-	idx = 0;
-	if (!s)
+	word_count = get_word_count(s, c);
+	if (!word_count)
 		return (0);
-	output = (char **)malloc(sizeof(char *) * count_str((char *) s, c));
-	if (!output)
-		return (0);
-	while (s[idx])
-	{
-		if (is_sep(s[idx], c))
-			idx++;
-		else
-		{
-			if (!split_put((char *) s + idx, c, output, n++))
-				return (free_split(output));
-			while (s[idx] && !is_sep(s[idx], c))
-				idx++;
-		}
-	}
-	output[n] = 0;
-	return (output);
+	result = (char **)malloc(sizeof(char *) * (word_count + 1));
+	if (!result)
+		return (NULL);
+	if (set_result(result, s, c) == -1)
+		return (NULL);
+	return (result);
 }

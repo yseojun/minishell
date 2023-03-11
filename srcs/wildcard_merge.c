@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/11 13:27:31 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/11 14:45:16 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,33 +50,6 @@ static int	count_wildcard_lst(t_wildcard *wildcard)
 	}
 	return (count);
 }
-
-// static t_token	*wildcard_merge(t_pipe *info, t_token *now)
-// {
-// 	t_token		*add;
-// 	t_token		*prev;
-// 	t_token		*next;
-// 	t_wildcard	*search;	
-
-// 	prev = now->left;
-// 	next = now->right;
-// 	search = info->wildcard;
-// 	while (search)
-// 	{
-// 		add = (t_token *)malloc(sizeof(t_token));
-// 		add->token = ft_strdup(search->name);
-// 		add->type = now->type;
-// 		add->left = prev;
-// 		add->right = 0;
-// 		prev->right = add;
-// 		prev = add;
-// 		search = search->next;
-// 	}
-// 	add->right = next;
-// 	if (next)
-// 		next->left = add;
-// 	return (next);
-// }
 
 static t_token	*wildcard_merge(t_pipe *info, t_token *now)
 {

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 19:52:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:02:19 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
-static int	chk_stat(char *path_command);
+static int  chk_stat(char *path_command);
 
 int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 {
@@ -132,13 +132,12 @@ static void	run_command(t_pipe *info, t_data *data)
 	perror_exit(info->cmd_arr[0]);
 }
 
-static int	chk_stat(char *path_command)
+static int  chk_stat(char *path_command)
 {
-	struct stat	sp;
-	
-	// 반환값에 따른 에러처리를 해줘야하는 지는 잘 모르겠다
-	lstat(path_command, &sp);
-	if (S_ISDIR(sp.st_mode))
-		return (FAILURE);
-	return (SUCCESS);
+    struct stat sp;
+    // 반환값에 따른 에러처리를 해줘야하는 지는 잘 모르겠다
+    lstat(path_command, &sp);
+    if (S_ISDIR(sp.st_mode))
+        return (FAILURE);
+    return (SUCCESS);
 }

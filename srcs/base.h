@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:48:11 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:00:22 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
 void		lst_wildcard_free_all(t_wildcard *lst);
 void		wildcard_prt(t_wildcard *head);
-
 
 //set_pipe.c
 int			chk_cmd(t_pipe *info, t_data *data);
