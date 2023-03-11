@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 20:12:27 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:23:23 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static void	run_command(t_pipe *info, t_data *data)
 	if (access(path_command, X_OK) == SUCCESS)
 	{
 		if (chk_stat(path_command) == SUCCESS)
-			execve(path_command, info->cmd_arr, environ);
+			execve(path_command, info->cmd_arr, NULL);
 		else
 		{
 			ft_putstr_fd("minishell: ", 2);

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 20:00:22 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 20:29:30 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@
 # define PIPE 4
 # define CMD 5
 # define REDIRECTION 6
-
-extern char	**environ;
 
 typedef struct s_pid
 {
@@ -107,8 +105,7 @@ typedef struct s_data
 }	t_data;
 
 //base_data.c
-void		init_data(t_data *data);
-t_env		*init_env(void);
+void	init_data(t_data *data, char *envp[]);
 
 //list_env.c
 t_env		*lst_new_env(char *name, char *value);

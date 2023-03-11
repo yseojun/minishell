@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 15:39:36 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 20:22:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,20 @@ static void	manage_signals(void);
 static void	handler(int sig);
 static void	finish_line(char *str, t_pipe *info);
 
-int	main(void)
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipe	line_info;
 	t_data	data;
 	char	*str;
 
+	argv = 0;
+	if (argc != 1)
+	{
+		ft_putendl_fd("Invalid arguments", STDERR_FILENO);
+		return (FAILURE);
+	}
 	manage_signals();
-	init_data(&data);
+	init_data(&data, envp);
 	while (1)
 	{
 		line_info.heredoc_tmp = 0;
