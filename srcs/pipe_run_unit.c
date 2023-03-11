@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:12:20 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/08 16:27:34 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/11 15:44:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
-static int	chk_stat(char *path_command);
 
 int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 {
@@ -103,22 +102,6 @@ static void	run_command(t_pipe *info, t_data *data)
 	if (access(path_command, X_OK) == FAILURE)
 		exit(EXIT_FAILURE);
 	else
-	{
-		if (chk_stat(path_command) == SUCCESS)	
-			execve(path_command, info->cmd_arr, environ);
-		else
-			errno = 21; // is a directory
-	}
+		execve(path_command, info->cmd_arr, environ);
 	perror_exit(info->cmd_arr[0]);
-}
-
-static int	chk_stat(char *path_command)
-{
-	struct stat	sp;
-	
-	// 반환값에 따른 에러처리를 해줘야하는 지는 잘 모르겠다
-	lstat(path_command, &sp);
-	if (S_ISDIR(sp.st_mode))
-		return (FAILURE);
-	return (SUCCESS);
 }
