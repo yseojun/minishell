@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/07 19:48:03 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/11 21:02:50 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,14 @@ static int	chk_grammer_valid(t_pipe *info)
 	brace_opened = 0;
 	if (!search)
 		return (FAILURE);
+	// token_prt(search);
 	while (search)
 	{
 		if (chk_condition(search, &brace_opened) == FAILURE)
 		{
-			printf("syntax error near unexpected token '%s'\n", search->token);
+			ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+			ft_putstr_fd(search->token, 2);
+			ft_putendl_fd("'", 2);
 			return (FAILURE);
 		}
 		if (search->type == REDIRECTION)
@@ -70,7 +73,11 @@ static int	chk_condition(t_token *now, int *brace_opened)
 		&& (!now->right || is_symbol(now->right->token)))
 		return (FAILURE);
 	else if (now->type == BRACE && now->token[0] == ')')
+	{
+		if (now->left && now->left->type == BRACE && now->left->token[0] == '(')
+			return (FAILURE);
 		return (--(*brace_opened));
+	}
 	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	return (SUCCESS);
