@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:42:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 void	init_pipe_info(t_pipe *info)
 {
-	info->unit_size = 0;
 	info->prev_fd = STDIN_FILENO;
-	info->token_arr = 0;
 	info->wildcard = 0;
 	info->cmd_arr = 0;
 	info->pids = 0;
@@ -69,7 +67,7 @@ char	**get_paths(t_data *data)
 		return (NULL);
 	paths = ft_split(get_env(data, "PATH"), ':');
 	if (!paths)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	return (paths);
 }
 
@@ -87,7 +85,10 @@ char	*find_command_in_path(char *command, t_data *data)
 	{
 		tmp_path = make_real_path(paths[idx], command);
 		if (access(tmp_path, F_OK) == SUCCESS)
+		{
+			free_arr((void **)paths);
 			return (tmp_path);
+		}
 		free(tmp_path);
 		idx++;
 	}
@@ -117,13 +118,23 @@ void	add_pid(t_pipe *info, pid_t	pid)
 void	wait_all(t_pipe *info, t_data *data)
 {
 	t_pid	*search;
+	t_pid	*to_delete;
+	int		status;
+
+	if (data)
+		printf("무시하시오\n");
 
 	search = info->pids;
 	while (search)
 	{
-		waitpid(search->pid, &data->exit_status, 0);
+		waitpid(search->pid, &status, 0);
+		// printf("%d\n", data->exit_status);
 		// 시그널 종료시 128 + 시그널 번호
-		data->exit_status = WEXITSTATUS(data->exit_status);
+		// printf("%d\n", WEXITSTATUS(data->exit_status));
+		to_delete = search;
 		search = search->next;
+		free(to_delete);
+		set_status(status);
 	}
+	info->pids = 0;
 }

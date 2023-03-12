@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 21:12:40 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:40:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		info->pipe_count++;
 		excute_tree(top->left, info, data);
 		excute_tree(top->right, info, data);
-		return (data->exit_status == SUCCESS);
+		return (set_status(-1) == SUCCESS);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
+	{
+		free_arr((void **)info->cmd_arr);
 		return (run_unit(top, info, data) == SUCCESS);
+	}
 	return (0);
 }
 
@@ -50,17 +53,25 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 	if (info->is_pipe || info->is_built_in == FALSE)
 		return (FALSE);
 	if (info->is_built_in == EXPORT && info->cmd_arr[1])
-		data->exit_status = builtin_export(data, info->cmd_arr);
+		set_status(builtin_export(data, info->cmd_arr));
 	else if (info->is_built_in == UNSET)
-		data->exit_status = builtin_unset(data, info->cmd_arr);
+		set_status(builtin_unset(data, info->cmd_arr));
 	else if (info->is_built_in == EXIT)
-		data->exit_status = builtin_exit(info->cmd_arr);
+		set_status(builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		data->exit_status = builtin_cd(info->cmd_arr[1]);
+		set_status(builtin_cd(data, info->cmd_arr[1]));
 	else
 		return (FALSE);
 	return (TRUE);
 }
+
+void	handler(int sig);
+
+// void	child_handler(int sig)
+// {
+// 	if (sig == SIGINT)
+// 		exit(130);
+// }
 
 int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
@@ -75,12 +86,13 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	if (chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	if (run_single_builtin(info, data))
-		return (data->exit_status);
+		return (set_status(-1));
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		add_pid(info, pid);
 		if (info->in_fd != STDIN_FILENO)
 			close(info->in_fd);
@@ -88,6 +100,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 			close(info->out_fd);
 		if (info->pipe_count == 0)
 			wait_all(info, data);
+		signal(SIGINT, handler);
 		info->prev_fd = STDIN_FILENO;
 		if (info->pipe_count > 0)
 		{
@@ -101,7 +114,6 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 static void	child(t_pipe *info, t_data *data)
 {
 	//printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
-	signal(SIGINT, old);
 	if  (info->pipe_count > 0)
 		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/11 15:45:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:19:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	transform(t_data *data, t_pipe *info)
 			search = pull_token(&info->head, search);
 		else
 			search = search->right;
-	}	
+	}
+	if (info->head == 0)
+		return (FAILURE);
 	return (SUCCESS);
 }

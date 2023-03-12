@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:09:21 by rolee             #+#    #+#             */
-/*   Updated: 2023/02/27 09:24:15 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*rm_quote(int open_idx, int close_idx, char *str)
 	new_size = ft_strlen(str) - 2;
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	idx = 0;
 	new_idx = 0;
 	while (str[idx])

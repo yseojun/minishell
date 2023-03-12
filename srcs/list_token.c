@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 12:41:04 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 14:25:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,30 @@ void	lst_token_free(t_token *lst)
 {
 	free(lst->token);
 	free(lst);
+	lst = 0;
+}
+
+void	lst_token_free_all(t_token *lst)
+{
+	t_token	*search;
+	t_token	*next;
+
+	search = lst;
+	while (search)
+	{
+		next = search->right;
+		lst_token_free(search);
+		search = next;
+	}
+}
+
+void	lst_tree_free_all(t_token *top)
+{
+	if (top == 0)
+		return ;
+	lst_tree_free_all(top->left);
+	lst_tree_free_all(top->right);
+	lst_token_free(top);
 }
 
 void	token_prt(t_token *head)

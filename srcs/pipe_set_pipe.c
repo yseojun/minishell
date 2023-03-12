@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 20:32:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,17 @@ int	chk_cmd(t_pipe *info, t_data *data)
 
 	if (ft_strlen(info->cmd_arr[0]) != 0)
 	{
-		paths = get_paths(data);
-		idx = 0;
 		if (is_builtin_func(info) == SUCCESS)
 			return (SUCCESS);
+		paths = get_paths(data);
+		idx = 0;
 		while (paths && paths[idx])
 		{
 			tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
 			if (access(tmp_path, F_OK) == SUCCESS)
 			{
 				free(tmp_path);
+				free_arr((void **)paths);
 				return (SUCCESS);
 			}
 			idx++;
@@ -84,7 +85,7 @@ char	**set_cmd(t_token *unit)
 		return (0);
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	cmd_idx = 0;
 	search = unit;
 	while (search)

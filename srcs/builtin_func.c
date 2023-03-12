@@ -6,12 +6,13 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 20:38:55 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
+#include "parse.h"
 
 static int	builtin_env(char **cmd_arr, t_data *data);
 static void	chk_valid_export(char *str, int *exit_status);
@@ -30,7 +31,7 @@ int	run_builtin_func(t_pipe *info, t_data *data)
 	else if (info->is_built_in == EXIT)
 		return (builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		return (builtin_cd(info->cmd_arr[1]));
+		return (builtin_cd(data, info->cmd_arr[1]));
 	else if (info->is_built_in == PWD)
 		return (builtin_pwd());
 	else
@@ -44,7 +45,7 @@ static int	builtin_env(char **cmd_arr, t_data *data)
 	if (cmd_arr[1])
 	{
 		ft_putendl_fd("minishell: env: invaild env arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		return (MY_EXIT_FAILURE);
 	}
 	search = data->env;
 	while (search)
@@ -99,7 +100,7 @@ static void	chk_valid_export(char *str, int *exit_status)
 {
 	if (str[0] == '=')
 	{
-		*exit_status = EXIT_FAILURE;
+		*exit_status = MY_EXIT_FAILURE;
 		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);	
@@ -121,7 +122,7 @@ int	builtin_unset(t_data *data, char **cmd_arr)
 		prev = env;
 		while (env)
 		{
-			if (ft_strncmp(env->name, cmd_arr[idx], ft_strlen(cmd_arr[idx])) == 0)
+			if (ft_strncmp(env->name, cmd_arr[idx], ft_strlen(cmd_arr[idx]) + 1) == 0)
 			{
 				if (data->env == env)
 				{
@@ -147,7 +148,7 @@ int	builtin_exit(char **cmd_arr)
 	if (cmd_arr[1] && cmd_arr[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		return (MY_EXIT_FAILURE);
 	}
 	if (cmd_arr[1])
 	{
@@ -179,12 +180,22 @@ static int	is_number(char *str)
 	return (TRUE);
 }
 
-int	builtin_cd(char *dir) // ~ 처리
-{
+int	builtin_cd(t_data *data, char *dir) // ~ 처리
+{	
+	if (!dir)
+	{
+		dir = get_value(data, "HOME");
+		if (!dir)
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+			return (MY_EXIT_FAILURE);
+		}
+	}
 	if (chdir(dir) == FAILURE)
 	{
-		perror("minishell: cd");
-		return (EXIT_FAILURE);
+		ft_putstr_fd("minishell: cd: ", 2);
+		perror(dir);
+		return (MY_EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -195,7 +206,7 @@ static int	builtin_pwd(void)
 
 	curr_dir = getcwd(NULL, 0);
 	if (!curr_dir)
-		return (EXIT_FAILURE);
+		return (MY_EXIT_FAILURE);
 	ft_putendl_fd(curr_dir, STDOUT_FILENO);
 	free(curr_dir);
 	return (EXIT_SUCCESS);

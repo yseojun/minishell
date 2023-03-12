@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 21:13:00 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define CMD_NOT_FOUND "minishell: command not found: "
 # define SUCCESS 0
 # define FAILURE -1
+# define MY_EXIT_FAILURE 256
 # define TRUE 1
 # define FALSE 0
 // # define TMP_FILE "tmp.txt"
@@ -79,20 +80,17 @@ typedef struct s_token
 
 typedef struct s_pipe
 {
-	int				pipefd[2];
-	int				prev_fd;
 	t_token			*head;
-	char			**token_arr;
-	int				token_arr_size;
 	t_token			**unit;
-	int				unit_size;
 	t_wildcard		*wildcard;
 	char			**cmd_arr;
+	int				is_built_in;
+	int				pipefd[2];
+	int				prev_fd;
 	int				in_fd;
 	int				out_fd;
-	int				is_built_in;
-	int				pipe_count;
 	int				is_pipe;
+	int				pipe_count;
 	char			*heredoc_tmp;
 	struct s_pid	*pids;
 }	t_pipe;
@@ -151,7 +149,7 @@ int			run_builtin_func(t_pipe *info, t_data *data);
 int			builtin_exit(char **cmd_arr);
 int			builtin_export(t_data *data, char **cmd_arr);
 int			builtin_unset(t_data *data, char **cmd_arr);
-int 		builtin_cd(char *dir);
+int 		builtin_cd(t_data *data, char *dir);
 
 //is_symbol.c
 int			is_redirection(char *str);
@@ -167,11 +165,16 @@ t_token		*lst_new_token(char *str);
 int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
+void		lst_token_free_all(t_token *lst);
+void		lst_tree_free_all(t_token *top);
 t_token		*make_token(char *str, int *idx);
 void		token_prt(t_token *head);
 void		prt_tree(t_token *head);
 char		*put_token(char *str, int *idx);
 int			set_type(char *token);
+
+int	set_status(int status);
+//void	load_status(t_data *data);
 
 
 #endif

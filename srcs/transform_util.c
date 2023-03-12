@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/05 11:56:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:28:08 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ t_token	*pull_token(t_token **head, t_token *remove)
 	}
 	if (!remove->left && !remove->right)
 		*head = 0;
-	free(remove->token);
-	// token_free(remove);
+	lst_token_free(remove);
 	remove = NULL;
 	return (temp);
 }
