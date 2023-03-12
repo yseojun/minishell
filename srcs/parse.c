@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 21:02:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 13:25:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "util.h"
 #include "parse.h"
 
+static void	token_error(char *token);
 static int	chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_pipe *info);
 
@@ -50,9 +51,7 @@ static int	chk_grammer_valid(t_pipe *info)
 	{
 		if (chk_condition(search, &brace_opened) == FAILURE)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
-			ft_putstr_fd(search->token, 2);
-			ft_putendl_fd("'", 2);
+			token_error(search->token);
 			return (FAILURE);
 		}
 		if (search->type == REDIRECTION)
@@ -60,6 +59,11 @@ static int	chk_grammer_valid(t_pipe *info)
 		if (search->type == BRACE && search->token[0] == '(')
 			brace_opened++;
 		search = search->right;
+	}
+	if (brace_opened > 0)
+	{
+		token_error("(");
+		return (FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -74,11 +78,19 @@ static int	chk_condition(t_token *now, int *brace_opened)
 		return (FAILURE);
 	else if (now->type == BRACE && now->token[0] == ')')
 	{
-		if (now->left && now->left->type == BRACE && now->left->token[0] == '(')
+		if ((now->left && now->left->type == BRACE
+				&& now->left->token[0] == '(') || *brace_opened <= 0)
 			return (FAILURE);
 		return (--(*brace_opened));
 	}
 	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	return (SUCCESS);
+}
+
+static void	token_error(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(token, 2);
+	ft_putendl_fd("'", 2);
 }
