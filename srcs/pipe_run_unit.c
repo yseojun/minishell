@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 17:34:41 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:40:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		info->pipe_count++;
 		excute_tree(top->left, info, data);
 		excute_tree(top->right, info, data);
-		return (data->exit_status == SUCCESS);
+		return (set_status(-1) == SUCCESS);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
 	{
@@ -53,13 +53,13 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 	if (info->is_pipe || info->is_built_in == FALSE)
 		return (FALSE);
 	if (info->is_built_in == EXPORT && info->cmd_arr[1])
-		data->exit_status = builtin_export(data, info->cmd_arr);
+		set_status(builtin_export(data, info->cmd_arr));
 	else if (info->is_built_in == UNSET)
-		data->exit_status = builtin_unset(data, info->cmd_arr);
+		set_status(builtin_unset(data, info->cmd_arr));
 	else if (info->is_built_in == EXIT)
-		data->exit_status = builtin_exit(info->cmd_arr);
+		set_status(builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		data->exit_status = builtin_cd(data, info->cmd_arr[1]);
+		set_status(builtin_cd(data, info->cmd_arr[1]));
 	else
 		return (FALSE);
 	return (TRUE);
@@ -67,21 +67,11 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 
 void	handler(int sig);
 
-void	child_handler(int sig)
-{
-	if (sig == SIGINT)
-		exit(130);
-}
-
-void	parent_handler(int sig)
-{
-	int	status;
-	
-	status = 0;
-	if (sig == SIGINT)
-		wait(&status);
-	//printf("%d\n", status);
-}
+// void	child_handler(int sig)
+// {
+// 	if (sig == SIGINT)
+// 		exit(130);
+// }
 
 int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
@@ -96,7 +86,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	if (chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	if (run_single_builtin(info, data))
-		return (data->exit_status);
+		return (set_status(-1));
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 18:18:37 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define CMD_NOT_FOUND "minishell: command not found: "
 # define SUCCESS 0
 # define FAILURE -1
+# define MY_EXIT_FAILURE 256
 # define TRUE 1
 # define FALSE 0
 // # define TMP_FILE "tmp.txt"

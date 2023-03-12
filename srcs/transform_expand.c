@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/12 18:14:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 		return (str);
 	key = ft_substr(str, dollar_idx + 1, key_len);
 	if (!key)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	value = get_value(data, key);
 	if (!value)
 		value = "";
@@ -59,7 +59,7 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 	new_size = ft_strlen(str) - key_len + ft_strlen(value) - 1;
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	put_in_new_str(str, new_str, value, dollar_idx);
 	return (new_str);
 }

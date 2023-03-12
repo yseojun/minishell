@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 18:18:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:50:22 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		set_status(130);
+		set_status(256);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -83,7 +83,26 @@ int	set_status(int status)
 
 	if (status == -1)
 		return (save);
-	save = status;
+	// if (WIFSIGNALED(status))
+	// {
+	// 	printf("시그널드, %d\n", WTERMSIG(status));
+	// 	save = 128 + WTERMSIG(status);
+	// }
+	// else if (WIFEXITED(status))
+	// {
+	// 	printf("엑시티드\n");
+	// 	save = status;
+	// }
+	if (WIFEXITED(status))
+	{
+		printf("엑시티드\n");
+		save = WEXITSTATUS(status);
+	}
+	else if (WIFSIGNALED(status))
+	{
+		printf("시그널드, %d\n", WTERMSIG(status));
+		save = 128 + WTERMSIG(status);
+	}
 	return (save);
 }
 
@@ -99,6 +118,6 @@ static void	finish_line(char *str, t_pipe *info)
 	free_arr((void **)info->cmd_arr);
 	lst_tree_free_all(info->head);
 	info->head = 0;
-	set_status(-2);
+	// set_status(-2);
 	// system("leaks --quiet minishell");
 }

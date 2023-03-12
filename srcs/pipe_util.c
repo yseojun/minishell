@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 18:17:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**get_paths(t_data *data)
 		return (NULL);
 	paths = ft_split(get_env(data, "PATH"), ':');
 	if (!paths)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	return (paths);
 }
 
@@ -134,7 +134,7 @@ void	wait_all(t_pipe *info, t_data *data)
 		to_delete = search;
 		search = search->next;
 		free(to_delete);
-		set_status(WEXITSTATUS(status));
+		set_status(status);
 	}
 	info->pids = 0;
 }

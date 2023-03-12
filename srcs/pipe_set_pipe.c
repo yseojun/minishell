@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 13:34:10 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	**set_cmd(t_token *unit)
 		return (0);
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
-		exit(EXIT_FAILURE);
+		exit(MY_EXIT_FAILURE);
 	cmd_idx = 0;
 	search = unit;
 	while (search)
