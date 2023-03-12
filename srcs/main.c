@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 14:07:54 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 15:01:29 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		add_history(str);
 		if (parse_line(str, &data, &line_info) == FAILURE)
+		{
+			free(str);
 			continue ;
+		}
 		excute_tree(line_info.head, &line_info, &data);
 		finish_line(str, &line_info);
 	}

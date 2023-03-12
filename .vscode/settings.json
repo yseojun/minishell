@@ -3,6 +3,7 @@
 		"base.h": "c",
 		"complex": "c",
 		"algorithm": "c",
-		"ios": "c"
+		"ios": "c",
+		"util.h": "c"
 	}
 }
