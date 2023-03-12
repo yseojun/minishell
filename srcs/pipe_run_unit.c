@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 13:57:25 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 14:02:34 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		return (data->exit_status == SUCCESS);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
+	{
+		free_arr((void **)info->cmd_arr);
 		return (run_unit(top, info, data) == SUCCESS);
+	}
 	return (0);
 }
 

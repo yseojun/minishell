@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 20:51:20 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 14:19:34 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,11 @@ static t_token *find_braces(t_token *tail)
 				search->right->left = search->left;
 			to_remove = search;
 			search = search->left;
-			free(to_remove->token);
-			free(to_remove);
-			to_remove = NULL;
+			lst_token_free(to_remove);
 			while (search->left)
 				search = search->left;
 			search = search->right;
-			free(search->left->token);
-			free(search->left);
-			search->left = NULL;
+			lst_token_free(search->left);
 			return (make_tree(lst_token_last(search)));
 		}
 		search = search->left;

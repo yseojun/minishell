@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/01 16:34:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 14:15:39 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 	if (!new_str)
 		exit(EXIT_FAILURE);
 	put_in_new_str(str, new_str, value, dollar_idx);
+	free(value);
 	return (new_str);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 13:30:15 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 14:10:05 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 void	init_pipe_info(t_pipe *info)
 {
-	info->unit_size = 0;
 	info->prev_fd = STDIN_FILENO;
-	info->token_arr = 0;
 	info->wildcard = 0;
 	info->cmd_arr = 0;
 	info->pids = 0;

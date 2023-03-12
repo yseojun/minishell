@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 13:40:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 14:09:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,17 @@ typedef struct s_token
 
 typedef struct s_pipe
 {
-	int				pipefd[2];
-	int				prev_fd;
 	t_token			*head;
-	char			**token_arr;
-	int				token_arr_size;
 	t_token			**unit;
-	int				unit_size;
 	t_wildcard		*wildcard;
 	char			**cmd_arr;
+	int				is_built_in;
+	int				pipefd[2];
+	int				prev_fd;
 	int				in_fd;
 	int				out_fd;
-	int				is_built_in;
-	int				pipe_count;
 	int				is_pipe;
+	int				pipe_count;
 	char			*heredoc_tmp;
 	struct s_pid	*pids;
 }	t_pipe;
