@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 21:12:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 13:49:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		line_info.heredoc_tmp = 0;
-		printf("%s", ft_itoa((int) getpid()));
+		//printf("%s", ft_itoa((int) getpid()));
 		init_pipe_info(&line_info);
 		str = readline("minishell> ");
 		if (!str)
@@ -46,7 +46,7 @@ int	main(int argc, char *argv[], char *envp[])
 		excute_tree(line_info.head, &line_info, &data);
 		finish_line(str, &line_info);
 	}
-	// system("leaks minishell");
+	//system("leaks minishell");
 	return (SUCCESS);
 }
 
@@ -80,4 +80,9 @@ static void	finish_line(char *str, t_pipe *info)
 		info->heredoc_tmp = 0;
 	}
 	free(str);
+	free_arr((void **)info->cmd_arr);
+	lst_tree_free_all(info->head);
+	info->head = 0;
+	
+	system("leaks minishell");
 }

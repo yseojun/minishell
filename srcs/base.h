@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 21:13:00 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 13:40:06 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ t_token		*lst_new_token(char *str);
 int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
+void		lst_token_free_all(t_token *lst);
+void		lst_tree_free_all(t_token *top);
 t_token		*make_token(char *str, int *idx);
 void		token_prt(t_token *head);
 void		prt_tree(t_token *head);

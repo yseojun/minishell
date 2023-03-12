@@ -2,6 +2,7 @@
 	"files.associations": {
 		"base.h": "c",
 		"complex": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"ios": "c"
 	}
 }

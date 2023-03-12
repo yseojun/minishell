@@ -6,17 +6,19 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:51:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 18:59:05 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 13:41:47 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 #include "base.h"
 
-int	free_arr(void **arr)
+int	free_arr(void **arr) // 리턴 void?
 {
 	int	i;
 
+	if (!arr)
+		return (SUCCESS);
 	i = 0;
 	while (arr[i])
 		free(arr[i++]);

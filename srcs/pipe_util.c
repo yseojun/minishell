@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 19:42:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 13:30:15 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ char	*find_command_in_path(char *command, t_data *data)
 	{
 		tmp_path = make_real_path(paths[idx], command);
 		if (access(tmp_path, F_OK) == SUCCESS)
+		{
+			free_arr((void **)paths);
 			return (tmp_path);
+		}
 		free(tmp_path);
 		idx++;
 	}
