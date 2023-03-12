@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 14:46:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:32:12 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static int	chk_grammer_valid(t_pipe *info);
 int	parse_line(char *str, t_data *data, t_pipe *info)
 {
 	if (tokenize(str, info) == FAILURE || chk_grammer_valid(info) == FAILURE
-		|| transform(data, info))
+		|| transform(data, info) == FAILURE)
 	{
 		if (info->head == 0)
 			return (FAILURE);
-		// free_list(head);
+		lst_token_free_all(info->head);
 		return (FAILURE);
 	}
 	// 타입이 리다이렉션이고, 와일드 카드의 결과가 여러 개면 오류(ambiguous redirect)
