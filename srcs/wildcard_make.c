@@ -6,11 +6,12 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/11 20:07:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 15:44:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "util.h"
 
 static void			cmp_wildcard(t_pipe *info, char **to_find, t_token *now);
 static int			find_str(char *to_find_str, char *name, int *idx);
@@ -22,13 +23,16 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 {
 	char			**to_find;
 	DIR				*dp;
+	char			*cwd;
 	struct dirent	*fp;
 
 	if (now->left && ft_strncmp("<<", now->left->token, 3) == 0)
 		return ;
 	if (!ft_strchr(now->token, '*'))
 		return ;
-	dp = opendir(getcwd(0, 0)); // 실패할 경우 처리
+	cwd = getcwd(0, 0);
+	dp = opendir(cwd); // 실패할 경우 처리
+	free(cwd);
 	while (1)
 	{
 		fp = readdir(dp);
@@ -36,9 +40,11 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 			break ;
 		wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
 	}
+	closedir(dp);
 	to_find = ft_split(now->token, '*');
 	if (to_find)
 		cmp_wildcard(info, to_find, now);
+	free_arr((void **)to_find);
 }
 
 static void	cmp_wildcard(t_pipe *info, char **to_find, t_token *now)

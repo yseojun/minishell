@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:06:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:17:51 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,16 +119,22 @@ void	wait_all(t_pipe *info, t_data *data)
 {
 	t_pid	*search;
 	t_pid	*to_delete;
+	int		status;
+
+	if (data)
+		printf("무시하시오\n");
 
 	search = info->pids;
 	while (search)
 	{
-		waitpid(search->pid, &data->exit_status, 0);
+		waitpid(search->pid, &status, 0);
+		// printf("%d\n", data->exit_status);
 		// 시그널 종료시 128 + 시그널 번호
+		// printf("%d\n", WEXITSTATUS(data->exit_status));
 		to_delete = search;
 		search = search->next;
 		free(to_delete);
-		data->exit_status = WEXITSTATUS(data->exit_status);
+		set_status(WEXITSTATUS(status));
 	}
 	info->pids = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/12 14:15:39 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 18:14:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "parse.h"
 
 static int	get_key_len(int key_idx, char *str);
-static char	*get_value(t_data *data, char *str);
-static void	put_in_new_str(char *str, char *new_str, char *value, int dollar_idx);
+static void	put_in_new_str(char *str, char *new_str, const char *value, int dollar_idx);
 
 char	*expand(t_data *data, char *str, int *flag)
 {
@@ -40,11 +39,11 @@ char	*expand(t_data *data, char *str, int *flag)
 
 char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 {
-	int		key_len;
-	char	*key;
-	char	*value;
-	int		new_size;
-	char	*new_str;
+	int			key_len;
+	char		*key;
+	const char	*value;
+	int			new_size;
+	char		*new_str;
 
 	key_len = get_key_len(dollar_idx + 1, str);
 	if (key_len == 0)
@@ -54,7 +53,7 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 		exit(EXIT_FAILURE);
 	value = get_value(data, key);
 	if (!value)
-		value = ft_strdup("");
+		value = "";
 	free(key);
 	*idx += ft_strlen(value) - 1;
 	new_size = ft_strlen(str) - key_len + ft_strlen(value) - 1;
@@ -62,7 +61,6 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 	if (!new_str)
 		exit(EXIT_FAILURE);
 	put_in_new_str(str, new_str, value, dollar_idx);
-	free(value);
 	return (new_str);
 }
 
@@ -81,12 +79,12 @@ static int	get_key_len(int key_idx, char *str)
 	return (key_len);
 }
 
-static char	*get_value(t_data *data, char *key)
+char	*get_value(t_data *data, char *key)
 {
 	t_env	*search;
 
 	if (ft_strncmp(key, "?", 2) == 0)
-		return (ft_itoa(data->exit_status));
+		return (ft_itoa(set_status(-1)));
 	search = data->env;
 	while (search)
 	{
@@ -97,7 +95,7 @@ static char	*get_value(t_data *data, char *key)
 	return (NULL);
 }
 
-static void	put_in_new_str(char *str, char *new_str, char *value, int dollar_idx)
+static void	put_in_new_str(char *str, char *new_str, const char *value, int dollar_idx)
 {
 	int	idx;
 	int	new_idx;

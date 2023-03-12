@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 14:09:54 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 18:18:37 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int			run_builtin_func(t_pipe *info, t_data *data);
 int			builtin_exit(char **cmd_arr);
 int			builtin_export(t_data *data, char **cmd_arr);
 int			builtin_unset(t_data *data, char **cmd_arr);
-int 		builtin_cd(char *dir);
+int 		builtin_cd(t_data *data, char *dir);
 
 //is_symbol.c
 int			is_redirection(char *str);
@@ -171,6 +171,9 @@ void		token_prt(t_token *head);
 void		prt_tree(t_token *head);
 char		*put_token(char *str, int *idx);
 int			set_type(char *token);
+
+int	set_status(int status);
+//void	load_status(t_data *data);
 
 
 #endif

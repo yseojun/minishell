@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:33:19 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:18:32 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "parse.h"
 
 static void	manage_signals(void);
-static void	handler(int sig);
+void	handler(int sig);
 static void	finish_line(char *str, t_pipe *info);
 
 int	main(int argc, char *argv[], char *envp[])
@@ -47,31 +47,44 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		}
 		excute_tree(line_info.head, &line_info, &data);
+		//load_status(&data);
 		finish_line(str, &line_info);
 	}
 	// system("leaks --quiet minishell");
 	return (SUCCESS);
 }
 
+void	child_handler(int sig);
+
 static void	manage_signals(void)
 {
 	extern int	rl_catch_signals;
 
 	rl_catch_signals = 0;
-	signal(SIGINT, handler);
+	old = signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	handler(int sig)
+void	handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		signal(SIGINT, old);
+		set_status(130);
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+int	set_status(int status)
+{
+	static int	save;
+
+	if (status == -1)
+		return (save);
+	save = status;
+	return (save);
 }
 
 static void	finish_line(char *str, t_pipe *info)
@@ -86,5 +99,6 @@ static void	finish_line(char *str, t_pipe *info)
 	free_arr((void **)info->cmd_arr);
 	lst_tree_free_all(info->head);
 	info->head = 0;
+	set_status(-2);
 	// system("leaks --quiet minishell");
 }

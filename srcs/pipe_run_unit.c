@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 14:02:34 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 17:34:41 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,28 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 	else if (info->is_built_in == EXIT)
 		data->exit_status = builtin_exit(info->cmd_arr);
 	else if (info->is_built_in == CD)
-		data->exit_status = builtin_cd(info->cmd_arr[1]);
+		data->exit_status = builtin_cd(data, info->cmd_arr[1]);
 	else
 		return (FALSE);
 	return (TRUE);
+}
+
+void	handler(int sig);
+
+void	child_handler(int sig)
+{
+	if (sig == SIGINT)
+		exit(130);
+}
+
+void	parent_handler(int sig)
+{
+	int	status;
+	
+	status = 0;
+	if (sig == SIGINT)
+		wait(&status);
+	//printf("%d\n", status);
 }
 
 int	run_unit(t_token *unit, t_pipe *info, t_data *data)
@@ -84,6 +102,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		child(info, data);
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		add_pid(info, pid);
 		if (info->in_fd != STDIN_FILENO)
 			close(info->in_fd);
@@ -91,6 +110,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 			close(info->out_fd);
 		if (info->pipe_count == 0)
 			wait_all(info, data);
+		signal(SIGINT, handler);
 		info->prev_fd = STDIN_FILENO;
 		if (info->pipe_count > 0)
 		{
