@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_tokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 14:19:34 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/12 15:16:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_token *make_tree(t_token *tail)
 	return (0);
 }
 
-static t_token *find_logical_operator(t_token *tail)
+static t_token	*find_logical_operator(t_token *tail)
 {
 	t_token	*search;
 
@@ -110,10 +110,12 @@ static t_token *find_braces(t_token *tail)
 			to_remove = search;
 			search = search->left;
 			lst_token_free(to_remove);
+			to_remove = NULL;
 			while (search->left)
 				search = search->left;
 			search = search->right;
 			lst_token_free(search->left);
+			search->left = NULL;
 			return (make_tree(lst_token_last(search)));
 		}
 		search = search->left;

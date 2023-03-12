@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:00:01 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:06:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,5 @@ void	wait_all(t_pipe *info, t_data *data)
 		free(to_delete);
 		data->exit_status = WEXITSTATUS(data->exit_status);
 	}
+	info->pids = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 12:40:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:14:09 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	tokenize(char *str, t_pipe *info)
 			}
 		}
 	}
+	token_prt(info->head);
 	return (SUCCESS);
 }
 

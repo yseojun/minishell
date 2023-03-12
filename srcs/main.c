@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:01:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/12 15:17:47 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char *argv[], char *envp[])
 		excute_tree(line_info.head, &line_info, &data);
 		finish_line(str, &line_info);
 	}
-	system("leaks --quiet minishell");
+	// system("leaks --quiet minishell");
 	return (SUCCESS);
 }
 
@@ -86,5 +86,5 @@ static void	finish_line(char *str, t_pipe *info)
 	free_arr((void **)info->cmd_arr);
 	lst_tree_free_all(info->head);
 	info->head = 0;
-	system("leaks --quiet minishell");
+	// system("leaks --quiet minishell");
 }
