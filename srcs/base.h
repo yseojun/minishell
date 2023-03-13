@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 15:12:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 19:34:32 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,6 @@ int			infile_chk(char *infile);
 
 //run_pipe.c
 int			excute_tree(t_token *top, t_pipe *info, t_data *data);
-int			run_unit(t_token *unit, t_pipe *info, t_data *data);
-
 
 //builtin_func.c
 int			run_builtin_func(t_pipe *info, t_data *data);
@@ -175,5 +173,6 @@ char		*put_token(char *str, int *idx);
 int			set_type(char *token);
 
 int			exit_status(int status);
+void		handler(int sig);
 
 #endif

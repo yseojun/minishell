@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 19:56:54 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 19:29:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,6 @@ int	builtin_unset(t_data *data, char **cmd_arr)
 
 int	builtin_exit(char **cmd_arr)
 {
-	if (cmd_arr[1] && cmd_arr[2])
-	{
-		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		return (MY_EXIT_FAILURE);
-	}
 	if (cmd_arr[1])
 	{
 		if (!is_number(cmd_arr[1]))
@@ -157,7 +152,12 @@ int	builtin_exit(char **cmd_arr)
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(cmd_arr[1], STDERR_FILENO);
 			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-			exit(255);
+			exit (255);
+		}
+		if (cmd_arr[2])
+		{
+			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+			return (MY_EXIT_FAILURE);
 		}
 		exit((unsigned char)ft_atoi(cmd_arr[1]));
 	}

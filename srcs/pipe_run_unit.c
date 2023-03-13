@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/13 18:13:26 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 19:35:33 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "base.h"
 #include "util.h"
 
+static void	run_unit(t_token *unit, t_pipe *info, t_data *data);
+static int	run_single_builtin(t_pipe *info, t_data *data);
 static void	child(t_pipe *info, t_data *data);
 static void	run_command(t_pipe *info, t_data *data);
 static int  chk_stat(char *path_command);
@@ -43,12 +45,13 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 	else if (top->type == CMD || top->type == REDIRECTION)
 	{
 		free_arr((void **)info->cmd_arr);
-		return (run_unit(top, info, data) == SUCCESS);
+		run_unit(top, info, data);
+		return (exit_status(LOAD) == SUCCESS);
 	}
 	return (0);
 }
 
-int	run_single_builtin(t_pipe *info, t_data *data)
+static int	run_single_builtin(t_pipe *info, t_data *data)
 {
 	if (info->is_pipe || info->is_built_in == FALSE)
 		return (FALSE);
@@ -65,22 +68,20 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 	return (TRUE);
 }
 
-void	handler(int sig);
-
-int	run_unit(t_token *unit, t_pipe *info, t_data *data)
+static void	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
 	pid_t	pid;
 
 	if (set_fd(unit, info) == FAILURE)
-		return (FAILURE);
+		return ;
 	info->cmd_arr = set_cmd(unit);
 	if (info->cmd_arr == 0)
-		return (FAILURE);
+		return ;
 	info->is_built_in = 0;
 	if (chk_cmd(info, data) == FAILURE)
-		return (FAILURE);
+		return ;
 	if (run_single_builtin(info, data))
-		return (exit_status(LOAD));
+		return ;
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
@@ -99,8 +100,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		if (info->pipe_count > 0)
 			info->prev_fd = info->pipefd[P_READ];
 	}
-	//return (data->exit_status);
-	return (exit_status(LOAD));
+	return ;
 }
 
 static void	child(t_pipe *info, t_data *data)
@@ -134,7 +134,7 @@ static void	run_command(t_pipe *info, t_data *data)
 			ft_putstr_fd(info->cmd_arr[0], 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd(strerror(21), 2);
-			exit(126);	
+			exit(126);
 		}
 	}
 	perror_exit(info->cmd_arr[0]);

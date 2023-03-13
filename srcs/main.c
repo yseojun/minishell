@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 16:26:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 19:31:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	exit_status(int status)
 		exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		exit_status = 128 + WTERMSIG(status);
+	//printf("status: %d, exit_status: %d\n", status, exit_status);
 	return (exit_status);
 }
 

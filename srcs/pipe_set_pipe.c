@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 16:34:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 18:48:51 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	chk_cmd(t_pipe *info, t_data *data)
 	data->exit_status = 127;
 	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO);
 	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
+	exit_status(MY_EXIT_FAILURE);
 	return (FAILURE);
 }
 
@@ -82,7 +83,10 @@ char	**set_cmd(t_token *unit)
 
 	count = count_cmd(unit);
 	if (count == 0)
+	{
+		exit_status(EXIT_SUCCESS);
 		return (0);
+	}
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
 		exit(MY_EXIT_FAILURE);
