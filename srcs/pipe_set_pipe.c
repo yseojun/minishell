@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 16:34:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(search->right->token);
+			exit_status(MY_EXIT_FAILURE);
 			return (FAILURE);
 		}
 		search = search->left;
@@ -167,6 +168,7 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 		{
 			ft_putstr_fd("minishell", STDERR_FILENO);
 			perror(search->right->token);
+			exit_status(MY_EXIT_FAILURE);
 			return (FAILURE);
 		}
 		search = search->left;
