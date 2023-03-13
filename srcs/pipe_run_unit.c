@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/13 14:05:42 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 18:13:26 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 {
 	if (top->type == AND)
 	{
-		info->is_pipe = 0;
 		if (excute_tree(top->left, info, data) == 1)
 			return (excute_tree(top->right, info, data));
 	}
 	else if (top->type == OR)
 	{
-		info->is_pipe = 0;
 		if (excute_tree(top->left, info, data) == 0)
 			return (excute_tree(top->right, info, data));
 	}
 	else if (top->type == PIPE)
 	{
-		info->is_pipe = 1;
+		info->is_pipe = TRUE;
 		info->pipe_count++;
 		excute_tree(top->left, info, data);
+		info->pipe_count--;
 		excute_tree(top->right, info, data);
+		info->is_pipe = FALSE;
 		return (exit_status(LOAD) == SUCCESS);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
@@ -97,17 +97,14 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		signal(SIGINT, handler);
 		info->prev_fd = STDIN_FILENO;
 		if (info->pipe_count > 0)
-		{
-			info->pipe_count--;
 			info->prev_fd = info->pipefd[P_READ];
-		}
 	}
-	return (data->exit_status);
+	//return (data->exit_status);
+	return (exit_status(LOAD));
 }
 
 static void	child(t_pipe *info, t_data *data)
 {
-	//printf("in : %d , out : %d\n", info->in_fd, info->out_fd);
 	if  (info->pipe_count > 0)
 		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);
