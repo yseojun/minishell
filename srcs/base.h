@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 19:56:38 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 15:12:17 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define PIPE 4
 # define CMD 5
 # define REDIRECTION 6
+# define LOAD -1
 
 typedef struct s_pid
 {
@@ -133,7 +134,7 @@ char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 char		*find_command_in_path(char *command, t_data *data);
 void		add_pid(t_pipe *info, pid_t	pid);
-void		wait_all(t_pipe *info, t_data *data);
+void		wait_all(t_pipe *info);
 
 //pipe_infile.c
 int			make_heredoc(char *limiter, t_pipe *info);
@@ -173,8 +174,6 @@ void		prt_tree(t_token *head);
 char		*put_token(char *str, int *idx);
 int			set_type(char *token);
 
-int	set_status(int status);
-//void	load_status(t_data *data);
-
+int			exit_status(int status);
 
 #endif

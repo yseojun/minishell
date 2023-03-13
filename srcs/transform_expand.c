@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 14:39:54 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*get_value(t_data *data, char *key)
 	t_env	*search;
 
 	if (ft_strncmp(key, "?", 2) == 0)
-		return (ft_itoa(set_status(-1)));
+		return (ft_itoa(exit_status(LOAD)));
 	search = data->env;
 	while (search)
 	{

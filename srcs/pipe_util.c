@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 19:56:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 14:04:22 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,26 +115,20 @@ void	add_pid(t_pipe *info, pid_t	pid)
 		info->pids = new;
 }
 
-void	wait_all(t_pipe *info, t_data *data)
+void	wait_all(t_pipe *info)
 {
 	t_pid	*search;
 	t_pid	*to_delete;
 	int		status;
 
-	if (data)
-		printf("무시하시오\n");
-
 	search = info->pids;
 	while (search)
 	{
 		waitpid(search->pid, &status, 0);
-		// printf("%d\n", data->exit_status);
-		// 시그널 종료시 128 + 시그널 번호
-		// printf("%d\n", WEXITSTATUS(data->exit_status));
 		to_delete = search;
 		search = search->next;
 		free(to_delete);
-		set_status(status);
+		exit_status(status);
 	}
 	info->pids = 0;
 }

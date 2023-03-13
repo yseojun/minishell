@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 19:40:54 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 14:05:42 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		info->pipe_count++;
 		excute_tree(top->left, info, data);
 		excute_tree(top->right, info, data);
-		return (set_status(-1) == SUCCESS);
+		return (exit_status(LOAD) == SUCCESS);
 	}
 	else if (top->type == CMD || top->type == REDIRECTION)
 	{
@@ -53,25 +53,19 @@ int	run_single_builtin(t_pipe *info, t_data *data)
 	if (info->is_pipe || info->is_built_in == FALSE)
 		return (FALSE);
 	if (info->is_built_in == EXPORT && info->cmd_arr[1])
-		set_status(builtin_export(data, info->cmd_arr));
+		exit_status(builtin_export(data, info->cmd_arr));
 	else if (info->is_built_in == UNSET)
-		set_status(builtin_unset(data, info->cmd_arr));
+		exit_status(builtin_unset(data, info->cmd_arr));
 	else if (info->is_built_in == EXIT)
-		set_status(builtin_exit(info->cmd_arr));
+		exit_status(builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		set_status(builtin_cd(data, info->cmd_arr[1]));
+		exit_status(builtin_cd(data, info->cmd_arr[1]));
 	else
 		return (FALSE);
 	return (TRUE);
 }
 
 void	handler(int sig);
-
-// void	child_handler(int sig)
-// {
-// 	if (sig == SIGINT)
-// 		exit(130);
-// }
 
 int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 {
@@ -86,7 +80,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	if (chk_cmd(info, data) == FAILURE)
 		return (FAILURE);
 	if (run_single_builtin(info, data))
-		return (set_status(-1));
+		return (exit_status(LOAD));
 	pid = _fork();
 	if (pid == 0)
 		child(info, data);
@@ -99,7 +93,7 @@ int	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		if (info->out_fd != STDOUT_FILENO)
 			close(info->out_fd);
 		if (info->pipe_count == 0)
-			wait_all(info, data);
+			wait_all(info);
 		signal(SIGINT, handler);
 		info->prev_fd = STDIN_FILENO;
 		if (info->pipe_count > 0)
