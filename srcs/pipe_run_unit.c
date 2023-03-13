@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/13 19:35:33 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 20:29:58 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		info->is_pipe = TRUE;
 		info->pipe_count++;
 		excute_tree(top->left, info, data);
+		info->is_pipe = TRUE;
 		info->pipe_count--;
 		excute_tree(top->right, info, data);
 		info->is_pipe = FALSE;
