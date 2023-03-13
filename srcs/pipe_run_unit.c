@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/13 20:29:58 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/13 21:12:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,46 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 {
 	if (top->type == AND)
 	{
-		if (excute_tree(top->left, info, data) == 1)
+		if (!top->left && !top->right)
+			return (EXIT_SUCCESS);
+		else if (!top->left)
 			return (excute_tree(top->right, info, data));
+		else if (!top->right)
+			return (excute_tree(top->left, info, data));
+		else
+		{
+			if (excute_tree(top->left, info, data) == 1)
+			{
+				info->prev_fd = STDIN_FILENO;
+				return (excute_tree(top->right, info, data));
+			}
+		}
 	}
 	else if (top->type == OR)
 	{
-		if (excute_tree(top->left, info, data) == 0)
-			return (excute_tree(top->right, info, data));
+		if (!top->left)
+			return (EXIT_SUCCESS);
+		else if (!top->right)
+			return (excute_tree(top->left, info, data));
+		else
+		{
+			if (excute_tree(top->left, info, data) == 0)
+			{
+				info->prev_fd = STDIN_FILENO;
+				return (excute_tree(top->right, info, data));
+			}
+		}
 	}
 	else if (top->type == PIPE)
 	{
 		info->is_pipe = TRUE;
 		info->pipe_count++;
-		excute_tree(top->left, info, data);
+		if (top->left)
+			excute_tree(top->left, info, data);
 		info->is_pipe = TRUE;
 		info->pipe_count--;
-		excute_tree(top->right, info, data);
+		if (top->right)
+			excute_tree(top->right, info, data);
 		info->is_pipe = FALSE;
 		return (exit_status(LOAD) == SUCCESS);
 	}
@@ -49,7 +73,7 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 		run_unit(top, info, data);
 		return (exit_status(LOAD) == SUCCESS);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 static int	run_single_builtin(t_pipe *info, t_data *data)

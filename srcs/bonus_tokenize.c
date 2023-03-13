@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_tokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:26:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/13 20:49:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,16 @@ static t_token	*find_logical_operator(t_token *tail)
 		}
 		else if (search->type == AND || search->type == OR)
 		{
-			search->right->left = NULL;
-			search->left->right = NULL;
-			search->left = make_tree(search->left);
-			search->right = make_tree(tail);
+			if (search->left)
+			{
+				search->left->right = NULL;
+				search->left = make_tree(search->left);	
+			}
+			if (search->right)
+			{
+				search->right->left = NULL;
+				search->right = make_tree(tail);
+			}
 			return(search);
 		}
 		search = search->left;
@@ -80,10 +86,16 @@ static t_token *find_pipe(t_token *tail)
 		}
 		else if (search->type == PIPE)
 		{
-			search->right->left = NULL;
-			search->left->right = NULL;
-			search->left = make_tree(search->left);
-			search->right = make_tree(tail);
+			if (search->left)
+			{
+				search->left->right = NULL;
+				search->left = make_tree(search->left);
+			}
+			if (search->right)
+			{
+				search->right->left = NULL;
+				search->right = make_tree(tail);
+			}
 			return (search);
 		}
 		search = search->left;
