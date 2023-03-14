@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_arr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:51:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 13:41:47 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 12:38:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	free_arr(void **arr) // 리턴 void?
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+	arr = 0;
 	return (SUCCESS);
 }
 

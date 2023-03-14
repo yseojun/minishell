@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 19:34:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 12:35:11 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,10 @@ void		add_pid(t_pipe *info, pid_t	pid);
 void		wait_all(t_pipe *info);
 
 //pipe_infile.c
+int			open_heredoc(t_token *search);
+void		find_heredoc(t_token *top);
+void		unlink_heredoc(t_token *top);
 int			make_heredoc(char *limiter, t_pipe *info);
-int			infile_chk(char *infile);
 
 //run_pipe.c
 int			excute_tree(t_token *top, t_pipe *info, t_data *data);

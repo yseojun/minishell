@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/14 12:08:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:39:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	excute_tree(t_token *top, t_pipe *info, t_data *data)
 	else if (top->type == CMD || top->type == REDIRECTION)
 	{
 		free_arr((void **)info->cmd_arr);
+		info->cmd_arr = 0;
 		run_unit(top, info, data);
 		return (exit_status(LOAD) == SUCCESS);
 	}

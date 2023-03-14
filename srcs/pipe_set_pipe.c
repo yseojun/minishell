@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 08:27:12 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 12:31:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,13 +130,13 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 		{
 			if (info->in_fd != STDIN_FILENO)
 				close(info->in_fd);
-			info->in_fd = make_heredoc(search->right->token, info);
+			info->in_fd = open_heredoc(search);
 		}
 		else if (!ft_strncmp(search->token, "<", 2))
 		{
 			if (info->in_fd != STDIN_FILENO)
 				close(info->in_fd);
-			info->in_fd = infile_chk(search->right->token);
+			info->in_fd = open(search->right->token, O_RDONLY);
 		}
 		if (info->in_fd == FAILURE)
 		{
