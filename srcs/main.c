@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/03/14 12:42:45 by seojyang         ###   ########.fr       */
+=======
+/*   Updated: 2023/03/14 12:30:34 by rolee            ###   ########.fr       */
+>>>>>>> e23cd034b9efeb4eae257968215fd18739356232
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +59,6 @@ int	main(int argc, char *argv[], char *envp[])
 	return (SUCCESS);
 }
 
-void	child_handler(int sig);
-
 static void	manage_signals(void)
 {
 	extern int	rl_catch_signals;
@@ -76,6 +78,8 @@ void	handler(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+	else if (sig == SIGQUIT)
+		ft_putendl_fd("Quit: 3", STDERR_FILENO);
 }
 
 int	exit_status(int status)
