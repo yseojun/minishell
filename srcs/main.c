@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:57:31 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:31:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 static void	manage_signals(void);
 void		handler(int sig);
 static void	finish_line(char *str, t_data *data);
-static void	remove_comment(char *str);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -26,51 +25,25 @@ int	main(int argc, char *argv[], char *envp[])
 
 	argv = 0;
 	if (argc != 1)
-	{
-		ft_putendl_fd("Invalid arguments", STDERR_FILENO);
 		return (FAILURE);
-	}
-	manage_signals();
-	init_data_env(&data, envp);
+	set_beginning(&data, envp);
 	while (1)
 	{
-		//printf("%s", ft_itoa((int) getpid()));
 		reset_line_data(&data);
 		str = readline("minishell> ");
 		if (!str)
 			break ;
 		add_history(str);
-		remove_comment(str);
-		if (parse_line(str, &data) == FAILURE)
+		if (parse_line(str, &data) == SUCCESS)
 		{
-			free(str);
-			continue ;
+			exit_status(0);
+			find_heredoc(data.head);
+			if (exit_status(LOAD) == EXIT_SUCCESS)
+				excute_tree(data.head, &data);
 		}
-		exit_status(0);
-		find_heredoc(data.head);
-		if (exit_status(LOAD) == EXIT_SUCCESS)
-			excute_tree(data.head, &data);
 		finish_line(str, &data);
 	}
-	// system("leaks --quiet minishell");
 	return (SUCCESS);
-}
-
-static void	remove_comment(char *str)
-{
-	while (*str)
-	{
-		if (*str == '#')
-			*str = 0;
-		str++;
-	}
-}
-
-static void	manage_signals(void)
-{
-	rl_catch_signals = 0;
-	old = signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 void	handler(int sig)
@@ -97,7 +70,6 @@ int	exit_status(int status)
 		exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		exit_status = 128 + WTERMSIG(status);
-	//printf("status: %d, exit_status: %d\n", status, exit_status);
 	return (exit_status);
 }
 
