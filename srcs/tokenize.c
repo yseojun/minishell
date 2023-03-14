@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:20:48 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:10:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	tokenize(char *str, t_data *data)
 			}
 		}
 	}
-	// token_prt(info->head);
 	return (SUCCESS);
 }
 
@@ -77,23 +76,17 @@ char	*put_token(char *str, int *idx)
 static void	get_token_size(char *str, int *idx)
 {
 	int	qoute_size;
-	int	start;	
+	int	start;
 
 	start = *idx;
 	while (str[*idx] && str[*idx] != ' ')
 	{
 		qoute_size = 0;
-		if (is_brace_chr(str[*idx]))
-		{
-			if (start == *idx)
-				(*idx)++;
-			break ;
-		}
-		else if (is_special_chr(str[*idx]))
+		if (is_brace_chr(str[*idx]) || is_special_chr(str[*idx]))
 		{
 			if (start == *idx)
 			{
-				if (str[*idx + 1] == str[*idx])
+				if (is_special_chr(str[*idx]) && str[*idx + 1] == str[*idx])
 					(*idx)++;
 				(*idx)++;
 			}

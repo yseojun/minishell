@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:24:14 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:29:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 
 static t_env	*init_env(char *envp[]);
 
-void	init_data_env(t_data *data, char *envp[])
+void	set_beginning(t_data *data, char *envp[])
 {
 	data->env = init_env(envp);
+	rl_catch_signals = 0;
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static t_env	*init_env(char *envp[])

@@ -1,49 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_list_util.c                               :+:      :+:    :+:   */
+/*   pipe_pid_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/04 19:03:31 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:33:42 by seojyang         ###   ########.fr       */
+/*   Created: 2023/03/14 16:11:44 by seojyang          #+#    #+#             */
+/*   Updated: 2023/03/14 16:11:55 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-t_token	*lst_new_env(char *name, char *value)
+void	add_pid(t_data *data, pid_t	pid)
 {
-	t_env	*new;
+	t_pid	*last;
+	t_pid	*new;
 
-	new = (t_env *)malloc(sizeof(t_env));
-	new->name = ft_strdup(name);
-	new->value = ft_strdup(value);
+	new = (t_pid *)malloc(sizeof(t_pid));
+	new->pid = pid;
 	new->next = 0;
-	return (new);
-}
-
-void	lst_env_add_back(t_env **head, t_env *new)
-{
-	t_env	*last;
-
-	if (!new)
-		return ;
-	last = lst_env_last(*head);
-	if (!last)
-		*head = new;
-	else
+	if (data->pids)
+	{
+		last = data->pids;
+		while (last->next)
+			last = last->next;
 		last->next = new;
+	}
+	else
+		data->pids = new;
 }
 
-t_env	*lst_env_last(t_env *lst)
+void	wait_all(t_data *data)
 {
-	t_env	*search;
+	t_pid	*search;
+	t_pid	*to_delete;
+	int		status;
 
-	if (!lst)
-		return (0);
-	search = lst;
-	while (search->next)
+	search = data->pids;
+	while (search)
+	{
+		waitpid(search->pid, &status, 0);
+		to_delete = search;
 		search = search->next;
-	return (search);
+		free(to_delete);
+		exit_status(status);
+	}
+	data->pids = 0;
 }

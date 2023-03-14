@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:26:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 13:03:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:32:03 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,5 @@ void	lst_wildcard_free_all(t_wildcard *lst)
 		next = search->next;
 		lst_wildcard_free(search);
 		search = next;
-	}
-}
-
-void	wildcard_prt(t_wildcard *head)
-{
-	t_wildcard	*search;
-
-	search = head;
-	while (search)
-	{
-		printf("name : %s\n", search->name);
-		search = search->next;
 	}
 }

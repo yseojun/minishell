@@ -12,6 +12,7 @@ pipe_run_unit.c \
 pipe_set_pipe.c \
 pipe_file.c \
 pipe_util.c \
+pipe_pid_util.c \
 builtin_func.c \
 transform.c \
 transform_expand.c \

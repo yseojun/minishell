@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:59:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:55:55 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,33 +66,36 @@ void	unlink_heredoc(t_token *top)
 	}
 }
 
-static void	write_heredoc(int heredoc_fd, char *limiter)
+static void	heredoc_child(int heredoc_fd, char *limiter)
 {
 	char		*str;
+
+	signal(SIGINT, SIG_DFL);
+	rl_catch_signals = 1;
+	str = 0;
+	while (1)
+	{
+		str = readline("heredoc> ");
+		if (!str || ft_strncmp(str, limiter, ft_strlen(str) + 1) == 0)
+			break ;
+		write(heredoc_fd, str, ft_strlen(str));
+		free(str);
+		str = 0;
+	}
+	free(str);
+	exit(EXIT_SUCCESS);
+}
+
+static void	write_heredoc(int heredoc_fd, char *limiter)
+{
 	pid_t		pid;
 	int			status;
 
-	str = 0;
 	pid = fork();
 	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		rl_catch_signals = 1;
-		while (1)
-		{
-			str = readline("heredoc> ");
-			if (!str || ft_strncmp(str, limiter, ft_strlen(str) + 1) == 0)
-				break ;
-			write(heredoc_fd, str, ft_strlen(str));
-			free(str);
-			str = 0;
-		}
-		free(str);
-		exit(EXIT_SUCCESS);
-	}
+		heredoc_child(heredoc_fd, limiter);
 	else
 	{
-		signal(SIGINT, SIG_IGN);
 		wait3(&status, 0, 0);
 		exit_status(EXIT_SUCCESS);
 		if (status != 0)
