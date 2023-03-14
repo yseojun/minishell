@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 18:48:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 08:27:12 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ int	chk_cmd(t_pipe *info, t_data *data)
 			return (SUCCESS);
 	}
 	data->exit_status = 127;
-	ft_putstr_fd(CMD_NOT_FOUND, STDERR_FILENO);
-	ft_putendl_fd(info->cmd_arr[0], STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(info->cmd_arr[0], STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
 	exit_status(MY_EXIT_FAILURE);
 	return (FAILURE);
 }

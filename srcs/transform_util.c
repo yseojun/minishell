@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/12 15:28:08 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 09:13:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,9 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 			str = get_expanded(data, new_idx, str, &new_idx);
 		new_idx++;
 	}
-	*idx = new_idx - 1;
+	*idx = new_idx;
 	return (str);
 }
-
-// void	pull_token(char **token_arr, int idx)
-// {
-// 	free(token_arr[idx]);
-// 	while (token_arr[idx])
-// 	{
-// 		if (token_arr[idx + 1] == 0)
-// 			break ;
-// 		token_arr[idx] = token_arr[idx + 1];
-// 		idx++;
-// 	}
-// 	token_arr[idx] = 0;
-// }
 
 t_token	*pull_token(t_token **head, t_token *remove)
 {
