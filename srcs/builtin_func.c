@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 13:51:38 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:25:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@ static int	builtin_env(char **cmd_arr, t_data *data);
 static void	chk_valid_export(char *str, int *exit_status);
 static int	is_number(char *str);
 static int	builtin_pwd(void);
-static int	builtin_echo(t_pipe *info);
+static int	builtin_echo(t_data *data);
 
-int	run_builtin_func(t_pipe *info, t_data *data)
+int	run_builtin_func(t_data *data)
 {
-	if (info->is_built_in == EXPORT)
-		return (builtin_export(data, info->cmd_arr));
-	else if (info->is_built_in == ENV)
-		return (builtin_env(info->cmd_arr, data));
-	else if (info->is_built_in == UNSET)
-		return (builtin_unset(data, info->cmd_arr));
-	else if (info->is_built_in == EXIT)
-		return (builtin_exit(info->cmd_arr));
-	else if (info->is_built_in == CD)
-		return (builtin_cd(data, info->cmd_arr[1]));
-	else if (info->is_built_in == PWD)
+	if (data->is_built_in == EXPORT)
+		return (builtin_export(data, data->cmd_arr));
+	else if (data->is_built_in == ENV)
+		return (builtin_env(data->cmd_arr, data));
+	else if (data->is_built_in == UNSET)
+		return (builtin_unset(data, data->cmd_arr));
+	else if (data->is_built_in == EXIT)
+		return (builtin_exit(data->cmd_arr));
+	else if (data->is_built_in == CD)
+		return (builtin_cd(data, data->cmd_arr[1]));
+	else if (data->is_built_in == PWD)
 		return (builtin_pwd());
 	else
-		return (builtin_echo(info));
+		return (builtin_echo(data));
 }
 
 static int	builtin_env(char **cmd_arr, t_data *data)
@@ -65,7 +65,7 @@ int	builtin_export(t_data *data, char **cmd_arr)
 	int		idx;
 	t_env	*env;
 	char	**name_val;
-	
+
 	if (!cmd_arr[1])
 		return (builtin_env(cmd_arr, data));
 	exit_status = EXIT_SUCCESS;
@@ -103,7 +103,7 @@ static void	chk_valid_export(char *str, int *exit_status)
 		*exit_status = EXIT_FAILURE;
 		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);	
+		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
 	}
 }
 
@@ -129,7 +129,7 @@ int	builtin_unset(t_data *data, char **cmd_arr)
 					data->env = env->next;
 					lst_env_free(env);
 					env = data->env;
-					continue;
+					continue ;
 				}
 				prev->next = env->next;
 				lst_env_free(env);
@@ -180,7 +180,7 @@ static int	is_number(char *str)
 	return (TRUE);
 }
 
-int	builtin_cd(t_data *data, char *dir) // ~ 처리
+int	builtin_cd(t_data *data, char *dir)
 {
 	if (!dir)
 	{
@@ -228,20 +228,20 @@ static int	is_n_option(char *str)
 	return (TRUE);
 }
 
-static int	builtin_echo(t_pipe *info)
+static int	builtin_echo(t_data *data)
 {
 	int	remove_nl;
 	int	idx;
 
-	remove_nl = is_n_option(info->cmd_arr[1]);
+	remove_nl = is_n_option(data->cmd_arr[1]);
 	if (remove_nl == TRUE)
 		idx = 2;
 	else
 		idx = 1;
-	while (info->cmd_arr[idx])
+	while (data->cmd_arr[idx])
 	{
-		ft_putstr_fd(info->cmd_arr[idx], STDOUT_FILENO);
-		if (info->cmd_arr[idx + 1] != NULL)
+		ft_putstr_fd(data->cmd_arr[idx], STDOUT_FILENO);
+		if (data->cmd_arr[idx + 1] != NULL)
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		idx++;
 	}

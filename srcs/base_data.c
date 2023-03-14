@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/11 20:22:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:24:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 
 static t_env	*init_env(char *envp[]);
 
-void	init_data(t_data *data, char *envp[])
+void	init_data_env(t_data *data, char *envp[])
 {
-	data->exit_status = 0;
 	data->env = init_env(envp);
-	tcgetattr(0, &data->termios);
 }
 
 static t_env	*init_env(char *envp[])

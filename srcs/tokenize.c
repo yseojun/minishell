@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 15:29:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:20:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int		get_quote_size(char *str, int idx);
 static void		get_token_size(char *str, int *idx);
 
-int	tokenize(char *str, t_pipe *info)
+int	tokenize(char *str, t_data *data)
 {
 	t_token	*new;
 	int		idx;
@@ -28,7 +28,7 @@ int	tokenize(char *str, t_pipe *info)
 		else
 		{
 			new = make_token(str, &idx);
-			if (!new || lst_token_add_back(&info->head, new) == FAILURE)
+			if (!new || lst_token_add_back(&data->head, new) == FAILURE)
 				return (FAILURE);
 			if (new->type == 0)
 			{

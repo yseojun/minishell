@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:38:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:27:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "util.h"
 #include "base.h"
 
-void	init_pipe_info(t_pipe *info)
+void	reset_line_data(t_data *data)
 {
-	info->prev_fd = STDIN_FILENO;
-	info->wildcard = 0;
-	info->cmd_arr = 0;
-	info->pids = 0;
-	info->pipe_count = 0;
-	info->is_pipe = 0;
-	info->head = 0;
+	data->prev_fd = STDIN_FILENO;
+	data->wildcard = 0;
+	data->cmd_arr = 0;
+	data->pids = 0;
+	data->pipe_count = 0;
+	data->is_pipe = 0;
+	data->head = 0;
 }
 
 char	*make_real_path(char *path, char *command)
@@ -96,7 +96,7 @@ char	*find_command_in_path(char *command, t_data *data)
 	return (command);
 }
 
-void	add_pid(t_pipe *info, pid_t	pid)
+void	add_pid(t_data *data, pid_t	pid)
 {
 	t_pid	*last;
 	t_pid	*new;
@@ -104,24 +104,24 @@ void	add_pid(t_pipe *info, pid_t	pid)
 	new = (t_pid *)malloc(sizeof(t_pid));
 	new->pid = pid;
 	new->next = 0;
-	if (info->pids)
+	if (data->pids)
 	{
-		last = info->pids;
+		last = data->pids;
 		while (last->next)
 			last = last->next;
 		last->next = new;
 	}
 	else
-		info->pids = new;
+		data->pids = new;
 }
 
-void	wait_all(t_pipe *info)
+void	wait_all(t_data *data)
 {
 	t_pid	*search;
 	t_pid	*to_delete;
 	int		status;
 
-	search = info->pids;
+	search = data->pids;
 	while (search)
 	{
 		waitpid(search->pid, &status, 0);
@@ -130,5 +130,5 @@ void	wait_all(t_pipe *info)
 		free(to_delete);
 		exit_status(status);
 	}
-	info->pids = 0;
+	data->pids = 0;
 }

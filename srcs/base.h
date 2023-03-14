@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:03:12 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:26:15 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ typedef struct s_token
 	struct s_token	*right;
 }	t_token;
 
-typedef struct s_pipe
+typedef struct s_data
 {
+	t_env			*env;
 	t_token			*head;
-	t_token			**unit;
 	t_wildcard		*wildcard;
 	char			**cmd_arr;
 	int				is_built_in;
@@ -93,21 +93,13 @@ typedef struct s_pipe
 	int				out_fd;
 	int				is_pipe;
 	int				pipe_count;
-	char			*heredoc_tmp;
 	struct s_pid	*pids;
-}	t_pipe;
-
-typedef struct s_data
-{
-	int				exit_status;
-	t_env			*env;
-	struct termios	termios;
 }	t_data;
 
 void 		(*old)(int);
 
 //base_data.c
-void	init_data(t_data *data, char *envp[]);
+void	init_data_env(t_data *data, char *envp[]);
 
 //list_env.c
 t_env		*lst_new_env(char *name, char *value);
@@ -124,30 +116,30 @@ void		lst_wildcard_free_all(t_wildcard *lst);
 void		wildcard_prt(t_wildcard *head);
 
 //set_pipe.c
-int			chk_cmd(t_pipe *info, t_data *data);
+int			chk_cmd(t_data *data);
 char		**set_cmd(t_token *unit);
 int			count_cmd(t_token *unit);
-int			set_fd(t_token *unit, t_pipe *info);
+int			set_fd(t_token *unit, t_data *data);
 
 //pipe_info.c
-void		init_pipe_info(t_pipe *info);
+void		reset_line_data(t_data *data);
 char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 char		*find_command_in_path(char *command, t_data *data);
-void		add_pid(t_pipe *info, pid_t	pid);
-void		wait_all(t_pipe *info);
+void		add_pid(t_data *data, pid_t	pid);
+void		wait_all(t_data *data);
 
 //pipe_infile.c
 int			open_heredoc(t_token *search);
 void		find_heredoc(t_token *top);
 void		unlink_heredoc(t_token *top);
-int			make_heredoc(char *limiter, t_pipe *info);
+int			make_heredoc(char *limiter, t_data *data);
 
 //run_pipe.c
-int			excute_tree(t_token *top, t_pipe *info, t_data *data);
+int			excute_tree(t_token *top, t_data *data);
 
 //builtin_func.c
-int			run_builtin_func(t_pipe *info, t_data *data);
+int			run_builtin_func(t_data *data);
 int			builtin_exit(char **cmd_arr);
 int			builtin_export(t_data *data, char **cmd_arr);
 int			builtin_unset(t_data *data, char **cmd_arr);
@@ -162,7 +154,6 @@ int			is_brace(char *str);
 int			is_brace_chr(char c);
 
 //token
-int			tokenize(char *str, t_pipe *info);
 t_token		*lst_new_token(char *str);
 int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);

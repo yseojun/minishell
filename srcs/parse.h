@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/12 16:21:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:22:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 # include "base.h"
 
 // parse.c
-int		    parse_line(char *str, t_data *data, t_pipe *info);
+int		    parse_line(char *str, t_data *data);
 
 // tokenize.c
-int		    tokenize(char *str, t_pipe *info);
+int		    tokenize(char *str, t_data *data);
 
 // transform.c
-int		    transform(t_data *data, t_pipe *info);
+int		    transform(t_data *data);
 
 // transform_expand.c
 char	    *expand(t_data *data, char *str, int *flag);
@@ -40,7 +40,7 @@ char	    *remove_quote(char *str);
 t_token     *make_tree(t_token *tail);
 
 //wildcard.c
-void		make_wildcard_lst(t_pipe *info, t_token *now);
-int 		merge_wildcard_lst(t_pipe *info, t_token **now);
+void		make_wildcard_lst(t_data *data, t_token *now);
+int 		merge_wildcard_lst(t_data *data, t_token **now);
 
 #endif

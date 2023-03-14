@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_make.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/14 13:53:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:20:16 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void			cmp_wildcard(t_pipe *info, char **to_find, t_token *now);
+static void			cmp_wildcard(t_data *data, char **to_find, t_token *now);
 static int			find_str(char *to_find_str, char *name, int *idx);
 static int			check_wildcard(char *name, char **to_find, t_token *now);
-static t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, \
+static t_wildcard	*remove_wildcard(t_data *data, t_wildcard *prev, \
 	t_wildcard *to_remove);
 
-void	make_wildcard_lst(t_pipe *info, t_token *now)
+void	make_wildcard_lst(t_data *data, t_token *now)
 {
 	char			**to_find;
 	DIR				*dp;
@@ -39,28 +39,28 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 		if (fp == NULL)
 			break ;
 		if (fp->d_name[0] != '.')
-			wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
+			wildcard_add_back(&data->wildcard, lst_new_wildcard(fp->d_name));
 	}
 	closedir(dp);
 	to_find = ft_split(now->token, '*');
 	if (to_find)
-		cmp_wildcard(info, to_find, now);
+		cmp_wildcard(data, to_find, now);
 	free_arr((void **)to_find);
 }
 
-static void	cmp_wildcard(t_pipe *info, char **to_find, t_token *now)
+static void	cmp_wildcard(t_data *data, char **to_find, t_token *now)
 {
 	t_wildcard	*search;
 	t_wildcard	*prev;
 
-	if (!info->wildcard)
+	if (!data->wildcard)
 		return ;
-	search = info->wildcard;
+	search = data->wildcard;
 	prev = search;
 	while (search)
 	{
 		if (check_wildcard(search->name, to_find, now) == FAILURE)
-			search = remove_wildcard(info, prev, search);
+			search = remove_wildcard(data, prev, search);
 		else
 		{
 			prev = search;
@@ -128,14 +128,14 @@ static int	check_wildcard(char *name, char **to_find, t_token *now)
 	return (FAILURE);
 }
 
-static t_wildcard	*remove_wildcard(t_pipe *info, t_wildcard *prev, \
+static t_wildcard	*remove_wildcard(t_data *data, t_wildcard *prev, \
 	t_wildcard *to_remove)
 {
-	if (to_remove == info->wildcard)
+	if (to_remove == data->wildcard)
 	{
-		info->wildcard = to_remove->next;
+		data->wildcard = to_remove->next;
 		lst_wildcard_free(to_remove);
-		return (info->wildcard);
+		return (data->wildcard);
 	}
 	else
 	{

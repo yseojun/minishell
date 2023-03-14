@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:38:04 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 15:15:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static int	is_builtin_func(t_pipe *info);
+static int	is_builtin_func(t_data *data);
 
-int	chk_cmd(t_pipe *info, t_data *data)
+int	chk_cmd(t_data *data)
 {
 	char	**paths;
 	int		idx;
 	char	*tmp_path;
 
-	if (ft_strlen(info->cmd_arr[0]) != 0)
+	if (ft_strlen(data->cmd_arr[0]) != 0)
 	{
-		if (is_builtin_func(info) == SUCCESS)
+		if (is_builtin_func(data) == SUCCESS)
 			return (SUCCESS);
 		paths = get_paths(data);
 		idx = 0;
 		while (paths && paths[idx])
 		{
-			tmp_path = make_real_path(paths[idx], info->cmd_arr[0]);
+			tmp_path = make_real_path(paths[idx], data->cmd_arr[0]);
 			if (access(tmp_path, F_OK) == SUCCESS)
 			{
 				free(tmp_path);
@@ -41,34 +41,32 @@ int	chk_cmd(t_pipe *info, t_data *data)
 		}
 		if (paths)
 			free_arr((void **)paths);
-		if (access(info->cmd_arr[0], F_OK) == SUCCESS)
+		if (access(data->cmd_arr[0], F_OK) == SUCCESS)
 			return (SUCCESS);
 	}
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(info->cmd_arr[0], STDERR_FILENO);
+	ft_putstr_fd(data->cmd_arr[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 	exit_status(256 * 127);
 	return (FAILURE);
 }
 
-static int	is_builtin_func(t_pipe *info)
+static int	is_builtin_func(t_data *data)
 {
-	if (ft_strncmp(info->cmd_arr[0], "export", 7) == 0)
-		info->is_built_in = EXPORT;
-	else if (ft_strncmp(info->cmd_arr[0], "env", 4) == 0)
-		info->is_built_in = ENV;
-	else if (ft_strncmp(info->cmd_arr[0], "unset", 6) == 0)
-		info->is_built_in = UNSET;
-	else if (ft_strncmp(info->cmd_arr[0], "exit", 5) == 0)
-		info->is_built_in = EXIT;
-	else if (ft_strncmp(info->cmd_arr[0], "cd", 3) == 0)
-		info->is_built_in = CD;
-	else if (ft_strncmp(info->cmd_arr[0], "pwd", 4) == 0)
-		info->is_built_in = PWD;
-	else if (ft_strncmp(info->cmd_arr[0], "echo", 5) == 0)
-		info->is_built_in = _ECHO;
-	// else if (ft_strncmp(info->cmd_arr[0], "history", 8) == 0)
-	// 	info->is_built_in = HISTORY;
+	if (ft_strncmp(data->cmd_arr[0], "export", 7) == 0)
+		data->is_built_in = EXPORT;
+	else if (ft_strncmp(data->cmd_arr[0], "env", 4) == 0)
+		data->is_built_in = ENV;
+	else if (ft_strncmp(data->cmd_arr[0], "unset", 6) == 0)
+		data->is_built_in = UNSET;
+	else if (ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
+		data->is_built_in = EXIT;
+	else if (ft_strncmp(data->cmd_arr[0], "cd", 3) == 0)
+		data->is_built_in = CD;
+	else if (ft_strncmp(data->cmd_arr[0], "pwd", 4) == 0)
+		data->is_built_in = PWD;
+	else if (ft_strncmp(data->cmd_arr[0], "echo", 5) == 0)
+		data->is_built_in = _ECHO;
 	else
 		return (FAILURE);
 	return (SUCCESS);
@@ -118,7 +116,7 @@ int	count_cmd(t_token *unit)
 	return (count);
 }
 
-int	set_in_fd(t_token *unit, t_pipe *info)
+int	set_in_fd(t_token *unit, t_data *data)
 {
 	t_token	*search;
 
@@ -127,17 +125,17 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 	{
 		if (!ft_strncmp(search->token, "<<", 3))
 		{
-			if (info->in_fd != STDIN_FILENO)
-				close(info->in_fd);
-			info->in_fd = open_heredoc(search);
+			if (data->in_fd != STDIN_FILENO)
+				close(data->in_fd);
+			data->in_fd = open_heredoc(search);
 		}
 		else if (!ft_strncmp(search->token, "<", 2))
 		{
-			if (info->in_fd != STDIN_FILENO)
-				close(info->in_fd);
-			info->in_fd = open(search->right->token, O_RDONLY);
+			if (data->in_fd != STDIN_FILENO)
+				close(data->in_fd);
+			data->in_fd = open(search->right->token, O_RDONLY);
 		}
-		if (info->in_fd == FAILURE)
+		if (data->in_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(search->right->token);
@@ -149,7 +147,7 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 	return (SUCCESS);
 }
 
-int	set_out_fd(t_token *unit, t_pipe *info)
+int	set_out_fd(t_token *unit, t_data *data)
 {
 	t_token	*search;
 
@@ -158,17 +156,17 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 	{
 		if (!ft_strncmp(search->token, ">>", 3))
 		{
-			if (info->out_fd != STDOUT_FILENO)
-				close(info->out_fd);
-			info->out_fd = open(search->right->token, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (data->out_fd != STDOUT_FILENO)
+				close(data->out_fd);
+			data->out_fd = open(search->right->token, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		}
 		else if (!ft_strncmp(search->token, ">", 2))
 		{
-			if (info->out_fd != STDOUT_FILENO)
-				close(info->out_fd);
-			info->out_fd = open(search->right->token, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (data->out_fd != STDOUT_FILENO)
+				close(data->out_fd);
+			data->out_fd = open(search->right->token, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
-		if (info->out_fd == FAILURE)
+		if (data->out_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell", STDERR_FILENO);
 			perror(search->right->token);
@@ -180,19 +178,19 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 	return (SUCCESS);
 }
 
-int	set_fd(t_token *unit, t_pipe *info)
+int	set_fd(t_token *unit, t_data *data)
 {
-	info->in_fd = info->prev_fd;
-	if (set_in_fd(unit, info) == FAILURE)
+	data->in_fd = data->prev_fd;
+	if (set_in_fd(unit, data) == FAILURE)
 		return (FAILURE);
-	if (info->pipe_count)
+	if (data->pipe_count)
 	{
-		_pipe(info->pipefd);
-		info->out_fd = info->pipefd[P_WRITE];
+		_pipe(data->pipefd);
+		data->out_fd = data->pipefd[P_WRITE];
 	}
 	else
-		info->out_fd = STDOUT_FILENO;
-	if (set_out_fd(unit, info) == FAILURE)
+		data->out_fd = STDOUT_FILENO;
+	if (set_out_fd(unit, data) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
