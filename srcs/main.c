@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 19:31:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 12:15:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	main(int argc, char *argv[], char *envp[])
 			free(str);
 			continue ;
 		}
+		// find_heredoc(line_info.head);
 		excute_tree(line_info.head, &line_info, &data);
 		//load_status(&data);
 		finish_line(str, &line_info);

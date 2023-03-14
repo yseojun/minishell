@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_tokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 20:49:09 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 12:11:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_token	*find_logical_operator(t_token *tail)
 			if (search->left)
 			{
 				search->left->right = NULL;
-				search->left = make_tree(search->left);	
+				search->left = make_tree(search->left);
 			}
 			if (search->right)
 			{
