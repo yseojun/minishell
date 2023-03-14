@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:59:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:03:12 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define CMD_NOT_FOUND "minishell: command not found: "
 # define SUCCESS 0
 # define FAILURE -1
-# define MY_EXIT_FAILURE 256
 # define TRUE 1
 # define FALSE 0
 // # define TMP_FILE "tmp.txt"
