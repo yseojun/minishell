@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/14 18:12:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 20:49:44 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static int  chk_stat(char *path_command);
 
 int	excute_tree(t_token *top, t_data *data)
 {
-	printf("트리 실행\n");
 	if (top == 0)
 		return (1);
 	if (top->type == AND)

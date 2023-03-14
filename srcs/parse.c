@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 18:38:52 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 20:49:40 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "util.h"
 #include "parse.h"
 
-//static void	remove_comment(char *str);
+static void	remove_comment(char *str);
 static void	token_error(char *token);
 static int	chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_data *data);
 
 int	parse_line(char *str, t_data *data)
 {
-	//remove_comment(str);
+	remove_comment(str);
 	if (tokenize(str, data) == FAILURE || chk_grammer_valid(data) == FAILURE
 		|| transform(data) == FAILURE)
 	{
@@ -85,29 +85,15 @@ static int	chk_condition(t_token *now, int *brace_opened)
 }
 
 
-// static void	remove_comment(char *str)
-// {
-// 	// int	idx;
-
-// 	// printf("str: %s\n", str);
-
-// 	// idx = 0;
-// 	// while (str[idx])
-// 	// {
-// 	// 	printf("%c\n", str[idx]);
-// 	// 	if (str[idx] == '#')
-// 	// 		str[idx] = 0;
-// 	// 	idx++;
-// 	// }
-
-// 	while (*str)
-// 	{
-// 		printf("%c\n", *str);
-// 		if (*str == '#')
-// 			*str = 0;
-// 		str++;
-// 	}
-// }
+static void	remove_comment(char *str)
+{
+	while (*str)
+	{
+		if (*str == '#')
+			*str = 0;
+		str++;
+	}
+}
 
 static void	token_error(char *token)
 {

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 18:04:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 20:49:01 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	transform(t_data *data)
 	{
 		is_expanded = 0;
 		search->token = expand(data, search->token, &is_expanded);
-		if (!is_expanded)
+		if (!is_expanded && (search->left && ft_strncmp("<<", search->left->token, 3) != 0)
+			&& ft_strchr(search->token, '*'))
 		{
 			if (wildcard(data, &search) == FAILURE)
 				return (FAILURE);
@@ -62,10 +63,6 @@ static void	make_wildcard_lst(t_data *data, t_token *now)
 	char			*cwd;
 	struct dirent	*fp;
 
-	if (now->left && ft_strncmp("<<", now->left->token, 3) == 0)
-		return ;
-	if (!ft_strchr(now->token, '*'))
-		return ;
 	cwd = getcwd(0, 0);
 	dp = opendir(cwd);
 	free(cwd);
