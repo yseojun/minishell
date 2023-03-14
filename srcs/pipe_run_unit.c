@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/14 12:08:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 12:30:27 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ static void	run_unit(t_token *unit, t_pipe *info, t_data *data)
 	else
 	{
 		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, handler);
 		add_pid(info, pid);
 		if (info->in_fd != STDIN_FILENO)
 			close(info->in_fd);
@@ -107,6 +108,7 @@ static void	run_unit(t_token *unit, t_pipe *info, t_data *data)
 		if (info->pipe_count == 0)
 			wait_all(info);
 		signal(SIGINT, handler);
+		signal(SIGQUIT, SIG_IGN);
 		info->prev_fd = STDIN_FILENO;
 		if (info->pipe_count > 0)
 			info->prev_fd = info->pipefd[P_READ];
@@ -116,6 +118,7 @@ static void	run_unit(t_token *unit, t_pipe *info, t_data *data)
 
 static void	child(t_pipe *info, t_data *data)
 {
+	signal(SIGQUIT, SIG_DFL);
 	if  (info->pipe_count > 0)
 		close(info->pipefd[P_READ]);
 	dup2(info->in_fd, STDIN_FILENO);
