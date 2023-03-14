@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run_unit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/14 13:35:49 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 13:55:27 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static int	run_single_builtin(t_pipe *info, t_data *data)
 	if (info->is_pipe || info->is_built_in == FALSE)
 		return (FALSE);
 	if (info->is_built_in == EXPORT && info->cmd_arr[1])
-		exit_status(256 * builtin_export(data, info->cmd_arr));
+		exit_status(builtin_export(data, info->cmd_arr));
 	else if (info->is_built_in == UNSET)
-		exit_status(256 * builtin_unset(data, info->cmd_arr));
+		exit_status(builtin_unset(data, info->cmd_arr));
 	else if (info->is_built_in == EXIT)
-		exit_status(256 * builtin_exit(info->cmd_arr));
+		exit_status(builtin_exit(info->cmd_arr));
 	else if (info->is_built_in == CD)
-		exit_status(256 * builtin_cd(data, info->cmd_arr[1]));
+		exit_status(builtin_cd(data, info->cmd_arr[1]));
 	else
 		return (FALSE);
 	return (TRUE);

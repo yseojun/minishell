@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 12:45:20 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 14:22:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ int	main(int argc, char *argv[], char *envp[])
 			free(str);
 			continue ;
 		}
+		exit_status(0);
 		find_heredoc(line_info.head);
-		excute_tree(line_info.head, &line_info, &data);
-		//load_status(&data);
+		if (exit_status(LOAD) == EXIT_SUCCESS)
+			excute_tree(line_info.head, &line_info, &data);
 		finish_line(str, &line_info);
 	}
 	// system("leaks --quiet minishell");
