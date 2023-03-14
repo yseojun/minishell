@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 12:35:11 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:59:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@
 # define CMD 5
 # define REDIRECTION 6
 # define LOAD -1
+
+extern int	rl_catch_signals;
 
 typedef struct s_pid
 {

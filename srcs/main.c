@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:22:30 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:56:36 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 static void	manage_signals(void)
 {
-	extern int	rl_catch_signals;
-
 	rl_catch_signals = 0;
 	old = signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);

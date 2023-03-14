@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:27:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:00:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,25 @@ void	unlink_heredoc(t_token *top)
 
 static void	write_heredoc(int heredoc_fd, char *limiter)
 {
-	char	*str;
-	char	*cmp_limiter;
-	pid_t	pid;
-	int		status;
+	char		*str;
+	pid_t		pid;
+	int			status;
 
 	str = 0;
-	cmp_limiter = ft_strjoin(limiter, "\n");
 	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		rl_catch_signals = 1;
 		while (1)
 		{
-			ft_putstr_fd("pipe heredoc> ", STDOUT_FILENO);
-			str = get_next_line(STDIN_FILENO);
-			if (!str || ft_strncmp(str, cmp_limiter, ft_strlen(str) + 1) == 0)
+			str = readline("heredoc> ");
+			if (!str || ft_strncmp(str, limiter, ft_strlen(str) + 1) == 0)
 				break ;
 			write(heredoc_fd, str, ft_strlen(str));
 			free(str);
 			str = 0;
 		}
-		free(cmp_limiter);
 		free(str);
 		exit(EXIT_SUCCESS);
 	}
