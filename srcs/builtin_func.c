@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 19:29:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 13:51:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	builtin_env(char **cmd_arr, t_data *data)
 	if (cmd_arr[1])
 	{
 		ft_putendl_fd("minishell: env: invaild env arguments", STDERR_FILENO);
-		return (MY_EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	search = data->env;
 	while (search)
@@ -100,7 +100,7 @@ static void	chk_valid_export(char *str, int *exit_status)
 {
 	if (str[0] == '=')
 	{
-		*exit_status = MY_EXIT_FAILURE;
+		*exit_status = EXIT_FAILURE;
 		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);	
@@ -152,12 +152,12 @@ int	builtin_exit(char **cmd_arr)
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(cmd_arr[1], STDERR_FILENO);
 			ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-			exit (255);
+			exit(255);
 		}
 		if (cmd_arr[2])
 		{
 			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-			return (MY_EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		exit((unsigned char)ft_atoi(cmd_arr[1]));
 	}
@@ -181,21 +181,21 @@ static int	is_number(char *str)
 }
 
 int	builtin_cd(t_data *data, char *dir) // ~ 처리
-{	
+{
 	if (!dir)
 	{
 		dir = get_value(data, "HOME");
 		if (!dir)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
-			return (MY_EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 	}
 	if (chdir(dir) == FAILURE)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		perror(dir);
-		return (MY_EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -206,7 +206,7 @@ static int	builtin_pwd(void)
 
 	curr_dir = getcwd(NULL, 0);
 	if (!curr_dir)
-		return (MY_EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	ft_putendl_fd(curr_dir, STDOUT_FILENO);
 	free(curr_dir);
 	return (EXIT_SUCCESS);

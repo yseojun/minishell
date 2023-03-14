@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/12 15:44:35 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 13:53:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	make_wildcard_lst(t_pipe *info, t_token *now)
 		fp = readdir(dp);
 		if (fp == NULL)
 			break ;
-		wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
+		if (fp->d_name[0] != '.')
+			wildcard_add_back(&info->wildcard, lst_new_wildcard(fp->d_name));
 	}
 	closedir(dp);
 	to_find = ft_split(now->token, '*');
@@ -56,10 +57,8 @@ static void	cmp_wildcard(t_pipe *info, char **to_find, t_token *now)
 		return ;
 	search = info->wildcard;
 	prev = search;
-	// wildcard_prt(info->wildcard);
 	while (search)
 	{
-		// printf("search name : %s\n", search->name);
 		if (check_wildcard(search->name, to_find, now) == FAILURE)
 			search = remove_wildcard(info, prev, search);
 		else
