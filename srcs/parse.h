@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:55:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 18:06:24 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ t_token	    *pull_token(t_token **head, t_token *remove);
 char	    *remove_quote(char *str);
 
 t_token     *make_tree(t_token *tail);
+t_token		*find_logical_operator(t_token *tail);
+t_token 	*find_pipe(t_token *tail);
 
 //wildcard.c
 void		cmp_wildcard(t_data *data, char **to_find, t_token *now);

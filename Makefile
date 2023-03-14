@@ -5,7 +5,7 @@ RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
 parse.c \
-base_data.c \
+set_beginning.c \
 list_env.c \
 list_wildcard.c \
 pipe_run_unit.c \
@@ -13,7 +13,9 @@ pipe_set_pipe.c \
 pipe_file.c \
 pipe_util.c \
 pipe_pid_util.c \
-builtin_func.c \
+builtin_func1.c \
+builtin_func2.c \
+builtin_func3.c \
 transform.c \
 transform_expand.c \
 transform_rm_quote.c \
@@ -25,7 +27,8 @@ list_token.c \
 _util.c \
 is_symbol.c \
 util_arr.c \
-bonus_tokenize.c
+tree_make1.c \
+tree_make2.c
 SRCS_BONUS = $(addprefix bonus_, $(SRCS:.c=.o))
 LIBT = libft 
 OBJS = $(addprefix srcs/, $(SRCS:.c=.o))

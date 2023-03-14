@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:29:48 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 17:57:33 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,13 @@ int			excute_tree(t_token *top, t_data *data);
 
 //builtin_func.c
 int			run_builtin_func(t_data *data);
-int			builtin_exit(char **cmd_arr);
+int			builtin_env(char **cmd_arr, t_data *data);
 int			builtin_export(t_data *data, char **cmd_arr);
 int			builtin_unset(t_data *data, char **cmd_arr);
-int 		builtin_cd(t_data *data, char *dir);
+int			builtin_exit(char **cmd_arr);
+int			builtin_cd(t_data *data, char *dir);
+int			builtin_pwd(void);
+int			builtin_echo(t_data *data);
 
 //is_symbol.c
 int			is_redirection(char *str);
@@ -156,6 +159,7 @@ int			is_brace_chr(char c);
 t_token		*lst_new_token(char *str);
 int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
+t_token		*lst_token_head(t_token *lst);
 void		lst_token_free(t_token *lst);
 void		lst_token_free_all(t_token *lst);
 void		lst_tree_free_all(t_token *top);

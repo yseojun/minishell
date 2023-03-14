@@ -6,15 +6,16 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/14 16:55:40 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 18:05:27 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static int			find_str(char *to_find_str, char *name, int *idx);
 static int			check_wildcard(char *name, char **to_find, t_token *now);
+static int			is_good_format(char *name, char **to_find, char *token);
+static int			find_str(char *to_find_str, char *name, int *idx);
 static t_wildcard	*remove_wildcard(t_data *data, t_wildcard *prev, \
 	t_wildcard *to_remove);
 

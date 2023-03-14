@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:31:46 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:32:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "util.h"
 #include "parse.h"
 
-static void	manage_signals(void);
-void		handler(int sig);
 static void	finish_line(char *str, t_data *data);
 
 int	main(int argc, char *argv[], char *envp[])
@@ -36,7 +34,7 @@ int	main(int argc, char *argv[], char *envp[])
 		add_history(str);
 		if (parse_line(str, &data) == SUCCESS)
 		{
-			exit_status(0);
+			exit_status(EXIT_SUCCESS);
 			find_heredoc(data.head);
 			if (exit_status(LOAD) == EXIT_SUCCESS)
 				excute_tree(data.head, &data);
@@ -44,20 +42,6 @@ int	main(int argc, char *argv[], char *envp[])
 		finish_line(str, &data);
 	}
 	return (SUCCESS);
-}
-
-void	handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		exit_status(256 * EXIT_FAILURE);
-		write(STDOUT_FILENO, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-		ft_putendl_fd("Quit: 3", STDERR_FILENO);
 }
 
 int	exit_status(int status)

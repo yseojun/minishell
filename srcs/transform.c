@@ -6,12 +6,13 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 16:50:46 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 18:04:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "parse.h"
+#include "util.h"
 
 static int	wildcard(t_data *data, t_token **search);
 static void	make_wildcard_lst(t_data *data, t_token *now);
