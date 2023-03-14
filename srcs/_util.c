@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 14:28:00 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 14:36:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 16:53:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,18 @@ void	perror_exit(char *name)
 	ft_putstr_fd("minishell: ", 2);
 	perror(name);
 	exit(EXIT_FAILURE);
+}
+
+void	free_arr(void **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+	arr = 0;
+	return ;
 }

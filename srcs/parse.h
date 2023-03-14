@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:22:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:51:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	    *remove_quote(char *str);
 t_token     *make_tree(t_token *tail);
 
 //wildcard.c
-void		make_wildcard_lst(t_data *data, t_token *now);
+void		cmp_wildcard(t_data *data, char **to_find, t_token *now);
 int 		merge_wildcard_lst(t_data *data, t_token **now);
 
 #endif

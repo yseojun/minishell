@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 15:31:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:12:41 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parse.h"
 
 static int	get_key_len(int key_idx, char *str);
-static void	put_in_new_str(char *str, char *new_str, char *value, int dollar_idx);
+static void	put_in_new_str(char *str, char *new, char *value, int dollar);
 
 char	*expand(t_data *data, char *str, int *flag)
 {
@@ -96,7 +96,7 @@ char	*get_value(t_data *data, char *key)
 	return (NULL);
 }
 
-static void	put_in_new_str(char *str, char *new_str, char *value, int dollar_idx)
+static void	put_in_new_str(char *str, char *new, char *value, int dollar)
 {
 	int	idx;
 	int	new_idx;
@@ -107,16 +107,16 @@ static void	put_in_new_str(char *str, char *new_str, char *value, int dollar_idx
 	value_idx = 0;
 	while (str[idx])
 	{
-		if (idx == dollar_idx)
+		if (idx == dollar)
 		{
 			while (value[value_idx])
-				new_str[new_idx++] = value[value_idx++];
+				new[new_idx++] = value[value_idx++];
 			idx += get_key_len(idx + 1, str) + 1;
 			if (!str[idx])
 				break ;
 		}
-		new_str[new_idx++] = str[idx++];
+		new[new_idx++] = str[idx++];
 	}
-	new_str[new_idx] = 0;
+	new[new_idx] = 0;
 	free(str);
 }
