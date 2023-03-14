@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 12:31:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:38:04 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,10 @@ int	chk_cmd(t_pipe *info, t_data *data)
 		if (access(info->cmd_arr[0], F_OK) == SUCCESS)
 			return (SUCCESS);
 	}
-	data->exit_status = 127;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(info->cmd_arr[0], STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
-	exit_status(MY_EXIT_FAILURE);
+	exit_status(256 * 127);
 	return (FAILURE);
 }
 
@@ -90,7 +89,7 @@ char	**set_cmd(t_token *unit)
 	}
 	cmd = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!cmd)
-		exit(MY_EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	cmd_idx = 0;
 	search = unit;
 	while (search)
@@ -142,7 +141,7 @@ int	set_in_fd(t_token *unit, t_pipe *info)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(search->right->token);
-			exit_status(MY_EXIT_FAILURE);
+			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
 		}
 		search = search->left;
@@ -173,7 +172,7 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 		{
 			ft_putstr_fd("minishell", STDERR_FILENO);
 			perror(search->right->token);
-			exit_status(MY_EXIT_FAILURE);
+			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
 		}
 		search = search->left;
@@ -183,20 +182,17 @@ int	set_out_fd(t_token *unit, t_pipe *info)
 
 int	set_fd(t_token *unit, t_pipe *info)
 {
-	// 리다이렉션 연결하기
-	// in_fd
-	info->in_fd = info->prev_fd; // pipe 또는 STDIN으로 기본 세팅
-	if (set_in_fd(unit, info) == FAILURE) // unit left를 보며 재세팅
+	info->in_fd = info->prev_fd;
+	if (set_in_fd(unit, info) == FAILURE)
 		return (FAILURE);
-	// out_fd
-	if (info->pipe_count) // pipe 또는 STDOUT으로 기본 세팅
+	if (info->pipe_count)
 	{
 		_pipe(info->pipefd);
 		info->out_fd = info->pipefd[P_WRITE];
 	}
 	else
 		info->out_fd = STDOUT_FILENO;
-	if (set_out_fd(unit, info) == FAILURE) // unit left를 보며 재세팅
+	if (set_out_fd(unit, info) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }

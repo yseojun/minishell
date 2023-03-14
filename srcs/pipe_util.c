@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/13 14:04:22 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/14 14:38:17 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**get_paths(t_data *data)
 		return (NULL);
 	paths = ft_split(get_env(data, "PATH"), ':');
 	if (!paths)
-		exit(MY_EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	return (paths);
 }
 
