@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:25:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:45:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ static int	builtin_pwd(void)
 static int	is_n_option(char *str)
 {
 	int	idx;
-	
+
 	if (str[0] != '-')
 		return (FALSE);
 	idx = 1;

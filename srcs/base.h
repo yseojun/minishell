@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:26:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:00:04 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <sys/errno.h>
 # include <sys/stat.h> // stat
 # include <termios.h> // tcgetattr
-# include "../gnl/get_next_line_bonus.h"
 # include "../libft/libft.h"
 
 # define P_WRITE 1
@@ -99,7 +98,7 @@ typedef struct s_data
 void 		(*old)(int);
 
 //base_data.c
-void	init_data_env(t_data *data, char *envp[]);
+void		init_data_env(t_data *data, char *envp[]);
 
 //list_env.c
 t_env		*lst_new_env(char *name, char *value);

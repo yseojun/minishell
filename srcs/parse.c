@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:22:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:46:33 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static int	chk_grammer_valid(t_data *data)
 
 static int	chk_condition(t_token *now, int *brace_opened)
 {
-	if (now->type == PIPE && (!now->left || !now->right
-			|| is_symbol(now->left->token)))
+	if ((now->type == PIPE || now->type == AND || now->type == OR)
+		&& (!now->left || !now->right || is_symbol(now->left->token)))
 		return (FAILURE);
 	else if (now->type == REDIRECTION
 		&& (!now->right || is_symbol(now->right->token)))

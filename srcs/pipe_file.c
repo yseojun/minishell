@@ -6,12 +6,11 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:00:02 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:59:06 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
-#include "../gnl/get_next_line_bonus.h"
 
 static void	write_heredoc(int heredoc_fd, char *limiter);
 

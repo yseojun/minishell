@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"base.h": "c",
-		"complex": "c",
-		"algorithm": "c",
-		"ios": "c",
-		"util.h": "c"
-	}
-}

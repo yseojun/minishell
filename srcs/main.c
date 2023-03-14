@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 15:30:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:57:31 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 static void	manage_signals(void);
 void		handler(int sig);
 static void	finish_line(char *str, t_data *data);
+static void	remove_comment(char *str);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -39,6 +40,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (!str)
 			break ;
 		add_history(str);
+		remove_comment(str);
 		if (parse_line(str, &data) == FAILURE)
 		{
 			free(str);
@@ -52,6 +54,16 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	// system("leaks --quiet minishell");
 	return (SUCCESS);
+}
+
+static void	remove_comment(char *str)
+{
+	while (*str)
+	{
+		if (*str == '#')
+			*str = 0;
+		str++;
+	}
 }
 
 static void	manage_signals(void)
