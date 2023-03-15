@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 20:49:40 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 14:13:34 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ static int	chk_condition(t_token *now, int *brace_opened)
 		return (FAILURE);
 	return (SUCCESS);
 }
-
 
 static void	remove_comment(char *str)
 {

@@ -1,29 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_file.c                                        :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:55:55 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 14:02:25 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
 static void	write_heredoc(int heredoc_fd, char *limiter);
-
-int	open_heredoc(t_token *search)
-{
-	char	*heredoc_tmp_name;
-	int		fd;
-
-	heredoc_tmp_name = ft_itoa((unsigned long long) &search->token);
-	fd = open(heredoc_tmp_name, O_RDONLY);
-	free(heredoc_tmp_name);
-	return (fd);
-}
+static void	heredoc_child(int heredoc_fd, char *limiter);
 
 void	find_heredoc(t_token *top)
 {
@@ -50,19 +40,21 @@ void	find_heredoc(t_token *top)
 	}
 }
 
-void	unlink_heredoc(t_token *top)
+static void	write_heredoc(int heredoc_fd, char *limiter)
 {
-	char	*heredoc_tmp_name;
+	pid_t		pid;
+	int			status;
 
-	if (top == 0)
-		return ;
-	unlink_heredoc(top->left);
-	unlink_heredoc(top->right);
-	if (ft_strncmp(top->token, "<<", 3) == 0)
+	pid = fork();
+	if (pid == 0)
+		heredoc_child(heredoc_fd, limiter);
+	else
 	{
-		heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
-		unlink(heredoc_tmp_name);
-		free(heredoc_tmp_name);
+		wait3(&status, 0, 0);
+		exit_status(EXIT_SUCCESS);
+		if (status != 0)
+			exit_status(EXIT_FAILURE * 256);
+		signal(SIGINT, handler);
 	}
 }
 
@@ -86,20 +78,29 @@ static void	heredoc_child(int heredoc_fd, char *limiter)
 	exit(EXIT_SUCCESS);
 }
 
-static void	write_heredoc(int heredoc_fd, char *limiter)
+int	open_heredoc(t_token *search)
 {
-	pid_t		pid;
-	int			status;
+	char	*heredoc_tmp_name;
+	int		fd;
 
-	pid = fork();
-	if (pid == 0)
-		heredoc_child(heredoc_fd, limiter);
-	else
+	heredoc_tmp_name = ft_itoa((unsigned long long) &search->token);
+	fd = open(heredoc_tmp_name, O_RDONLY);
+	free(heredoc_tmp_name);
+	return (fd);
+}
+
+void	unlink_heredoc(t_token *top)
+{
+	char	*heredoc_tmp_name;
+
+	if (top == 0)
+		return ;
+	unlink_heredoc(top->left);
+	unlink_heredoc(top->right);
+	if (ft_strncmp(top->token, "<<", 3) == 0)
 	{
-		wait3(&status, 0, 0);
-		exit_status(EXIT_SUCCESS);
-		if (status != 0)
-			exit_status(EXIT_FAILURE * 256);
-		signal(SIGINT, handler);
+		heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
+		unlink(heredoc_tmp_name);
+		free(heredoc_tmp_name);
 	}
 }

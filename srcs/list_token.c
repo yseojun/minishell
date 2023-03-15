@@ -6,13 +6,14 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:59:37 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 13:36:11 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "parse.h"
 
-t_token	*make_token(char *str, int *idx)
+t_token	*lst_new_token(char *str, int *idx)
 {
 	t_token	*new;
 

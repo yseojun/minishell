@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_symbol.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:32:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/05 16:51:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/15 14:11:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,4 @@ int	is_special_chr(char c)
 int	is_brace(char *str)
 {
 	return (!ft_strncmp(str, "(", 2) || !ft_strncmp(str, ")", 2));
-}
-
-int	is_brace_chr(char c)
-{
-	return (c == '(' || c == ')');
 }

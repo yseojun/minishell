@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_set_pipe.c                                    :+:      :+:    :+:   */
+/*   pipe_set.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:26:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:23:15 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "util.h"
 
 static int	is_builtin_func(t_data *data);
+static int	set_in_fd(t_token *unit, t_data *data);
+static int	set_out_fd(t_token *unit, t_data *data);
 
 int	chk_cmd(t_data *data)
 {
@@ -116,7 +118,7 @@ int	count_cmd(t_token *unit)
 	return (count);
 }
 
-int	set_in_fd(t_token *unit, t_data *data)
+static int	set_in_fd(t_token *unit, t_data *data)
 {
 	t_token	*search;
 
@@ -147,7 +149,7 @@ int	set_in_fd(t_token *unit, t_data *data)
 	return (SUCCESS);
 }
 
-int	set_out_fd(t_token *unit, t_data *data)
+static int	set_out_fd(t_token *unit, t_data *data)
 {
 	t_token	*search;
 

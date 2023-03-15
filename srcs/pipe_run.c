@@ -1,15 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_run_unit.c                                    :+:      :+:    :+:   */
+/*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/14 20:49:44 by rolee            ###   ########.fr       */
+/*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
+/*   Updated: 2023/03/15 14:15:11 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "base.h"
 #include "util.h"
@@ -18,7 +17,7 @@ static void	run_unit(t_token *unit, t_data *data);
 static int	run_single_builtin(t_data *data);
 static void	child(t_data *data);
 static void	run_command(t_data *data);
-static int  chk_stat(char *path_command);
+static int	chk_stat(char *path_command);
 
 int	excute_tree(t_token *top, t_data *data)
 {

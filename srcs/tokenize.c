@@ -6,14 +6,14 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 18:46:51 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 14:11:25 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-static int		get_quote_size(char *str, int idx);
 static void		get_token_size(char *str, int *idx);
+static int		get_quote_size(char *str, int idx);
 
 int	tokenize(char *str, t_data *data)
 {
@@ -27,7 +27,7 @@ int	tokenize(char *str, t_data *data)
 			idx++;
 		else
 		{
-			new = make_token(str, &idx);
+			new = lst_new_token(str, &idx);
 			if (!new || lst_token_add_back(&data->head, new) == FAILURE)
 				return (FAILURE);
 			if (new->type == 0)
@@ -82,7 +82,7 @@ static void	get_token_size(char *str, int *idx)
 	while (str[*idx] && str[*idx] != ' ')
 	{
 		qoute_size = 0;
-		if (is_brace_chr(str[*idx]) || is_special_chr(str[*idx]))
+		if (str[*idx] == '(' || str[*idx] == ')' || is_special_chr(str[*idx]))
 		{
 			if (start == *idx)
 			{
