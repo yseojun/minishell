@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 20:49:01 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 15:25:32 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "parse.h"
 #include "util.h"
 
+static int	is_todo_wildcard(t_token *search);
 static int	wildcard(t_data *data, t_token **search);
 static void	make_wildcard_lst(t_data *data, t_token *now);
 
@@ -25,14 +26,12 @@ int	transform(t_data *data)
 	search = data->head;
 	while (search)
 	{
-		is_expanded = 0;
 		search->token = expand(data, search->token, &is_expanded);
-		if (!is_expanded && (search->left && ft_strncmp("<<", search->left->token, 3) != 0)
-			&& ft_strchr(search->token, '*'))
+		if (is_todo_wildcard(search))
 		{
 			if (wildcard(data, &search) == FAILURE)
 				return (FAILURE);
-			continue ;
+			continue;
 		}
 		search->token = remove_quote(search->token);
 		if (is_expanded && ft_strlen(search->token) == 0)
@@ -40,9 +39,18 @@ int	transform(t_data *data)
 		else
 			search = search->right;
 	}
-	if (data->head == 0)
+	if (!data->head)
 		return (FAILURE);
 	return (SUCCESS);
+}
+
+static int	is_todo_wildcard(t_token *search)
+{
+	if (ft_strncmp(search->token, "*", 2) != 0)
+		return (FALSE);
+	if (search->left && ft_strncmp(search->left->token, "<<", 3) == 0)
+		return (FALSE);
+	return (TRUE);
 }
 
 static int	wildcard(t_data *data, t_token **search)
@@ -53,6 +61,8 @@ static int	wildcard(t_data *data, t_token **search)
 		if (merge_wildcard_lst(data, search) == FAILURE)
 			return (FAILURE);
 	}
+	else
+		*search = (*search)->right;
 	return (SUCCESS);
 }
 

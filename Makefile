@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
