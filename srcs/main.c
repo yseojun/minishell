@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 18:32:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 21:21:08 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "parse.h"
 
 static void	finish_line(char *str, t_data *data);
+static void	lst_tree_free_all(t_token *top);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -64,5 +65,14 @@ static void	finish_line(char *str, t_data *data)
 	unlink_heredoc(data->head);
 	lst_tree_free_all(data->head);
 	data->head = 0;
-	system("leaks --quiet minishell");
+	//system("leaks --quiet minishell");
+}
+
+static void	lst_tree_free_all(t_token *top)
+{
+	if (top == 0)
+		return ;
+	lst_tree_free_all(top->left);
+	lst_tree_free_all(top->right);
+	lst_token_free(top);
 }

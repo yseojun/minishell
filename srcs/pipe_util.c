@@ -6,12 +6,11 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 14:05:52 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 16:36:27 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
-#include "parse.h"
 #include "util.h"
 
 void	reset_line_data(t_data *data)
@@ -23,40 +22,6 @@ void	reset_line_data(t_data *data)
 	data->pipe_count = 0;
 	data->is_pipe = 0;
 	data->head = 0;
-}
-
-char	*make_real_path(char *path, char *command)
-{
-	size_t	s1_len;
-	size_t	s2_len;
-	char	*str;
-
-	if (!path || !command)
-		return (NULL);
-	s1_len = ft_strlen(path);
-	s2_len = ft_strlen(command);
-	str = (char *)malloc(s1_len + s2_len + 2);
-	if (!str)
-		return (NULL);
-	ft_memcpy(str, path, s1_len);
-	str[s1_len] = '/';
-	ft_memcpy(str + s1_len + 1, command, s2_len + 1);
-	return (str);
-}
-
-char	**get_paths(t_data *data)
-{
-	char	*path_value;
-	char	**paths;
-
-	path_value = get_value(data, "PATH");
-	if (!path_value)
-		return (NULL);
-	paths = ft_split(path_value, ':');
-	free(path_value);
-	if (!paths)
-		exit(EXIT_FAILURE);
-	return (paths);
 }
 
 char	*find_command_in_path(char *command, t_data *data)
@@ -82,4 +47,51 @@ char	*find_command_in_path(char *command, t_data *data)
 	}
 	free_arr((void **)paths);
 	return (command);
+}
+
+int	chk_stat(char *path_command)
+{
+	struct stat	sp;
+
+	lstat(path_command, &sp);
+	if (S_ISDIR(sp.st_mode))
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+void	add_pid(t_data *data, pid_t	pid)
+{
+	t_pid	*last;
+	t_pid	*new;
+
+	new = (t_pid *)malloc(sizeof(t_pid));
+	new->pid = pid;
+	new->next = 0;
+	if (data->pids)
+	{
+		last = data->pids;
+		while (last->next)
+			last = last->next;
+		last->next = new;
+	}
+	else
+		data->pids = new;
+}
+
+void	wait_all(t_data *data)
+{
+	t_pid	*search;
+	t_pid	*to_delete;
+	int		status;
+
+	search = data->pids;
+	while (search)
+	{
+		waitpid(search->pid, &status, 0);
+		to_delete = search;
+		search = search->next;
+		free(to_delete);
+		exit_status(status);
+	}
+	data->pids = 0;
 }

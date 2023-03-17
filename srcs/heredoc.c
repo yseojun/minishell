@@ -6,11 +6,12 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 14:02:25 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 12:53:50 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "util.h"
 
 static void	write_heredoc(int heredoc_fd, char *limiter);
 static void	heredoc_child(int heredoc_fd, char *limiter);
@@ -40,19 +41,26 @@ void	find_heredoc(t_token *top)
 	}
 }
 
+void	heredoc_handler(int sig)
+{
+	if (sig == SIGINT)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+}
+
 static void	write_heredoc(int heredoc_fd, char *limiter)
 {
 	pid_t		pid;
 	int			status;
 
-	pid = fork();
+	pid = _fork();
 	if (pid == 0)
 		heredoc_child(heredoc_fd, limiter);
 	else
 	{
+		//signal(SIGINT, heredoc_handler);
 		wait3(&status, 0, 0);
 		exit_status(EXIT_SUCCESS);
-		if (status != 0)
+		if (status != EXIT_SUCCESS)
 			exit_status(EXIT_FAILURE * 256);
 		signal(SIGINT, handler);
 	}

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 20:50:25 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 20:31:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*expand(t_data *data, char *str, int *flag)
 	return (str);
 }
 
-char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
+char	*get_expanded(t_data *data, int dollar, char *str, int *idx)
 {
 	int			key_len;
 	char		*key;
@@ -45,10 +45,10 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 	int			new_size;
 	char		*new_str;
 
-	key_len = get_key_len(dollar_idx + 1, str);
+	key_len = get_key_len(dollar + 1, str);
 	if (key_len == 0)
 		return (str);
-	key = ft_substr(str, dollar_idx + 1, key_len);
+	key = ft_substr(str, dollar + 1, key_len);
 	if (!key)
 		exit(EXIT_FAILURE);
 	value = get_value(data, key);
@@ -60,7 +60,7 @@ char	*get_expanded(t_data *data, int dollar_idx, char *str, int *idx)
 	new_str = (char *)malloc(new_size + 1);
 	if (!new_str)
 		exit(EXIT_FAILURE);
-	put_in_new_str(str, new_str, value, dollar_idx);
+	put_in_new_str(str, new_str, value, dollar);
 	free(value);
 	return (new_str);
 }

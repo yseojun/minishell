@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 13:36:11 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 21:19:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,4 @@ void	lst_token_free_all(t_token *lst)
 		lst_token_free(search);
 		search = next;
 	}
-}
-
-void	lst_tree_free_all(t_token *top)
-{
-	if (top == 0)
-		return ;
-	lst_tree_free_all(top->left);
-	lst_tree_free_all(top->right);
-	lst_token_free(top);
 }

@@ -5,76 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/14 17:07:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 18:06:36 by rolee            ###   ########.fr       */
+/*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
+/*   Updated: 2023/03/15 21:12:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "parse.h"
 
-static t_token	*ignore_brace(t_token *search);
+static t_token	*set_cmd_top(t_token *head);
+static t_token	*add_command(t_token *top, t_token *add);
+static t_token	*add_redirection(t_token **top, t_token *add);
 
-t_token	*find_logical_operator(t_token *tail)
+t_token	*find_command(t_token *tail)
 {
+	t_token	*head;
 	t_token	*search;
+	t_token	*top;
 
-	search = tail;
+	head = tail;
+	while (head->left)
+		head = head->left;
+	top = set_cmd_top(head);
+	search = head;
 	while (search)
 	{
-		if (search->type == BRACE)
-			search = ignore_brace(search);
-		else if (search->type == AND || search->type == OR)
-		{
-			if (search->left)
-			{
-				search->left->right = NULL;
-				search->left = make_tree(search->left);
-			}
-			if (search->right)
-			{
-				search->right->left = NULL;
-				search->right = make_tree(tail);
-			}
-			return (search);
-		}
-		search = search->left;
+		if (search->type == CMD)
+			search = add_command(top, search);
+		else if (search->type == REDIRECTION)
+			search = add_redirection(&top, search);
 	}
-	return (0);
+	return (top);
 }
 
-t_token	*find_pipe(t_token *tail)
+static t_token	*set_cmd_top(t_token *head)
 {
 	t_token	*search;
+	t_token	*top;
 
-	search = tail;
+	search = head;
 	while (search)
 	{
-		if (search->type == BRACE)
-			search = ignore_brace(search);
-		else if (search->type == PIPE)
-		{
-			if (search->left)
-			{
-				search->left->right = NULL;
-				search->left = make_tree(search->left);
-			}
-			if (search->right)
-			{
-				search->right->left = NULL;
-				search->right = make_tree(tail);
-			}
-			return (search);
-		}
-		search = search->left;
+		if (search->type == CMD)
+			break ;
+		search = search->right;
 	}
-	return (0);
+	top = search;
+	if (top)
+		top->left = 0;
+	return (top);
 }
 
-static t_token	*ignore_brace(t_token *search)
+static t_token	*add_command(t_token *top, t_token *add)
 {
-	search = search->left;
-	while (search->type != BRACE)
-		search = search->left;
-	return (search);
+	t_token	*next_search;
+	t_token	*search;
+
+	next_search = add->right;
+	if (next_search)
+	{
+		next_search->left->right = NULL;
+		next_search->left = NULL;
+	}
+	if (top == add)
+		return (next_search);
+	search = top;
+	while (search->right)
+		search = search->right;
+	search->right = add;
+	return (next_search);
+}
+
+static t_token	*add_redirection(t_token **top, t_token *add)
+{
+	t_token	*next_search;
+	t_token	*search;
+
+	next_search = add->right->right;
+	if (next_search)
+	{
+		if (next_search->left != add->right)
+			add->right->right = 0;
+		else
+		{
+			next_search->left->right = NULL;
+			next_search->left = NULL;
+		}
+	}
+	if (*top)
+	{
+		search = *top;
+		while (search->left)
+			search = search->left;
+		search->left = add;
+	}
+	else
+		*top = add;
+	add->right->left = 0;
+	return (next_search);
 }

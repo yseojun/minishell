@@ -21,10 +21,11 @@ wildcard_merge.c \
 tree_make1.c \
 tree_make2.c \
 heredoc.c \
-pipe_run.c \
 pipe_set.c \
+pipe_check_cmd.c \
+pipe_execute_tree.c \
+pipe_run.c \
 pipe_util.c \
-pipe_util_pid.c \
 builtin_func1.c \
 builtin_func2.c \
 builtin_func3.c

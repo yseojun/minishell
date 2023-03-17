@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 14:11:25 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 21:27:58 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,6 @@ int	tokenize(char *str, t_data *data)
 		}
 	}
 	return (SUCCESS);
-}
-
-int	set_type(char *token)
-{
-	if (is_pipe(token))
-		return (PIPE);
-	else if (is_redirection(token))
-		return (REDIRECTION);
-	else if (is_brace(token))
-		return (BRACE);
-	else if (!ft_strncmp(token, "&&", 3))
-		return (AND);
-	else if (!ft_strncmp(token, "||", 3))
-		return (OR);
-	return (0);
 }
 
 char	*put_token(char *str, int *idx)
@@ -118,4 +103,19 @@ static int	get_quote_size(char *str, int idx)
 	if (!str[idx])
 		return (0);
 	return (quote_size);
+}
+
+int	set_type(char *token)
+{
+	if (is_pipe(token))
+		return (PIPE);
+	else if (is_redirection(token))
+		return (REDIRECTION);
+	else if (is_brace(token))
+		return (BRACE);
+	else if (!ft_strncmp(token, "&&", 3))
+		return (AND);
+	else if (!ft_strncmp(token, "||", 3))
+		return (OR);
+	return (0);
 }

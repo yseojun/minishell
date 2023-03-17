@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/15 15:25:32 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/15 20:35:57 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ int	transform(t_data *data)
 	search = data->head;
 	while (search)
 	{
+		is_expanded = 0;
 		search->token = expand(data, search->token, &is_expanded);
 		if (is_todo_wildcard(search))
 		{
 			if (wildcard(data, &search) == FAILURE)
 				return (FAILURE);
-			continue;
+			continue ;
 		}
 		search->token = remove_quote(search->token);
 		if (is_expanded && ft_strlen(search->token) == 0)

@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 14:11:55 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 12:15:29 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,29 +96,21 @@ typedef struct s_data
 	struct s_pid	*pids;
 }	t_data;
 
-//main.c
+//main.c / set_beginning.c
 int			exit_status(int status);
-
-//set_beginning.c
 void		set_beginning(t_data *data, char *envp[]);
 void		handler(int sig);
 
-//list_env.c
+//list_env.c / list_token.c / list_wildcard.c
 t_env		*lst_new_env(char *name, char *value);
 void		lst_env_add_back(t_env **head, t_env *new);
 t_env		*lst_env_last(t_env *lst);
 void		lst_env_free(t_env *lst);
-
-//list_token.c
 t_token		*lst_new_token(char *str, int *idx);
 int			lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
 void		lst_token_free_all(t_token *lst);
-
-void		lst_tree_free_all(t_token *top);
-
-//list_wildcard.c
 t_wildcard	*lst_new_wildcard(char *name);
 int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
 t_wildcard	*lst_wildcard_last(t_wildcard *lst);
@@ -137,20 +129,21 @@ int			open_heredoc(t_token *search);
 void		find_heredoc(t_token *top);
 void		unlink_heredoc(t_token *top);
 
-//pipe_set.c
-int			chk_cmd(t_data *data);
-char		**set_cmd(t_token *unit);
-int			count_cmd(t_token *unit);
+//pipe_set.c / pipe_check_cmd.c
 int			set_fd(t_token *unit, t_data *data);
-
-//run_pipe.c
-int			excute_tree(t_token *top, t_data *data);
-
-//pipe_util.c pipe_util_pid.c
-void		reset_line_data(t_data *data);
+char		**set_cmd(t_token *unit);
+int			check_cmd(t_data *data);
 char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
+
+//pipe_execute_tree.c / pipe_run.c
+int			excute_tree(t_token *top, t_data *data);
+void		run_unit(t_token *unit, t_data *data);
+
+//pipe_util.c
+void		reset_line_data(t_data *data);
 char		*find_command_in_path(char *command, t_data *data);
+int			chk_stat(char *path_command);
 void		add_pid(t_data *data, pid_t	pid);
 void		wait_all(t_data *data);
 
