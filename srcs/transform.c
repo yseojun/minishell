@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 18:22:04 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:26:18 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "util.h"
 
 static int	is_todo_wildcard(t_token *search);
-static int	star_surrounded_by(char quote, char *token);
+static int	is_surrounded_by_quote(char *token);
 static int	wildcard(t_data *data, t_token **search);
 static void	make_wildcard_lst(t_data *data, t_token *now);
 
@@ -59,8 +59,8 @@ static int	is_todo_wildcard(t_token *search)
 
 static int	is_surrounded_by_quote(char *token)
 {
-	int double_flag;
-	int single_flag;
+	int	double_flag;
+	int	single_flag;
 
 	double_flag = 0;
 	single_flag = 0;
