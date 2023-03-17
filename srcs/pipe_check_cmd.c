@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 17:47:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 19:50:53 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	check_cmd(t_data *data)
 			return (SUCCESS);
 		if (check_cmd_path(data) == SUCCESS)
 			return (SUCCESS);
-		if (access(data->cmd_arr[0], F_OK) == SUCCESS)
+		if (ft_strchr(data->cmd_arr[0], '/')
+			&& access(data->cmd_arr[0], F_OK) == SUCCESS)
 			return (SUCCESS);
 	}
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

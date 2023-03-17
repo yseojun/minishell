@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:09:21 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 14:38:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:33:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ char	*remove_quote(char *str)
 			open_idx = idx;
 			close_idx = get_close_idx(idx + 1, str[idx], str);
 			if (close_idx == FAILURE)
-				return (str);
+			{
+				idx++;
+				continue;
+			}
 			str = rm_quote(open_idx, close_idx, str);
 			idx += close_idx - open_idx - 2;
 		}
