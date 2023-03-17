@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_rm_quote.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:09:21 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 18:33:35 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 20:22:22 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*remove_quote(char *str)
 			if (close_idx == FAILURE)
 			{
 				idx++;
-				continue;
+				continue ;
 			}
 			str = rm_quote(open_idx, close_idx, str);
 			idx += close_idx - open_idx - 2;

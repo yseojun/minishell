@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 20:10:13 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:20:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,27 @@ static int	is_todo_wildcard(t_token *search)
 
 static int	is_surrounded_by_quote(char *token)
 {
-	int	double_flag;
-	int	single_flag;
+	int	flag[2];
 
-	double_flag = 0;
-	single_flag = 0;
+	flag[0] = 0;
+	flag[1] = 0;
 	while (*token)
 	{
 		if (*token == '\'')
 		{
-			if (single_flag == 0)
-				single_flag++;
+			if (flag[0] == 0)
+				flag[0]++;
 			else
-				single_flag--;
+				flag[0]--;
 		}
 		else if (*token == '\"')
 		{
-			if (double_flag == 0)
-				double_flag++;
+			if (flag[1] == 0)
+				flag[1]++;
 			else
-				double_flag--;
+				flag[1]--;
 		}
-		else if (*token == '*' && !single_flag && !double_flag)
+		else if (*token == '*' && !flag[0] && !flag[1])
 			return (FALSE);
 		token++;
 	}

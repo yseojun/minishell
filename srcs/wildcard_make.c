@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/17 20:10:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:16:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "util.h"
 #include "parse.h"
 
-static int			check_wildcard(char *name, t_wildcard *to_find, t_token *now);
-static int			is_good_format(char *name, t_wildcard *to_find, char *token);
+static int			chk_wildcard(char *name, t_wildcard *to_find, t_token *now);
+static int			chk_ends(char *name, t_wildcard *to_find, char *token);
 static int			find_str(char *to_find_str, char *name, int *idx);
 static t_wildcard	*remove_wildcard(t_data *data, t_wildcard *prev, \
 	t_wildcard *to_remove);
@@ -31,7 +31,7 @@ void	cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now)
 	prev = search;
 	while (search)
 	{
-		if (check_wildcard(search->name, to_find, now) == FAILURE)
+		if (chk_wildcard(search->name, to_find, now) == FAILURE)
 			search = remove_wildcard(data, prev, search);
 		else
 		{
@@ -41,14 +41,14 @@ void	cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now)
 	}
 }
 
-static int	check_wildcard(char *name, t_wildcard *to_find, t_token *now)
+static int	chk_wildcard(char *name, t_wildcard *to_find, t_token *now)
 {
 	t_wildcard	*search;
 	int			idx;
 
 	idx = 0;
 	search = to_find;
-	if (is_good_format(name, to_find, now->token))
+	if (chk_ends(name, to_find, now->token))
 	{
 		while (search)
 		{
@@ -62,7 +62,7 @@ static int	check_wildcard(char *name, t_wildcard *to_find, t_token *now)
 	return (FAILURE);
 }
 
-static int	is_good_format(char *name, t_wildcard *to_find, char *token)
+static int	chk_ends(char *name, t_wildcard *to_find, char *token)
 {
 	int			find_len;
 	const int	name_len = ft_strlen(name);
