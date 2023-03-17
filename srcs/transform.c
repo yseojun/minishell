@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 20:20:57 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/17 21:58:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 #include "parse.h"
 #include "util.h"
 
-static int	is_todo_wildcard(t_token *search);
-static int	is_surrounded_by_quote(char *token);
-static int	wildcard(t_data *data, t_token **search);
-static void	make_wildcard_lst(t_data *data, t_token *now);
+static int		is_todo_wildcard(t_token *search);
+static int		is_surrounded_by_quote(char *token);
+static t_token	*pull_token(t_token **head, t_token *remove);
 
 int	transform(t_data *data)
 {
@@ -44,6 +43,26 @@ int	transform(t_data *data)
 	if (!data->head)
 		return (FAILURE);
 	return (SUCCESS);
+}
+
+static t_token	*pull_token(t_token **head, t_token *remove)
+{
+	t_token	*temp;
+
+	temp = remove->right;
+	if (remove->left)
+		remove->left->right = remove->right;
+	if (remove->right)
+	{
+		if (*head == remove)
+			*head = remove->right;
+		remove->right->left = remove->left;
+	}
+	if (!remove->left && !remove->right)
+		*head = 0;
+	lst_token_free(remove);
+	remove = NULL;
+	return (temp);
 }
 
 static int	is_todo_wildcard(t_token *search)
@@ -84,42 +103,4 @@ static int	is_surrounded_by_quote(char *token)
 		token++;
 	}
 	return (TRUE);
-}
-
-static int	wildcard(t_data *data, t_token **search)
-{
-	make_wildcard_lst(data, *search);
-	if (data->wildcard)
-	{
-		if (merge_wildcard_lst(data, search) == FAILURE)
-			return (FAILURE);
-	}
-	else
-		*search = (*search)->right;
-	return (SUCCESS);
-}
-
-static void	make_wildcard_lst(t_data *data, t_token *now)
-{
-	t_wildcard		*to_find;
-	DIR				*dp;
-	char			*cwd;
-	struct dirent	*fp;
-
-	cwd = getcwd(0, 0);
-	dp = opendir(cwd);
-	free(cwd);
-	while (1)
-	{
-		fp = readdir(dp);
-		if (fp == NULL)
-			break ;
-		if (fp->d_name[0] != '.')
-			wildcard_add_back(&data->wildcard, lst_new_wildcard(fp->d_name));
-	}
-	closedir(dp);
-	to_find = make_to_find_head(now->token);
-	if (to_find)
-		cmp_wildcard(data, to_find, now);
-	lst_wildcard_free_all(to_find);
 }

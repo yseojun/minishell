@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:21:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:39:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "util.h"
 #include "parse.h"
 
+static void	run_line(t_data *data);
 static void	finish_line(char *str, t_data *data);
 static void	lst_tree_free_all(t_token *top);
 
@@ -34,15 +35,28 @@ int	main(int argc, char *argv[], char *envp[])
 			break ;
 		add_history(str);
 		if (parse_line(str, &data) == SUCCESS)
-		{
-			exit_status(EXIT_SUCCESS);
-			find_heredoc(data.head);
-			if (exit_status(LOAD) == EXIT_SUCCESS)
-				excute_tree(data.head, &data);
-		}
+			run_line(&data);
 		finish_line(str, &data);
 	}
 	return (SUCCESS);
+}
+
+static void	run_line(t_data *data)
+{
+	exit_status(EXIT_SUCCESS);
+	find_heredoc(data->head);
+	if (exit_status(LOAD) == EXIT_SUCCESS)
+		excute_tree(data->head, data);
+}
+
+static void	finish_line(char *str, t_data *data)
+{
+	free(str);
+	free_arr((void **)data->cmd_arr);
+	unlink_heredoc(data->head);
+	lst_tree_free_all(data->head);
+	data->head = 0;
+	//system("leaks --quiet minishell");
 }
 
 int	exit_status(int status)
@@ -56,16 +70,6 @@ int	exit_status(int status)
 	else if (WIFSIGNALED(status))
 		exit_status = 128 + WTERMSIG(status);
 	return (exit_status);
-}
-
-static void	finish_line(char *str, t_data *data)
-{
-	free(str);
-	free_arr((void **)data->cmd_arr);
-	unlink_heredoc(data->head);
-	lst_tree_free_all(data->head);
-	data->head = 0;
-	//system("leaks --quiet minishell");
 }
 
 static void	lst_tree_free_all(t_token *top)

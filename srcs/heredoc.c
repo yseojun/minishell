@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 18:10:07 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 20:52:39 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static void	write_heredoc(int heredoc_fd, char *limiter)
 static void	heredoc_child(int heredoc_fd, char *limiter)
 {
 	char		*str;
+	extern int	rl_catch_signals;
 
 	signal(SIGINT, SIG_DFL);
 	rl_catch_signals = 1;

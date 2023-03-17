@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 18:07:09 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:59:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static int	set_in_fd(t_token *unit, t_data *data)
 		}
 		if (data->in_fd == FAILURE)
 		{
+			ft_putstr_fd("minishell", STDERR_FILENO);
 			perror(unit->right->token);
 			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
@@ -119,7 +120,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 				close(data->out_fd);
 			if (!ft_strncmp(unit->token, ">>", 3))
 				data->out_fd = open(unit->right->token, opt | O_APPEND, 0644);
-			else if (!ft_strncmp(unit->token, ">", 2))
+			else
 				data->out_fd = open(unit->right->token, opt | O_TRUNC, 0644);
 		}
 		if (data->out_fd == FAILURE)

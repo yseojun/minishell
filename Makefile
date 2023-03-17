@@ -10,12 +10,13 @@ list_env.c \
 list_wildcard.c \
 list_token.c \
 is_symbol.c \
-parse.c \
+parse_line.c \
 tokenize.c \
 transform.c \
 transform_expand.c \
 transform_rm_quote.c \
-transform_util.c \
+transform_qoute_util.c \
+wildcard.c \
 wildcard_make.c \
 wildcard_merge.c \
 wildcard_tofind.c \

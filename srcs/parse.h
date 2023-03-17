@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 20:10:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/17 21:58:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char		*get_expanded(t_data *data, int dollar, char *str, int *idx);
 char		*get_value(t_data *data, char *key);
 void		handle_single_quote(char *str, int *idx);
 char		*handle_double_quote(t_data *data, char *str, int *idx);
-t_token		*pull_token(t_token **head, t_token *remove);
 
 // transform - wildcard
+int			wildcard(t_data *data, t_token **search);
 void		cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now);
 int			merge_wildcard_lst(t_data *data, t_token **now);
 t_wildcard	*make_to_find_head(char *s);

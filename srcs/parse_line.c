@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:09:03 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:34:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	parse_line(char *str, t_data *data)
 		if (data->head == 0)
 			return (FAILURE);
 		lst_token_free_all(data->head);
+		data->head = 0;
 		return (FAILURE);
 	}
 	data->head = make_tree(lst_token_last(data->head));

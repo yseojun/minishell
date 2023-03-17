@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 20:21:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/17 20:52:52 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static t_env	*init_env(char *envp[]);
 
 void	set_beginning(t_data *data, char *envp[])
 {
+	extern int	rl_catch_signals;
+
 	data->env = init_env(envp);
 	rl_catch_signals = 0;
 	tcgetattr(fileno(stdin), &data->term);

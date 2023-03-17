@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 17:47:53 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:47:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ void	run_unit(t_token *unit, t_data *data)
 	if (set_fd(unit, data) == FAILURE)
 		return ;
 	data->cmd_arr = set_cmd(unit);
-	if (data->cmd_arr == 0)
-		return ;
-	if (check_cmd(data) == FAILURE)
-		return ;
-	if (run_single_builtin(data))
+	if (check_cmd(data) == FAILURE || run_single_builtin(data) == TRUE)
 		return ;
 	pid = _fork();
 	if (pid == 0)

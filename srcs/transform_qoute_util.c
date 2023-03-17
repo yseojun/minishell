@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_util.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 16:47:14 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:58:11 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,4 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 	}
 	*idx = new_idx;
 	return (str);
-}
-
-t_token	*pull_token(t_token **head, t_token *remove)
-{
-	t_token	*temp;
-
-	temp = remove->right;
-	if (remove->left)
-		remove->left->right = remove->right;
-	if (remove->right)
-	{
-		if (*head == remove)
-			*head = remove->right;
-		remove->right->left = remove->left;
-	}
-	if (!remove->left && !remove->right)
-		*head = 0;
-	lst_token_free(remove);
-	remove = NULL;
-	return (temp);
 }

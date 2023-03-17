@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 19:50:53 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 21:44:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static int	check_cmd_path(t_data *data);
 int	check_cmd(t_data *data)
 {
 	data->is_built_in = 0;
+	if (data->cmd_arr == NULL)
+		return (FAILURE);
 	if (ft_strlen(data->cmd_arr[0]) != 0)
 	{
 		if (is_builtin_func(data) == SUCCESS)
