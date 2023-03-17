@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/15 21:18:30 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 17:47:53 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ static void	manage_fd(t_data *data)
 static void	child(t_data *data)
 {
 	signal(SIGQUIT, SIG_DFL);
+	data->term.c_lflag |= ECHOCTL;
+	tcsetattr(fileno(stdin), TCSANOW, &data->term);
 	if (data->pipe_count > 0)
 		close(data->pipefd[P_READ]);
 	_dup2(data->in_fd, STDIN_FILENO);

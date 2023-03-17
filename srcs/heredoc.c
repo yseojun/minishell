@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 12:53:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:10:07 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,6 @@ void	find_heredoc(t_token *top)
 	}
 }
 
-void	heredoc_handler(int sig)
-{
-	if (sig == SIGINT)
-		ft_putchar_fd('\n', STDOUT_FILENO);
-}
-
 static void	write_heredoc(int heredoc_fd, char *limiter)
 {
 	pid_t		pid;
@@ -57,7 +51,7 @@ static void	write_heredoc(int heredoc_fd, char *limiter)
 		heredoc_child(heredoc_fd, limiter);
 	else
 	{
-		//signal(SIGINT, heredoc_handler);
+		signal(SIGINT, heredoc_handler);
 		wait3(&status, 0, 0);
 		exit_status(EXIT_SUCCESS);
 		if (status != EXIT_SUCCESS)

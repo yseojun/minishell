@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 13:03:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:22:04 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "parse.h"
 #include "util.h"
 
-static int	is_todo_wildcard(t_token *search, int is_expanded);
+static int	is_todo_wildcard(t_token *search);
+static int	star_surrounded_by(char quote, char *token);
 static int	wildcard(t_data *data, t_token **search);
 static void	make_wildcard_lst(t_data *data, t_token *now);
 
@@ -28,7 +29,7 @@ int	transform(t_data *data)
 	{
 		is_expanded = 0;
 		search->token = expand(data, search->token, &is_expanded);
-		if (is_todo_wildcard(search, is_expanded))
+		if (is_todo_wildcard(search))
 		{
 			if (wildcard(data, &search) == FAILURE)
 				return (FAILURE);
@@ -45,16 +46,44 @@ int	transform(t_data *data)
 	return (SUCCESS);
 }
 
-static int	is_todo_wildcard(t_token *search, int is_expanded)
+static int	is_todo_wildcard(t_token *search)
 {
-	// if (ft_strncmp(search->token, "*", 2) != 0)
-	// 	return (FALSE);
-	if (is_expanded && ft_strncmp(search->token, "*", 2) != 0)
-		return (FALSE);
 	if (ft_strchr(search->token, '*') == 0)
+		return (FALSE);
+	if (is_surrounded_by_quote(search->token))
 		return (FALSE);
 	if (search->left && ft_strncmp(search->left->token, "<<", 3) == 0)
 		return (FALSE);
+	return (TRUE);
+}
+
+static int	is_surrounded_by_quote(char *token)
+{
+	int double_flag;
+	int single_flag;
+
+	double_flag = 0;
+	single_flag = 0;
+	while (*token)
+	{
+		if (*token == '\'')
+		{
+			if (single_flag == 0)
+				single_flag++;
+			else
+				single_flag--;
+		}
+		else if (*token == '\"')
+		{
+			if (double_flag == 0)
+				double_flag++;
+			else
+				double_flag--;
+		}
+		else if (*token == '*' && !single_flag && !double_flag)
+			return (FALSE);
+		token++;
+	}
 	return (TRUE);
 }
 

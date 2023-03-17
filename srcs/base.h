@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 12:15:29 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:09:15 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
+# include <termios.h>
 # include "../libft/libft.h"
 
 # define P_WRITE 1
@@ -50,8 +51,6 @@
 # define REDIRECTION 6
 
 # define LOAD -1
-
-extern int	rl_catch_signals;
 
 typedef struct s_pid
 {
@@ -85,6 +84,7 @@ typedef struct s_data
 	t_env			*env;
 	t_token			*head;
 	t_wildcard		*wildcard;
+	struct termios	term;
 	char			**cmd_arr;
 	int				is_built_in;
 	int				pipefd[2];
@@ -100,6 +100,7 @@ typedef struct s_data
 int			exit_status(int status);
 void		set_beginning(t_data *data, char *envp[]);
 void		handler(int sig);
+void		heredoc_handler(int sig);
 
 //list_env.c / list_token.c / list_wildcard.c
 t_env		*lst_new_env(char *name, char *value);

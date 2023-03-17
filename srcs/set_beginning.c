@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 12:54:16 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:10:13 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ static t_env	*init_env(char *envp[]);
 
 void	set_beginning(t_data *data, char *envp[])
 {
-	extern int	rl_catch_signals;
-
 	data->env = init_env(envp);
 	rl_catch_signals = 0;
+	tcgetattr(fileno(stdin), &data->term);
+	data->term.c_lflag &= ~ECHOCTL;
+	tcsetattr(fileno(stdin), TCSANOW, &data->term);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 }
@@ -30,7 +31,7 @@ void	handler(int sig)
 	if (sig == SIGINT)
 	{
 		exit_status(256 * EXIT_FAILURE);
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -55,4 +56,10 @@ static t_env	*init_env(char *envp[])
 		idx++;
 	}
 	return (head);
+}
+
+void	heredoc_handler(int sig)
+{
+	if (sig == SIGINT)
+		ft_putchar_fd('\n', STDOUT_FILENO);
 }

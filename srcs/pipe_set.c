@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:15:29 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 18:07:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,19 +108,19 @@ static int	set_in_fd(t_token *unit, t_data *data)
 
 static int	set_out_fd(t_token *unit, t_data *data)
 {
+	const int	opt = O_WRONLY | O_CREAT;
+
 	while (unit)
 	{
-		if (!ft_strncmp(unit->token, ">>", 3))
+		if (!ft_strncmp(unit->token, ">>", 3)
+			|| !ft_strncmp(unit->token, ">", 2))
 		{
 			if (data->out_fd != STDOUT_FILENO)
 				close(data->out_fd);
-			data->out_fd = open(unit->right->token, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		}
-		else if (!ft_strncmp(unit->token, ">", 2))
-		{
-			if (data->out_fd != STDOUT_FILENO)
-				close(data->out_fd);
-			data->out_fd = open(unit->right->token, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (!ft_strncmp(unit->token, ">>", 3))
+				data->out_fd = open(unit->right->token, opt | O_APPEND, 0644);
+			else if (!ft_strncmp(unit->token, ">", 2))
+				data->out_fd = open(unit->right->token, opt | O_TRUNC, 0644);
 		}
 		if (data->out_fd == FAILURE)
 		{
