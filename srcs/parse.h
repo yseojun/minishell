@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:30:47 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 20:10:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ char		*handle_double_quote(t_data *data, char *str, int *idx);
 t_token		*pull_token(t_token **head, t_token *remove);
 
 // transform - wildcard
-void		cmp_wildcard(t_data *data, char **to_find, t_token *now);
+void		cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now);
 int			merge_wildcard_lst(t_data *data, t_token **now);
+t_wildcard	*make_to_find_head(char *s);
 
 // tree_make
 t_token		*make_tree(t_token *tail);

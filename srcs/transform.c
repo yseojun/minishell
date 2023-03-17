@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 18:26:18 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 20:10:13 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	wildcard(t_data *data, t_token **search)
 
 static void	make_wildcard_lst(t_data *data, t_token *now)
 {
-	char			**to_find;
+	t_wildcard		*to_find;
 	DIR				*dp;
 	char			*cwd;
 	struct dirent	*fp;
@@ -119,8 +119,8 @@ static void	make_wildcard_lst(t_data *data, t_token *now)
 			wildcard_add_back(&data->wildcard, lst_new_wildcard(fp->d_name));
 	}
 	closedir(dp);
-	to_find = ft_split(now->token, '*');
+	to_find = make_to_find_head(now->token);
 	if (to_find)
 		cmp_wildcard(data, to_find, now);
-	free_arr((void **)to_find);
+	lst_wildcard_free_all(to_find);
 }
