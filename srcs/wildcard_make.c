@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_make.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 12:36:39 by seojun            #+#    #+#             */
-/*   Updated: 2023/03/14 18:05:27 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/17 20:10:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
+#include "parse.h"
 
-static int			check_wildcard(char *name, char **to_find, t_token *now);
-static int			is_good_format(char *name, char **to_find, char *token);
+static int			check_wildcard(char *name, t_wildcard *to_find, t_token *now);
+static int			is_good_format(char *name, t_wildcard *to_find, char *token);
 static int			find_str(char *to_find_str, char *name, int *idx);
 static t_wildcard	*remove_wildcard(t_data *data, t_wildcard *prev, \
 	t_wildcard *to_remove);
 
-void	cmp_wildcard(t_data *data, char **to_find, t_token *now)
+void	cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now)
 {
 	t_wildcard	*search;
 	t_wildcard	*prev;
@@ -40,28 +41,28 @@ void	cmp_wildcard(t_data *data, char **to_find, t_token *now)
 	}
 }
 
-static int	check_wildcard(char *name, char **to_find, t_token *now)
+static int	check_wildcard(char *name, t_wildcard *to_find, t_token *now)
 {
-	int	idx;
-	int	to_find_idx;
+	t_wildcard	*search;
+	int			idx;
 
 	idx = 0;
-	to_find_idx = 0;
+	search = to_find;
 	if (is_good_format(name, to_find, now->token))
 	{
-		while (to_find[to_find_idx])
+		while (search)
 		{
-			if (find_str(to_find[to_find_idx], name, &idx) == FAILURE)
+			if (find_str(search->name, name, &idx) == FAILURE)
 				break ;
-			to_find_idx++;
+			search = search->next;
 		}
-		if (to_find[to_find_idx] == 0)
+		if (search == 0)
 			return (SUCCESS);
 	}
 	return (FAILURE);
 }
 
-static int	is_good_format(char *name, char **to_find, char *token)
+static int	is_good_format(char *name, t_wildcard *to_find, char *token)
 {
 	int			find_len;
 	const int	name_len = ft_strlen(name);
@@ -69,17 +70,18 @@ static int	is_good_format(char *name, char **to_find, char *token)
 	find_len = 0;
 	if (token[0] != '*')
 	{
-		find_len = ft_strlen(*to_find);
-		if (ft_strncmp(name, *to_find, find_len) != 0)
+		find_len = ft_strlen(to_find->name);
+		if (ft_strncmp(name, to_find->name, find_len) != 0)
 			return (0);
 	}
-	while (*(to_find + 1))
-		to_find++;
+	while (to_find->next)
+		to_find = to_find->next;
 	if (token[ft_strlen(token) - 1] != '*')
 	{
-		find_len = ft_strlen(*to_find);
+		find_len = ft_strlen(to_find->name);
 		if (name_len < find_len
-			|| ft_strncmp(name + name_len - find_len, *to_find, find_len) != 0)
+			|| ft_strncmp(name + name_len - find_len, \
+				to_find->name, find_len) != 0)
 			return (0);
 	}
 	return (1);
