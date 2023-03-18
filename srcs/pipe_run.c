@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 21:47:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:45:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	run_unit(t_token *unit, t_data *data)
 	if (set_fd(unit, data) == FAILURE)
 		return ;
 	data->cmd_arr = set_cmd(unit);
-	if (check_cmd(data) == FAILURE || run_single_builtin(data) == TRUE)
+	if (check_cmd(data, unit) == FAILURE || run_single_builtin(data) == TRUE)
 		return ;
 	pid = _fork();
 	if (pid == 0)
@@ -92,6 +92,8 @@ static void	run_command(t_data *data)
 		exit(run_builtin_func(data));
 	if (data->cmd_arr)
 		path_command = find_command_in_path(data->cmd_arr[0], data);
+	else
+		exit(EXIT_SUCCESS);
 	if (access(path_command, X_OK) == SUCCESS)
 	{
 		if (chk_stat(path_command) == SUCCESS)

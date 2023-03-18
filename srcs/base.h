@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:43:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define PIPE 4
 # define CMD 5
 # define REDIRECTION 6
+# define ERROR 7
 
 # define LOAD -1
 
@@ -134,7 +135,7 @@ void		unlink_heredoc(t_token *top);
 //pipe_set.c / pipe_check_cmd.c
 int			set_fd(t_token *unit, t_data *data);
 char		**set_cmd(t_token *unit);
-int			check_cmd(t_data *data);
+int			check_cmd(t_data *data, t_token *unit);
 char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 

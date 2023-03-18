@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 21:34:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:27:16 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int	parse_line(char *str, t_data *data)
 	if (tokenize(str, data) == FAILURE || chk_grammer_valid(data) == FAILURE
 		|| transform(data) == FAILURE)
 	{
-		if (data->head == 0)
-			return (FAILURE);
 		lst_token_free_all(data->head);
 		data->head = 0;
 		return (FAILURE);

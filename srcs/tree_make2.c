@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_make2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 13:18:45 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:12:35 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/18 17:22:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_token	*find_command(t_token *tail)
 	search = head;
 	while (search)
 	{
-		if (search->type == CMD)
+		if (search->type == CMD || search->type == ERROR)
 			search = add_command(top, search);
 		else if (search->type == REDIRECTION)
 			search = add_redirection(&top, search);
@@ -46,7 +46,7 @@ static t_token	*set_cmd_top(t_token *head)
 	search = head;
 	while (search)
 	{
-		if (search->type == CMD)
+		if (search->type == CMD || search->type == ERROR)
 			break ;
 		search = search->right;
 	}

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 21:59:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:31:33 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char	**set_cmd(t_token *unit)
 	search = unit;
 	while (search)
 	{
-		cmd[cmd_idx++] = ft_strdup(search->token);
+		if (search->type != ERROR)
+			cmd[cmd_idx++] = ft_strdup(search->token);
 		search = search->right;
 	}
 	cmd[cmd_idx] = 0;
@@ -56,7 +57,8 @@ static int	count_cmd(t_token *unit)
 	search = unit;
 	while (search)
 	{
-		count++;
+		if (search->type != ERROR)
+			count++;
 		search = search->right;
 	}
 	return (count);

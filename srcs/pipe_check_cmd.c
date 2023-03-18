@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 21:44:56 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:43:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 static int	is_builtin_func(t_data *data);
 static int	check_cmd_path(t_data *data);
 
-int	check_cmd(t_data *data)
+int	check_cmd(t_data *data, t_token *unit)
 {
 	data->is_built_in = 0;
+	if (unit->type == ERROR && unit->right == NULL)
+		return (SUCCESS);
 	if (data->cmd_arr == NULL)
 		return (FAILURE);
 	if (ft_strlen(data->cmd_arr[0]) != 0)

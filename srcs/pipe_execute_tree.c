@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 16:46:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/18 17:49:14 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,33 +50,10 @@ static int	execute_pipe(t_token *top, t_data *data)
 {
 	data->is_pipe = TRUE;
 	data->pipe_count++;
-	if (top->left)
-		execute_tree(top->left, data);
-	else
-	{
-		_pipe(data->pipefd);
-		close(data->pipefd[1]);
-		data->prev_fd = data->pipefd[0];
-	}
+	execute_tree(top->left, data);
 	data->is_pipe = TRUE;
 	data->pipe_count--;
-	if (top->right)
-		execute_tree(top->right, data);
-	else
-	{
-		if (data->pipe_count == 0)
-		{
-			wait_all(data);
-			close(data->prev_fd);
-			data->prev_fd = STDIN_FILENO;
-		}
-		else
-		{
-			_pipe(data->pipefd);
-			close(data->pipefd[1]);
-			data->prev_fd = data->pipefd[0];
-		}
-	}
+	execute_tree(top->right, data);
 	data->is_pipe = FALSE;
 	return (exit_status(LOAD) == SUCCESS);
 }

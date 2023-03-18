@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:07:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 21:35:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:51:35 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,10 @@ static t_token	*find_logical_operator(t_token *tail)
 			search = ignore_brace(search);
 		else if (search->type == AND || search->type == OR)
 		{
-			if (search->left)
-			{
-				search->left->right = NULL;
-				search->left = make_tree(search->left);
-			}
-			if (search->right)
-			{
-				search->right->left = NULL;
-				search->right = make_tree(tail);
-			}
+			search->left->right = NULL;
+			search->left = make_tree(search->left);
+			search->right->left = NULL;
+			search->right = make_tree(tail);
 			return (search);
 		}
 		search = search->left;
@@ -76,16 +70,10 @@ static t_token	*find_pipe(t_token *tail)
 			search = ignore_brace(search);
 		else if (search->type == PIPE)
 		{
-			if (search->left)
-			{
-				search->left->right = NULL;
-				search->left = make_tree(search->left);
-			}
-			if (search->right)
-			{
-				search->right->left = NULL;
-				search->right = make_tree(tail);
-			}
+			search->left->right = NULL;
+			search->left = make_tree(search->left);
+			search->right->left = NULL;
+			search->right = make_tree(tail);
 			return (search);
 		}
 		search = search->left;
