@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 12:19:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:12:07 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ char	*expand(t_data *data, char *str, int *flag)
 			handle_single_quote(str, &idx);
 		else if (str[idx] == '\"')
 			str = handle_double_quote(data, str, &idx);
-		if (str[idx] == 0)
-			break ;
 		idx++;
 	}
 	return (str);

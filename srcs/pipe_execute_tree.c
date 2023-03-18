@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 21:39:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:48:06 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,20 @@ static int	execute_pipe(t_token *top, t_data *data)
 {
 	data->is_pipe = TRUE;
 	data->pipe_count++;
-	excute_tree(top->left, data);
+	if (top->left)
+		excute_tree(top->left, data);
+	else
+	{
+		_pipe(data->pipefd);
+		close(data->pipefd[1]);
+		data->prev_fd = data->pipefd[0];
+	}
+	data->is_pipe = TRUE;
 	data->pipe_count--;
-	excute_tree(top->right, data);
+	if (top->right)
+		excute_tree(top->right, data);
+	else
+		data->prev_fd = STDIN_FILENO;
 	data->is_pipe = FALSE;
 	return (exit_status(LOAD) == SUCCESS);
 }

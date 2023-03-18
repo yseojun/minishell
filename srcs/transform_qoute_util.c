@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   transform_util.c                                   :+:      :+:    :+:   */
+/*   transform_qoute_util.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:07:30 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/17 21:58:11 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 14:10:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*handle_double_quote(t_data *data, char *str, int *idx)
 			str = get_expanded(data, new_idx, str, &new_idx);
 		new_idx++;
 	}
-	*idx = new_idx;
+	if (str[new_idx] == '\"')
+		*idx = new_idx;
 	return (str);
 }
