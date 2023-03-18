@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 21:53:28 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 12:45:19 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	add_pid(t_data *data, pid_t	pid)
 	t_pid	*new;
 
 	new = (t_pid *)malloc(sizeof(t_pid));
+	if (!new)
+		exit(EXIT_FAILURE);
 	new->pid = pid;
 	new->next = 0;
 	if (data->pids)

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/17 20:09:49 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 13:12:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int		count_wildcard_lst(t_wildcard *wildcard);
 static t_token	*wildcard_merge(t_data *data, t_token *now);
+static t_token	*make_merge_node(char *name, t_token *now);
 
 int	merge_wildcard_lst(t_data *data, t_token **now)
 {
@@ -55,17 +56,15 @@ static t_token	*wildcard_merge(t_data *data, t_token *now)
 {
 	t_token		*merge_head;
 	t_token		*add;
-	t_wildcard	*search;	
+	t_wildcard	*search;
 
 	merge_head = 0;
 	search = data->wildcard;
 	while (search)
 	{
-		add = (t_token *)malloc(sizeof(t_token));
-		add->token = ft_strdup(search->name);
-		add->type = now->type;
-		add->left = 0;
-		add->right = 0;
+		add = make_merge_node(search->name, now);
+		if (!add)
+			return (0);
 		lst_token_add_back(&merge_head, add);
 		search = search->next;
 	}
@@ -78,4 +77,18 @@ static t_token	*wildcard_merge(t_data *data, t_token *now)
 	if (now->right)
 		now->right->left = add;
 	return (now->right);
+}
+
+static t_token	*make_merge_node(char *name, t_token *now)
+{
+	t_token	*add;
+
+	add = (t_token *)malloc(sizeof(t_token));
+	if (!add)
+		exit (EXIT_FAILURE);
+	add->token = ft_strdup(name);
+	add->type = now->type;
+	add->left = 0;
+	add->right = 0;
+	return (add);
 }

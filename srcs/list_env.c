@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 17:51:03 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:32:36 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 12:44:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_env	*lst_new_env(char *name, char *value)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
+	if (!new)
+		exit (EXIT_FAILURE);
 	new->name = ft_strdup(name);
 	new->value = ft_strdup(value);
 	new->next = 0;

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:26:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/14 16:32:03 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 12:44:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_wildcard	*lst_new_wildcard(char *name)
 	t_wildcard	*new;
 
 	new = (t_wildcard *)malloc(sizeof(t_wildcard));
+	if (!new)
+		exit (EXIT_FAILURE);
 	new->name = ft_strdup(name);
 	new->next = 0;
 	return (new);

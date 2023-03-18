@@ -6,14 +6,14 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 21:32:25 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 13:15:13 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "parse.h"
 
 static void		get_token_size(char *str, int *idx);
-static int		get_quote_size(char *str, int idx);
 
 int	tokenize(char *str, t_data *data)
 {
@@ -79,30 +79,30 @@ static void	get_token_size(char *str, int *idx)
 		}
 		else if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			qoute_size = get_quote_size(str, *idx);
+			qoute_size = get_qoute_size(str, *idx);
 			*idx += qoute_size;
 		}
 		(*idx)++;
 	}
 }
 
-static int	get_quote_size(char *str, int idx)
+int	get_qoute_size(char *str, int idx)
 {
-	int		quote_size;
-	char	quote;
+	int		qoute_size;
+	char	qoute;
 
-	quote_size = 0;
-	quote = str[idx];
+	qoute_size = 0;
+	qoute = str[idx];
 	idx++;
-	quote_size++;
-	while (str[idx] && str[idx] != quote)
+	qoute_size++;
+	while (str[idx] && str[idx] != qoute)
 	{
 		idx++;
-		quote_size++;
+		qoute_size++;
 	}
 	if (!str[idx])
 		return (0);
-	return (quote_size);
+	return (qoute_size);
 }
 
 int	set_type(char *token)

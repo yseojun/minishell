@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/15 21:19:18 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/18 12:44:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_token	*lst_new_token(char *str, int *idx)
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
+	if (!new)
+		exit(EXIT_FAILURE);
 	new->left = 0;
 	new->right = 0;
 	new->token = put_token(str, idx);

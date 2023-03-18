@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 18:35:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 12:06:05 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 13:14:25 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_wildcard	*lst_new_tofind(char *str, int *idx)
 
 	new = (t_wildcard *)malloc(sizeof(t_wildcard));
 	if (!new)
-		return (NULL);
+		exit(EXIT_FAILURE);
 	new->name = put_tofind(str, idx);
 	new->name = remove_quote(new->name);
 	new->next = NULL;
@@ -31,27 +31,25 @@ static t_wildcard	*lst_new_tofind(char *str, int *idx)
 static char	*put_tofind(char *str, int *idx)
 {
 	int		to_find_len;
+	int		qoute_size;
 	char	*to_find;
-	char	qoute;
 
 	to_find_len = 0;
 	while (str[*idx] && str[*idx] != '*')
 	{
+		qoute_size = 0;
 		if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			qoute = str[*idx];
-			(*idx)++;
-			to_find_len++;
-			while (str[*idx] && str[*idx] != qoute)
-			{
-				to_find_len++;
-				(*idx)++;
-			}
+			qoute_size = get_qoute_size(str, *idx);
+			(*idx) += qoute_size;
+			to_find_len += qoute_size;
 		}
 		to_find_len++;
 		(*idx)++;
 	}
 	to_find = (char *)malloc(sizeof(char) * (to_find_len + 1));
+	if (!to_find)
+		exit(EXIT_FAILURE);
 	ft_memcpy(to_find, str + (*idx - to_find_len), to_find_len);
 	to_find[to_find_len] = 0;
 	return (to_find);
