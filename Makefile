@@ -15,7 +15,7 @@ tokenize.c \
 transform.c \
 transform_expand.c \
 transform_rm_quote.c \
-transform_qoute_util.c \
+transform_quote_util.c \
 wildcard.c \
 wildcard_make.c \
 wildcard_merge.c \

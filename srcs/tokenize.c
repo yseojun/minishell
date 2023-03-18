@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 13:15:13 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:39:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ static void	get_token_size(char *str, int *idx)
 		}
 		else if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			qoute_size = get_qoute_size(str, *idx);
+			qoute_size = get_quote_size(str, *idx);
 			*idx += qoute_size;
 		}
 		(*idx)++;
 	}
 }
 
-int	get_qoute_size(char *str, int idx)
+int	get_quote_size(char *str, int idx)
 {
 	int		qoute_size;
 	char	qoute;
