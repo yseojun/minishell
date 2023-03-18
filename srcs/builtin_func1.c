@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 13:58:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:11:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "parse.h"
 
 static void	export_env(t_data *data, char *str);
-static void	prt_invalid_export(char *str, int *exit_status);
+static int	chk_export_valid(char *str);
 
 int	run_builtin_func(t_data *data)
 {
@@ -69,10 +69,10 @@ int	builtin_export(t_data *data, char **cmd_arr)
 	{
 		if (ft_strchr(cmd_arr[idx], '='))
 		{
-			if (cmd_arr[idx][0] == '=')
-				prt_invalid_export(cmd_arr[idx], &exit_status);
-			else
+			if (chk_export_valid(cmd_arr[idx]) == SUCCESS)
 				export_env(data, cmd_arr[idx]);
+			else
+				exit_status = EXIT_FAILURE;
 		}
 		idx++;
 	}
@@ -101,10 +101,31 @@ static void	export_env(t_data *data, char *str)
 	free_arr((void **) name_val);
 }
 
-static void	prt_invalid_export(char *str, int *exit_status)
+static int	chk_export_valid(char *str)
 {
-	*exit_status = EXIT_FAILURE;
-	ft_putstr_fd("minishell: export: ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
+	char	**name_val;
+	int		idx;
+
+	if (str[0] == '=')
+	{
+		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
+		return (FAILURE);
+	}
+	name_val = ft_split(str, '=');
+	idx = -1;
+	while (name_val[0][++idx])
+	{
+		if (ft_isalnum(name_val[0][idx]) == 0 && name_val[0][idx] != '_')
+		{
+			ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+			ft_putstr_fd("not valid in this context: ", STDERR_FILENO);
+			ft_putendl_fd(name_val[0], STDERR_FILENO);
+			free_arr((void **)name_val);
+			return (FAILURE);
+		}
+	}
+	free_arr((void **)name_val);
+	return (SUCCESS);
 }
