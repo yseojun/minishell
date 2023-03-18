@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 14:48:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	execute_or(t_token *top, t_data *data);
 static int	execute_pipe(t_token *top, t_data *data);
 static int	excute_unit(t_token *top, t_data *data);
 
-int	excute_tree(t_token *top, t_data *data)
+int	execute_tree(t_token *top, t_data *data)
 {
 	if (top == NULL)
 		return (TRUE);
@@ -34,15 +34,15 @@ int	excute_tree(t_token *top, t_data *data)
 
 static int	execute_and(t_token *top, t_data *data)
 {
-	if (excute_tree(top->left, data) == TRUE)
-		return (excute_tree(top->right, data));
+	if (execute_tree(top->left, data) == TRUE)
+		return (execute_tree(top->right, data));
 	return (TRUE);
 }
 
 static int	execute_or(t_token *top, t_data *data)
 {
-	if (excute_tree(top->left, data) == FALSE)
-		return (excute_tree(top->right, data));
+	if (execute_tree(top->left, data) == FALSE)
+		return (execute_tree(top->right, data));
 	return (TRUE);
 }
 
@@ -51,7 +51,7 @@ static int	execute_pipe(t_token *top, t_data *data)
 	data->is_pipe = TRUE;
 	data->pipe_count++;
 	if (top->left)
-		excute_tree(top->left, data);
+		execute_tree(top->left, data);
 	else
 	{
 		_pipe(data->pipefd);
@@ -61,7 +61,7 @@ static int	execute_pipe(t_token *top, t_data *data)
 	data->is_pipe = TRUE;
 	data->pipe_count--;
 	if (top->right)
-		excute_tree(top->right, data);
+		execute_tree(top->right, data);
 	else
 		data->prev_fd = STDIN_FILENO;
 	data->is_pipe = FALSE;

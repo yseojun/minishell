@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 15:11:00 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	run_line(t_data *data)
 	exit_status(EXIT_SUCCESS);
 	find_heredoc(data->head);
 	if (exit_status(LOAD) == EXIT_SUCCESS)
-		excute_tree(data->head, data);
+		execute_tree(data->head, data);
 }
 
 static void	finish_line(char *str, t_data *data)

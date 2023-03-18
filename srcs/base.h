@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 15:10:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 
 //pipe_execute_tree.c / pipe_run.c
-int			excute_tree(t_token *top, t_data *data);
+int			execute_tree(t_token *top, t_data *data);
 void		run_unit(t_token *unit, t_data *data);
 
 //pipe_util.c
