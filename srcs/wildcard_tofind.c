@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 18:35:35 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/17 20:10:18 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 12:06:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static t_wildcard	*lst_new_tofind(char *str, int *idx)
 	if (!new)
 		return (NULL);
 	new->name = put_tofind(str, idx);
+	new->name = remove_quote(new->name);
 	new->next = NULL;
 	return (new);
 }
@@ -31,13 +32,17 @@ static char	*put_tofind(char *str, int *idx)
 {
 	int		to_find_len;
 	char	*to_find;
+	char	qoute;
 
 	to_find_len = 0;
 	while (str[*idx] && str[*idx] != '*')
 	{
 		if (str[*idx] == '\'' || str[*idx] == '\"')
 		{
-			while (str[*idx] == '\'' || str[*idx] == '\"')
+			qoute = str[*idx];
+			(*idx)++;
+			to_find_len++;
+			while (str[*idx] && str[*idx] != qoute)
 			{
 				to_find_len++;
 				(*idx)++;
