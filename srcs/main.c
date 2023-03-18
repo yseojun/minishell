@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:05:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	finish_line(char *str, t_data *data)
 	unlink_heredoc(data->head);
 	lst_tree_free_all(data->head);
 	data->head = 0;
-	//system("leaks --quiet minishell");
 }
 
 int	exit_status(int status)
