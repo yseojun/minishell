@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 19:08:44 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 12:44:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 21:06:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,18 @@ t_token	*lst_new_token(char *str, int *idx)
 	return (new);
 }
 
-int	lst_token_add_back(t_token **head, t_token *new)
+void	lst_token_add_back(t_token **head, t_token *new)
 {
 	t_token	*last;
 
 	if (!new)
-		return (0);
+		return ;
 	last = lst_token_last(*head);
 	if (!last)
 		*head = new;
 	else
 		last->right = new;
 	new->left = last;
-	return (1);
 }
 
 t_token	*lst_token_last(t_token *lst)

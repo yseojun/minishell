@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 17:43:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 21:07:40 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ t_env		*lst_env_last(t_env *lst);
 void		lst_env_free(t_env *lst);
 void		lst_env_free_all(t_env *lst);
 t_token		*lst_new_token(char *str, int *idx);
-int			lst_token_add_back(t_token **head, t_token *new);
+void		lst_token_add_back(t_token **head, t_token *new);
 t_token		*lst_token_last(t_token *lst);
 void		lst_token_free(t_token *lst);
 void		lst_token_free_all(t_token *lst);
