@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 21:56:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 12:19:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:56:46 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	make_wildcard_lst(t_data *data, t_token *now)
 
 	cwd = getcwd(0, 0);
 	dp = opendir(cwd);
+	if (!dp)
+		exit(EXIT_FAILURE);
 	free(cwd);
 	while (1)
 	{

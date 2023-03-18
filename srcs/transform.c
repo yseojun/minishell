@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 17:46:19 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 20:57:26 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ int	transform(t_data *data)
 
 static int	is_todo_wildcard(t_token *search)
 {
-	if (ft_strchr(search->token, '*') == 0)
-		return (FALSE);
 	if (is_surrounded_by_quote(search->token))
 		return (FALSE);
 	if (search->left && ft_strncmp(search->left->token, "<<", 3) == 0)
