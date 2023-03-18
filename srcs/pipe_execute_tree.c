@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 15:35:02 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:42:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	execute_and(t_token *top, t_data *data)
 {
 	if (execute_tree(top->left, data) == TRUE)
 		return (execute_tree(top->right, data));
-	return (TRUE);
+	return (FALSE);
 }
 
 static int	execute_or(t_token *top, t_data *data)
