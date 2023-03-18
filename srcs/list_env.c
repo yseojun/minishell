@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 17:51:03 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 12:44:46 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:10:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,18 @@ void	lst_env_free(t_env *lst)
 	free(lst->name);
 	free(lst->value);
 	free(lst);
+}
+
+void	lst_env_free_all(t_env *lst)
+{
+	t_env	*search;
+	t_env	*next;
+
+	search = lst;
+	while (search)
+	{
+		next = search->next;
+		lst_env_free(search);
+		search = next;
+	}
 }
