@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 12:45:19 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 12:32:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	reset_line_data(t_data *data)
 	data->pipe_count = 0;
 	data->is_pipe = 0;
 	data->head = 0;
+	data->is_exit = 0;
 }
 
 char	*find_command_in_path(char *command, t_data *data)
