@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 17:35:23 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:09:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,14 @@ static int	execute_and(t_token *top, t_data *data);
 static int	execute_or(t_token *top, t_data *data);
 static int	execute_pipe(t_token *top, t_data *data);
 static int	excute_unit(t_token *top, t_data *data);
+static int	execute_brace(t_token *top, t_data *data);
 
 int	execute_tree(t_token *top, t_data *data)
 {
 	if (top == NULL)
 		return (TRUE);
+	if (top->type == BRACE)
+		return (execute_brace(top, data));
 	if (top->type == AND)
 		return (execute_and(top, data));
 	else if (top->type == OR)
@@ -30,6 +33,22 @@ int	execute_tree(t_token *top, t_data *data)
 		return (execute_pipe(top, data));
 	else
 		return (excute_unit(top, data));
+}
+
+static int	execute_brace(t_token *top, t_data *data)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = _fork();
+	if (pid == 0)
+		execute_tree(top->left, data);
+	else
+	{
+		waitpid(pid, &status, 0);
+		exit_status(status);
+	}
+	return (exit_status(LOAD) == SUCCESS);
 }
 
 static int	execute_and(t_token *top, t_data *data)

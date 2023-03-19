@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 19:21:28 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:14:24 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char *argv[], char *envp[])
 	set_beginning(&data, envp);
 	while (1)
 	{
+		printf("%d\n", getpid());
 		reset_line_data(&data);
 		str = readline("minishell> ");
 		if (!str)
@@ -40,9 +41,19 @@ int	main(int argc, char *argv[], char *envp[])
 	return (SUCCESS);
 }
 
+void	prt_tree(t_token *top)
+{
+	if (top == 0)
+		return ;
+	prt_tree(top->left);
+	prt_tree(top->right);
+	printf("%s\n", top->token);
+}
+
 static void	run_line(t_data *data)
 {
 	exit_status(EXIT_SUCCESS);
+	// prt_tree(data->head);
 	find_heredoc(data->head);
 	if (exit_status(LOAD) == EXIT_SUCCESS)
 		execute_tree(data->head, data);

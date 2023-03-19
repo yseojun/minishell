@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:07:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 18:41:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:04:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,26 +84,26 @@ static t_token	*find_pipe(t_token *tail)
 static t_token	*find_braces(t_token *tail)
 {
 	t_token	*search;
-	t_token	*to_remove;
+	t_token	*brace_top;
 
 	search = tail;
 	while (search)
 	{
-		if (search->type == BRACE)
+		if (search->type == BRACE && search->token[0] == ')')
 		{
-			search->left->right = search->right;
+			brace_top = search;
 			if (search->right)
-				search->right->left = search->left;
-			to_remove = search;
+				search->right->left = 0;
+			search->right = 0; // brace 끊기
 			search = search->left;
-			lst_token_free(to_remove);
-			to_remove = NULL;
+			search->right = 0; // brace 왼쪽으로가서 끊기
 			while (search->left)
 				search = search->left;
 			search = search->right;
 			lst_token_free(search->left);
-			search->left = NULL;
-			return (make_tree(lst_token_last(search)));
+			search->left = NULL; // brace ( 제거
+			brace_top->left = make_tree(lst_token_last(search));
+			return (brace_top);
 		}
 		search = search->left;
 	}
