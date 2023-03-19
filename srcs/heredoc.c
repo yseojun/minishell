@@ -3,42 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 20:25:41 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/19 19:43:37 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
+static void	make_heredoc(t_token *top);
 static void	write_heredoc(int heredoc_fd, char *limiter);
 static void	heredoc_child(int heredoc_fd, char *limiter);
 
 void	find_heredoc(t_token *top)
 {
-	int		heredoc_fd;
-	char	*heredoc_tmp_name;
-
 	if (top == 0 || exit_status(LOAD) != EXIT_SUCCESS)
 		return ;
 	find_heredoc(top->left);
 	find_heredoc(top->right);
 	if (ft_strncmp(top->token, "<<", 3) == 0)
+		make_heredoc(top);
+}
+
+static void	make_heredoc(t_token *top)
+{
+	int		heredoc_fd;
+	char	*heredoc_tmp_name;
+	char	*tmp;
+
+	execve("bin/mkdir", (char *[]){"mkdir", "-p", "/tmp", 0}, 0);
+	heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
+	tmp = heredoc_tmp_name;
+	heredoc_tmp_name = ft_strjoin("/tmp/", heredoc_tmp_name);
+	free(tmp);
+	heredoc_fd = open(heredoc_tmp_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (heredoc_fd == -1)
 	{
-		heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
-		heredoc_fd = open(heredoc_tmp_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (heredoc_fd == -1)
-		{
-			free(heredoc_tmp_name);
-			heredoc_tmp_name = 0;
-			return ;
-		}
 		free(heredoc_tmp_name);
-		write_heredoc(heredoc_fd, top->right->token);
-		close(heredoc_fd);
+		heredoc_tmp_name = 0;
+		return ;
 	}
+	free(heredoc_tmp_name);
+	write_heredoc(heredoc_fd, top->right->token);
+	close(heredoc_fd);
 }
 
 static void	write_heredoc(int heredoc_fd, char *limiter)
@@ -62,7 +71,8 @@ static void	write_heredoc(int heredoc_fd, char *limiter)
 
 static void	heredoc_child(int heredoc_fd, char *limiter)
 {
-	char		*str;
+	char	*str;
+	char	*tmp;
 
 	signal(SIGINT, SIG_DFL);
 	str = 0;
@@ -71,6 +81,9 @@ static void	heredoc_child(int heredoc_fd, char *limiter)
 		str = readline("heredoc> ");
 		if (!str || ft_strncmp(str, limiter, ft_strlen(str) + 1) == 0)
 			break ;
+		tmp = str;
+		str = ft_strjoin(str, "\n");
+		free(tmp);
 		write(heredoc_fd, str, ft_strlen(str));
 		free(str);
 		str = 0;
@@ -82,26 +95,14 @@ static void	heredoc_child(int heredoc_fd, char *limiter)
 int	open_heredoc(t_token *search)
 {
 	char	*heredoc_tmp_name;
+	char	*tmp;
 	int		fd;
 
 	heredoc_tmp_name = ft_itoa((unsigned long long) &search->token);
+	tmp = heredoc_tmp_name;
+	heredoc_tmp_name = ft_strjoin("/tmp/", heredoc_tmp_name);
+	free(tmp);
 	fd = open(heredoc_tmp_name, O_RDONLY);
 	free(heredoc_tmp_name);
 	return (fd);
-}
-
-void	unlink_heredoc(t_token *top)
-{
-	char	*heredoc_tmp_name;
-
-	if (top == 0)
-		return ;
-	unlink_heredoc(top->left);
-	unlink_heredoc(top->right);
-	if (ft_strncmp(top->token, "<<", 3) == 0)
-	{
-		heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
-		unlink(heredoc_tmp_name);
-		free(heredoc_tmp_name);
-	}
 }

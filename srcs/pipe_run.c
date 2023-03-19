@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 15:48:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:14:29 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static void	run_command(t_data *data)
 	if (access(path_command, X_OK) == SUCCESS)
 	{
 		if (chk_stat(path_command) == SUCCESS)
-			execve(path_command, data->cmd_arr, NULL);
+			execve(path_command, data->cmd_arr, env_to_char(data->env));
 		else
 		{
 			ft_putstr_fd("minishell: ", 2);

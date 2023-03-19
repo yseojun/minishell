@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 12:32:20 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 19:21:28 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include "parse.h"
 
 static void	run_line(t_data *data);
-static void	finish_line(char *str, t_data *data);
-static void	lst_tree_free_all(t_token *top);
 
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -50,15 +48,6 @@ static void	run_line(t_data *data)
 		execute_tree(data->head, data);
 }
 
-static void	finish_line(char *str, t_data *data)
-{
-	free(str);
-	free_arr((void **)data->cmd_arr);
-	unlink_heredoc(data->head);
-	lst_tree_free_all(data->head);
-	data->head = 0;
-}
-
 int	exit_status(int status)
 {
 	static int	exit_status;
@@ -70,13 +59,4 @@ int	exit_status(int status)
 	else if (WIFSIGNALED(status))
 		exit_status = 128 + WTERMSIG(status);
 	return (exit_status);
-}
-
-static void	lst_tree_free_all(t_token *top)
-{
-	if (top == 0)
-		return ;
-	lst_tree_free_all(top->left);
-	lst_tree_free_all(top->right);
-	lst_token_free(top);
 }

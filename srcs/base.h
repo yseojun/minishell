@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 12:35:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 19:22:17 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,10 @@ typedef struct s_data
 	struct s_pid	*pids;
 }	t_data;
 
-//main.c / set_beginning.c
+//main.c / set_beginning.c / finish_line.c
 int			exit_status(int status);
 void		set_beginning(t_data *data, char *envp[]);
+void		finish_line(char *str, t_data *data);
 void		handler(int sig);
 void		heredoc_handler(int sig);
 
@@ -121,6 +122,8 @@ t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
 void		lst_wildcard_free_all(t_wildcard *lst);
 
+char		**env_to_char(t_env *env);
+
 //is_symbol.c
 int			is_redirection(char *str);
 int			is_pipe(char *str);
@@ -131,7 +134,6 @@ int			is_brace(char *str);
 //heredoc.c
 int			open_heredoc(t_token *search);
 void		find_heredoc(t_token *top);
-void		unlink_heredoc(t_token *top);
 
 //pipe_set.c / pipe_check_cmd.c
 int			set_fd(t_token *unit, t_data *data);

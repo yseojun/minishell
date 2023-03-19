@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 12:35:33 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 17:35:23 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ static int	execute_or(t_token *top, t_data *data)
 
 static int	execute_pipe(t_token *top, t_data *data)
 {
+	int	pipe_fd[2];
+
+	_pipe(pipe_fd);
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count++;
@@ -65,7 +68,7 @@ static int	excute_unit(t_token *top, t_data *data)
 	free_arr((void **)data->cmd_arr);
 	data->cmd_arr = 0;
 	run_unit(top, data);
-	if (ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
+	if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
 		data->is_exit = 1;
 	return (exit_status(LOAD) == SUCCESS);
 }

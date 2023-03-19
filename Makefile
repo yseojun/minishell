@@ -4,7 +4,9 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RLIB = -L $(HOME)/.brew/opt/readline/lib -lreadline
 RLIBI = -I $(HOME)/.brew/opt/readline/include
 SRCS = main.c \
+env_to_char.c \
 set_beginning.c \
+finish_line.c \
 _util.c \
 list_env.c \
 list_wildcard.c \
