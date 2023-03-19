@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:07:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 17:51:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 13:21:09 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_token	*find_logical_operator(t_token *tail)
 	search = tail;
 	while (search)
 	{
-		if (search->type == BRACE)
+		if (search->type == BRACE && search->token[0] == ')')
 			search = ignore_brace(search);
 		else if (search->type == AND || search->type == OR)
 		{
@@ -66,7 +66,7 @@ static t_token	*find_pipe(t_token *tail)
 	search = tail;
 	while (search)
 	{
-		if (search->type == BRACE)
+		if (search->type == BRACE && search->token[0] == ')')
 			search = ignore_brace(search);
 		else if (search->type == PIPE)
 		{
@@ -113,7 +113,11 @@ static t_token	*find_braces(t_token *tail)
 static t_token	*ignore_brace(t_token *search)
 {
 	search = search->left;
-	while (search->type != BRACE)
+	while (search->type != BRACE || search->token[0] != '(')
+	{
+		if (search->type == BRACE && search->token[0] == ')')
+			search = ignore_brace(search);
 		search = search->left;
+	}
 	return (search);
 }
