@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 20:21:42 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 21:31:29 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ static int	execute_or(t_token *top, t_data *data)
 
 static int	execute_pipe(t_token *top, t_data *data)
 {
-	int	pipe_fd[2];
-
-	_pipe(pipe_fd);
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count++;
