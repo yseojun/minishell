@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_beginning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:11:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 20:25:44 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/19 15:48:24 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static t_env	*init_env(char *envp[]);
 void	set_beginning(t_data *data, char *envp[])
 {
 	data->env = init_env(envp);
-	tcgetattr(fileno(stdin), &data->term);
+	tcgetattr(0, &data->term);
 	data->term.c_lflag &= ~ECHOCTL;
-	tcsetattr(fileno(stdin), TCSANOW, &data->term);
+	tcsetattr(0, TCSANOW, &data->term);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, SIG_IGN);
 }
