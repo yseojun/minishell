@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 20:14:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:22:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char *argv[], char *envp[])
 	set_beginning(&data, envp);
 	while (1)
 	{
-		printf("%d\n", getpid());
+		// printf("%d\n", getpid());
 		reset_line_data(&data);
 		str = readline("minishell> ");
 		if (!str)

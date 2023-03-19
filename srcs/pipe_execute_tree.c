@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 20:09:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:21:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static int	execute_brace(t_token *top, t_data *data)
 
 	pid = _fork();
 	if (pid == 0)
+	{
 		execute_tree(top->left, data);
+		exit(exit_status(LOAD)); //subshell 종료
+	}
 	else
 	{
 		waitpid(pid, &status, 0);
