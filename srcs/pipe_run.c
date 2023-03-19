@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 17:14:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:06:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static int	run_single_builtin(t_data *data)
 	return (TRUE);
 }
 
+
 static void	manage_fd(t_data *data)
 {
 	if (data->in_fd != STDIN_FILENO)
@@ -67,8 +68,35 @@ static void	manage_fd(t_data *data)
 		close(data->out_fd);
 	data->prev_fd = STDIN_FILENO;
 	if (data->pipe_count > 0)
-		data->prev_fd = data->pipefd[P_READ];
+		data->prev_fd = lst_pipefd_last(data->listfd)->pipefd[P_READ];
 }
+
+// static void	manage_fd(t_data *data)
+// {
+// 	if (data->in_fd != STDIN_FILENO)
+// 		close(data->in_fd);
+// 	if (data->out_fd != STDOUT_FILENO)
+// 		close(data->out_fd);
+// 	data->prev_fd = STDIN_FILENO;
+// 	if (data->pipe_count > 0)
+// 		data->prev_fd = data->pipefd[P_READ];
+// }
+
+// static void	child(t_data *data)
+// {
+// 	signal(SIGQUIT, SIG_DFL);
+// 	data->term.c_lflag |= ECHOCTL;
+// 	tcsetattr(0, TCSANOW, &data->term);
+// 	if (data->pipe_count > 0)
+// 		close(data->pipefd[P_READ]);
+// 	_dup2(data->in_fd, STDIN_FILENO);
+// 	if (data->in_fd != STDIN_FILENO)
+// 		close(data->in_fd);
+// 	_dup2(data->out_fd, STDOUT_FILENO);
+// 	if (data->out_fd != STDOUT_FILENO)
+// 		close(data->out_fd);
+// 	run_command(data);
+// }
 
 static void	child(t_data *data)
 {
@@ -76,7 +104,7 @@ static void	child(t_data *data)
 	data->term.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &data->term);
 	if (data->pipe_count > 0)
-		close(data->pipefd[P_READ]);
+		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 	_dup2(data->in_fd, STDIN_FILENO);
 	if (data->in_fd != STDIN_FILENO)
 		close(data->in_fd);

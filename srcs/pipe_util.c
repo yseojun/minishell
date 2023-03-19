@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 12:32:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 21:56:11 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	reset_line_data(t_data *data)
 	data->wildcard = 0;
 	data->cmd_arr = 0;
 	data->pids = 0;
+	data->listfd = 0;
 	data->pipe_count = 0;
 	data->is_pipe = 0;
 	data->head = 0;

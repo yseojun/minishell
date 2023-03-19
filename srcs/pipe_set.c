@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 19:45:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:12:49 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,30 @@ static int	count_cmd(t_token *unit)
 	return (count);
 }
 
+// int	set_fd(t_token *unit, t_data *data)
+// {
+// 	data->in_fd = data->prev_fd;
+// 	if (set_in_fd(unit, data) == FAILURE)
+// 		return (FAILURE);
+// 	if (data->pipe_count)
+// 	{
+// 		_pipe(data->pipefd);
+// 		data->out_fd = data->pipefd[P_WRITE];
+// 	}
+// 	else
+// 		data->out_fd = STDOUT_FILENO;
+// 	if (set_out_fd(unit, data) == FAILURE)
+// 		return (FAILURE);
+// 	return (SUCCESS);
+// }
+
 int	set_fd(t_token *unit, t_data *data)
 {
 	data->in_fd = data->prev_fd;
 	if (set_in_fd(unit, data) == FAILURE)
 		return (FAILURE);
-	if (data->pipe_count)
-	{
-		_pipe(data->pipefd);
-		data->out_fd = data->pipefd[P_WRITE];
-	}
+	if (data->listfd)
+		data->out_fd = lst_pipefd_last(data->listfd)->pipefd[P_WRITE];
 	else
 		data->out_fd = STDOUT_FILENO;
 	if (set_out_fd(unit, data) == FAILURE)

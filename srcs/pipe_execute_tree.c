@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 21:31:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:14:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,26 @@ static int	execute_or(t_token *top, t_data *data)
 	return (TRUE);
 }
 
+// static int	execute_pipe(t_token *top, t_data *data)
+// {
+// 	data->is_exit = 0;
+// 	data->is_pipe = TRUE;
+// 	data->pipe_count++;
+// 	execute_tree(top->left, data);
+// 	data->is_exit = 0;
+// 	data->is_pipe = TRUE;
+// 	data->pipe_count--;
+// 	execute_tree(top->right, data);
+// 	data->is_pipe = FALSE;
+// 	return (exit_status(LOAD) == SUCCESS);
+// }
+
 static int	execute_pipe(t_token *top, t_data *data)
 {
+	int	pipefd[2];
+
+	_pipe(pipefd);
+	lst_pipefd_add_back(&data->listfd, lst_new_pipefd(pipefd));
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count++;
@@ -78,6 +96,7 @@ static int	execute_pipe(t_token *top, t_data *data)
 	data->is_pipe = TRUE;
 	data->pipe_count--;
 	execute_tree(top->right, data);
+	lst_pipefd_remove_last(&data->listfd);
 	data->is_pipe = FALSE;
 	return (exit_status(LOAD) == SUCCESS);
 }

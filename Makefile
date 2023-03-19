@@ -11,6 +11,7 @@ _util.c \
 list_env.c \
 list_wildcard.c \
 list_token.c \
+list_pipefd.c \
 is_symbol.c \
 parse_line.c \
 tokenize.c \

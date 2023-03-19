@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 19:22:17 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 22:08:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ typedef struct s_pid
 	struct s_pid	*next;
 }	t_pid;
 
+typedef struct s_pipefd
+{
+	int				pipefd[2];
+	struct s_pipefd	*next;
+}	t_pipefd;
+
 typedef struct s_wildcard
 {
 	char				*name;
@@ -85,6 +91,7 @@ typedef struct s_data
 	t_env			*env;
 	t_token			*head;
 	t_wildcard		*wildcard;
+	t_pipefd		*listfd;
 	struct termios	term;
 	char			**cmd_arr;
 	int				is_built_in;
@@ -121,6 +128,12 @@ int			wildcard_add_back(t_wildcard **head, t_wildcard *new);
 t_wildcard	*lst_wildcard_last(t_wildcard *lst);
 void		lst_wildcard_free(t_wildcard *lst);
 void		lst_wildcard_free_all(t_wildcard *lst);
+t_pipefd	*lst_new_pipefd(int fd[2]);
+void		lst_pipefd_add_back(t_pipefd **head, t_pipefd *new);
+t_pipefd	*lst_pipefd_last(t_pipefd *lst);
+void		lst_pipefd_free_all(t_pipefd *lst);
+void		lst_pipefd_remove_last(t_pipefd **head);
+
 
 char		**env_to_char(t_env *env);
 
