@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 17:31:33 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/19 19:45:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	set_in_fd(t_token *unit, t_data *data)
 		}
 		if (data->in_fd == FAILURE)
 		{
-			ft_putstr_fd("minishell", STDERR_FILENO);
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(unit->right->token);
 			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
@@ -127,7 +127,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 		}
 		if (data->out_fd == FAILURE)
 		{
-			ft_putstr_fd("minishell", STDERR_FILENO);
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(unit->right->token);
 			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
