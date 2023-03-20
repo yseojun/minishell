@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 22:06:38 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/20 21:05:56 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ void	run_unit(t_token *unit, t_data *data)
 
 	if (set_fd(unit, data) == FAILURE)
 		return ;
+	printf("unit: %s, in: %d, out: %d\n", unit->token, data->in_fd, data->out_fd);
 	data->cmd_arr = set_cmd(unit);
 	if (check_cmd(data, unit) == FAILURE || run_single_builtin(data) == TRUE)
 		return ;
 	pid = _fork();
+	printf("pid: %d, top: %s\n", pid, unit->token);
 	if (pid == 0)
 		child(data);
 	signal(SIGINT, SIG_IGN);
@@ -63,12 +65,18 @@ static int	run_single_builtin(t_data *data)
 static void	manage_fd(t_data *data)
 {
 	if (data->in_fd != STDIN_FILENO)
+	{
+		printf("infd: %d\n", data->in_fd);
 		close(data->in_fd);
+	}
 	if (data->out_fd != STDOUT_FILENO)
+	{
+		printf("outfd: %d\n", data->out_fd);
 		close(data->out_fd);
-	data->prev_fd = STDIN_FILENO;
-	if (data->pipe_count > 0)
-		data->prev_fd = lst_pipefd_last(data->listfd)->pipefd[P_READ];
+	}
+	// data->prev_fd = STDIN_FILENO;
+	// if (data->pipe_count > 0)
+	// 	data->prev_fd = lst_pipefd_last(data->listfd)->pipefd[P_READ];
 }
 
 // static void	manage_fd(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 22:08:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/20 19:43:36 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ void		lst_pipefd_add_back(t_pipefd **head, t_pipefd *new);
 t_pipefd	*lst_pipefd_last(t_pipefd *lst);
 void		lst_pipefd_free_all(t_pipefd *lst);
 void		lst_pipefd_remove_last(t_pipefd **head);
-
-
 char		**env_to_char(t_env *env);
 
 //is_symbol.c

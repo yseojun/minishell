@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 22:14:44 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/20 21:02:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,20 @@ int	execute_tree(t_token *top, t_data *data)
 static int	execute_brace(t_token *top, t_data *data)
 {
 	pid_t	pid;
-	int		status;
+	// int		status;
 
 	pid = _fork();
+	printf("pid: %d, top: %s\n", pid, top->token);
 	if (pid == 0)
 	{
+		data->pipe_count = 0;
 		execute_tree(top->left, data);
 		exit(exit_status(LOAD)); //subshell 종료
 	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		exit_status(status);
-	}
+	add_pid(data, pid);
+	// wait_all(data);
+	//waitpid(pid, &status, 0);
+	//exit_status(status);
 	return (exit_status(LOAD) == SUCCESS);
 }
 
@@ -92,11 +93,14 @@ static int	execute_pipe(t_token *top, t_data *data)
 	data->is_pipe = TRUE;
 	data->pipe_count++;
 	execute_tree(top->left, data);
+	data->prev_fd = STDIN_FILENO;
+	if (data->pipe_count > 0)
+		data->prev_fd = lst_pipefd_last(data->listfd)->pipefd[P_READ];
+	lst_pipefd_remove_last(&data->listfd);
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count--;
 	execute_tree(top->right, data);
-	lst_pipefd_remove_last(&data->listfd);
 	data->is_pipe = FALSE;
 	return (exit_status(LOAD) == SUCCESS);
 }
