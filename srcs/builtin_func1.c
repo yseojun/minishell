@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 12:35:53 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:32:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ static int	chk_export_valid(char *str)
 
 	if (str[0] == '=')
 	{
-		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+		ft_putstr_fd("minishell: export: '", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 		return (FAILURE);
 	}
 	name_val = ft_split(str, '=');

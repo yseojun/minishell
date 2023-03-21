@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 17:49:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:32:25 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,14 @@ void	prt_tree(t_token *top)
 {
 	if (top == 0)
 		return ;
+	printf("%s\n", top->token);
 	prt_tree(top->left);
 	prt_tree(top->right);
-	printf("%s\n", top->token);
 }
 
 static void	run_line(t_data *data)
 {
 	exit_status(EXIT_SUCCESS);
-	// prt_tree(data->head);
 	find_heredoc(data->head);
 	if (exit_status(LOAD) == EXIT_SUCCESS)
 		execute_tree(data->head, data);
@@ -65,7 +64,9 @@ int	exit_status(int status)
 
 	if (status == LOAD)
 		return (exit_status);
-	if (WIFEXITED(status))
+	else if (status == 258)
+		exit_status = 258;
+	else if (WIFEXITED(status))
 		exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		exit_status = 128 + WTERMSIG(status);

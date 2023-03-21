@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 21:56:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 17:47:04 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:53:35 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	wildcard(t_data *data, t_token **search)
 			return (FAILURE);
 	}
 	else
-	{
 		(*search)->token = remove_quote((*search)->token);
-		*search = (*search)->right;
-	}
 	return (SUCCESS);
 }
 

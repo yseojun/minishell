@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 16:21:49 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 20:33:56 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,54 +64,18 @@ static int	count_cmd(t_token *unit)
 	return (count);
 }
 
-// int	set_fd(t_token *unit, t_data *data)
-// {
-// 	data->in_fd = data->prev_fd;
-// 	if (set_in_fd(unit, data) == FAILURE)
-// 		return (FAILURE);
-// 	if (data->pipe_count)
-// 	{
-// 		_pipe(data->pipefd);
-// 		data->out_fd = data->pipefd[P_WRITE];
-// 	}
-// 	else
-// 		data->out_fd = STDOUT_FILENO;
-// 	if (set_out_fd(unit, data) == FAILURE)
-// 		return (FAILURE);
-// 	return (SUCCESS);
-// }
-
 int	set_fd(t_token *unit, t_data *data)
 {
 	data->in_fd = data->prev_fd;
-	if (set_in_fd(unit, data) == FAILURE)
-		return (FAILURE);
 	if (data->listfd)
 		data->out_fd = lst_pipefd_last(data->listfd)->pipefd[P_WRITE];
 	else
 		data->out_fd = STDOUT_FILENO;
-	if (set_out_fd(unit, data) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
-static int	set_in_fd(t_token *unit, t_data *data)
-{
 	while (unit)
 	{
-		if (!ft_strncmp(unit->token, "<<", 3))
-		{
-			if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
-				close(data->in_fd);
-			data->in_fd = open_heredoc(unit);
-		}
-		else if (!ft_strncmp(unit->token, "<", 2))
-		{
-			if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
-				close(data->in_fd);
-			data->in_fd = open(unit->right->token, O_RDONLY);
-		}
-		if (data->in_fd == FAILURE)
+		set_in_fd(unit, data);
+		set_out_fd(unit, data);
+		if (data->in_fd == FAILURE || data->out_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(unit->right->token);
@@ -123,30 +87,47 @@ static int	set_in_fd(t_token *unit, t_data *data)
 	return (SUCCESS);
 }
 
+static int	set_in_fd(t_token *unit, t_data *data)
+{
+	if (!ft_strncmp(unit->token, "<<", 3)
+		|| !ft_strncmp(unit->token, "<", 2))
+	{
+		if (unit->right && unit->right->right)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
+			return (FAILURE);
+		}
+		if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
+			close(data->in_fd);
+		if (!ft_strncmp(unit->token, "<<", 3))
+			data->in_fd = open_heredoc(unit);
+		else
+			data->in_fd = open(unit->right->token, O_RDONLY);
+	}
+	return (SUCCESS);
+}
+
 static int	set_out_fd(t_token *unit, t_data *data)
 {
 	const int	opt = O_WRONLY | O_CREAT;
 
-	while (unit)
+	if (!ft_strncmp(unit->token, ">>", 3)
+		|| !ft_strncmp(unit->token, ">", 2))
 	{
-		if (!ft_strncmp(unit->token, ">>", 3)
-			|| !ft_strncmp(unit->token, ">", 2))
-		{
-			if (data->out_fd != STDOUT_FILENO && data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])
-				close(data->out_fd);
-			if (!ft_strncmp(unit->token, ">>", 3))
-				data->out_fd = open(unit->right->token, opt | O_APPEND, 0644);
-			else
-				data->out_fd = open(unit->right->token, opt | O_TRUNC, 0644);
-		}
-		if (data->out_fd == FAILURE)
+		if (unit->right->right)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			perror(unit->right->token);
-			exit_status(256 * EXIT_FAILURE);
+			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
 			return (FAILURE);
 		}
-		unit = unit->left;
+		if (data->out_fd != STDOUT_FILENO 
+			&& data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])
+			close(data->out_fd);
+		if (!ft_strncmp(unit->token, ">>", 3))
+			data->out_fd = open(unit->right->token, opt | O_APPEND, 0644);
+		else
+			data->out_fd = open(unit->right->token, opt | O_TRUNC, 0644);
 	}
 	return (SUCCESS);
 }

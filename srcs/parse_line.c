@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 17:50:23 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:26:56 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	chk_grammer_valid(t_data *data)
 		if (chk_condition(search, &brace_opened) == FAILURE)
 		{
 			token_error(search->token);
-			// exit_status = 258;
+			exit_status(258);
 			return (FAILURE);
 		}
 		if (search->type == REDIRECTION)

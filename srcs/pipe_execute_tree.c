@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 17:54:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:33:31 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,18 @@ int	execute_tree(t_token *top, t_data *data)
 static int	execute_brace(t_token *top, t_data *data)
 {
 	pid_t	pid;
-	// int		status;
 
 	pid = _fork();
-	// printf("pid: %d, top: %s\n", pid, top->token);
 	if (pid == 0)
 	{
 		data->pipe_count = 0;
 		data->cmd_count = 0;
 		execute_tree(top->left, data);
-		exit(exit_status(LOAD)); //subshell 종료
+		exit(exit_status(LOAD));
 	}
 	add_pid(data, pid);
 	if (data->pipe_count == 0)
 		wait_all(data);
-	// wait_all(data);
-	//waitpid(pid, &status, 0);
-	//exit_status(status);
 	return (exit_status(LOAD) == SUCCESS);
 }
 
@@ -82,38 +77,6 @@ static int	execute_or(t_token *top, t_data *data)
 		return (execute_tree(top->right, data));
 	return (TRUE);
 }
-
-// static int	execute_pipe(t_token *top, t_data *data)
-// {
-// 	data->is_exit = 0;
-// 	data->is_pipe = TRUE;
-// 	data->pipe_count++;
-// 	execute_tree(top->left, data);
-// 	data->is_exit = 0;
-// 	data->is_pipe = TRUE;
-// 	data->pipe_count--;
-// 	execute_tree(top->right, data);
-// 	data->is_pipe = FALSE;
-// 	return (exit_status(LOAD) == SUCCESS);
-// }
-
-// static int	execute_pipe(t_token *top, t_data *data)
-// {
-// 	data->is_exit = 0;
-// 	data->is_pipe = TRUE;
-// 	data->pipe_count++;
-// 	execute_tree(top->left, data);
-// 	close(data->pipefd[P_WRITE]);
-// 	data->prev_fd = data->pipefd[P_READ];
-// 	data->pipe_made = 0;
-// 	data->is_exit = 0;
-// 	data->is_pipe = TRUE;
-// 	data->pipe_count--;
-// 	execute_tree(top->right, data);
-// 	close(data->prev_fd);
-// 	data->is_pipe = FALSE;
-// 	return (exit_status(LOAD) == SUCCESS);
-// }
 
 static int	execute_pipe(t_token *top, t_data *data)
 {
