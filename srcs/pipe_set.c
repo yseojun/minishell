@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 22:12:49 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:21:49 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,13 @@ static int	set_in_fd(t_token *unit, t_data *data)
 	{
 		if (!ft_strncmp(unit->token, "<<", 3))
 		{
-			if (data->in_fd != STDIN_FILENO)
+			if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
 				close(data->in_fd);
 			data->in_fd = open_heredoc(unit);
 		}
 		else if (!ft_strncmp(unit->token, "<", 2))
 		{
-			if (data->in_fd != STDIN_FILENO)
+			if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
 				close(data->in_fd);
 			data->in_fd = open(unit->right->token, O_RDONLY);
 		}
@@ -132,7 +132,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 		if (!ft_strncmp(unit->token, ">>", 3)
 			|| !ft_strncmp(unit->token, ">", 2))
 		{
-			if (data->out_fd != STDOUT_FILENO)
+			if (data->out_fd != STDOUT_FILENO && data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])
 				close(data->out_fd);
 			if (!ft_strncmp(unit->token, ">>", 3))
 				data->out_fd = open(unit->right->token, opt | O_APPEND, 0644);

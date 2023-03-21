@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/20 20:54:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:59:57 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	reset_line_data(t_data *data)
 	data->wildcard = 0;
 	data->cmd_arr = 0;
 	data->pids = 0;
-	data->listfd = 0;
 	data->pipe_count = 0;
 	data->is_pipe = 0;
+	data->cmd_count = 0;
 	data->head = 0;
 	data->is_exit = 0;
 }
@@ -71,7 +71,6 @@ void	add_pid(t_data *data, pid_t	pid)
 		exit(EXIT_FAILURE);
 	new->pid = pid;
 	new->next = 0;
-	// printf("newpid: %d\n", new->pid);
 	if (data->pids)
 	{
 		last = data->pids;
@@ -89,23 +88,14 @@ void	wait_all(t_data *data)
 	t_pid	*to_delete;
 	int		status;
 
-	// search = data->pids;
-	// while (search)
-	// {
-	// 	search = search->next;
-	// }
 	search = data->pids;
 	while (search)
 	{
-		//printf("2\n");
 		waitpid(search->pid, &status, 0);
-		printf("%d\n", search->pid);
-		//printf("3\n");
 		to_delete = search;
 		search = search->next;
 		free(to_delete);
 		exit_status(status);
 	}
-	printf("fin\n");
 	data->pids = 0;
 }
