@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 17:02:13 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 17:09:33 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	manage_fd(t_data *data)
 		// printf("outfd: %d\n", data->out_fd);
 		close(data->out_fd);
 	}
-	if (data->pipe_count == 0 && data->cmd_count == 0)
+	if (data->prev_fd != STDIN_FILENO && data->pipe_count == 0 && data->cmd_count == 0)
 		close(data->prev_fd);
 	// data->prev_fd = STDIN_FILENO;
 	// if (data->pipe_count > 0)

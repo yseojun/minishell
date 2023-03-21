@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/14 18:04:04 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 17:17:28 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static int	is_n_option(char *str)
 {
 	int	idx;
 
+	if (!str)
+		return (FALSE);
 	if (str[0] != '-')
 		return (FALSE);
 	idx = 1;
