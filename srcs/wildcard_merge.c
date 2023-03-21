@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_merge.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/21 20:34:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 20:57:04 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,14 @@ static void	wildcard_merge(t_data *data, t_token *now)
 	t_token		*now_right;
 	t_token		*add;
 	t_wildcard	*search;
-	int			first_flag;
 
 	search = data->wildcard;
-	first_flag = 1;
 	add = 0;
 	while (search)
 	{
-		if (first_flag == 0)
+		if (search == data->wildcard)
 		{
 			add = make_merge_node(search->name, now);
-			if (!add)
-				exit(EXIT_FAILURE);
 			lst_token_last(now)->right = add;
 		}
 		else
@@ -51,7 +47,6 @@ static void	wildcard_merge(t_data *data, t_token *now)
 			}
 			free(now->token);
 			now->token = ft_strdup(search->name);
-			first_flag = 0;
 		}
 		search = search->next;
 	}
