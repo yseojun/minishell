@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 17:31:59 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 17:54:59 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
+#include "parse.h"
 
 static int	execute_and(t_token *top, t_data *data);
 static int	execute_or(t_token *top, t_data *data);
@@ -140,6 +141,8 @@ static int	excute_unit(t_token *top, t_data *data)
 {
 	free_arr((void **)data->cmd_arr);
 	data->cmd_arr = 0;
+	if (transform(data, top) == FAILURE)
+		return (FAILURE);
 	run_unit(top, data);
 	if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
 		data->is_exit = 1;

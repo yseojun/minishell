@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 12:29:36 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:50:23 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static int	chk_grammer_valid(t_data *data);
 int	parse_line(char *str, t_data *data)
 {
 	remove_comment(str);
-	if (tokenize(str, data) == FAILURE || chk_grammer_valid(data) == FAILURE
-		|| transform(data) == FAILURE)
+	if (tokenize(str, data) == FAILURE || chk_grammer_valid(data) == FAILURE)
 	{
 		lst_token_free_all(data->head);
 		data->head = 0;
@@ -47,6 +46,7 @@ static int	chk_grammer_valid(t_data *data)
 		if (chk_condition(search, &brace_opened) == FAILURE)
 		{
 			token_error(search->token);
+			// exit_status = 258;
 			return (FAILURE);
 		}
 		if (search->type == REDIRECTION)

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/18 13:12:48 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:47:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,46 @@ static t_token	*wildcard_merge(t_data *data, t_token *now)
 		add = make_merge_node(search->name, now);
 		if (!add)
 			return (0);
-		lst_token_add_back(&merge_head, add);
+		if (!merge_head)
+			merge_head = add;
+		else
+			lst_token_last(merge_head)->right = add;
 		search = search->next;
 	}
-	merge_head->left = now->left;
 	if (now->left)
 		now->left->right = merge_head;
 	else
 		data->head = merge_head;
 	add->right = now->right;
-	if (now->right)
-		now->right->left = add;
 	return (now->right);
 }
+
+// static t_token	*wildcard_merge(t_data *data, t_token *now)
+// {
+// 	t_token		*merge_head;
+// 	t_token		*add;
+// 	t_wildcard	*search;
+
+// 	merge_head = 0;
+// 	search = data->wildcard;
+// 	while (search)
+// 	{
+// 		add = make_merge_node(search->name, now);
+// 		if (!add)
+// 			return (0);
+// 		lst_token_add_back(&merge_head, add);
+// 		search = search->next;
+// 	}
+// 	merge_head->left = now->left;
+// 	if (now->left)
+// 		now->left->right = merge_head;
+// 	else
+// 		data->head = merge_head;
+// 	add->right = now->right;
+// 	if (now->right)
+// 		now->right->left = add;
+// 	return (now->right);
+// }
 
 static t_token	*make_merge_node(char *name, t_token *now)
 {
