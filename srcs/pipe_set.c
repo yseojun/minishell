@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_set.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 20:33:56 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/21 21:00:47 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
 			return (FAILURE);
 		}
-		if (data->out_fd != STDOUT_FILENO 
+		if (data->out_fd != STDOUT_FILENO
 			&& data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])
 			close(data->out_fd);
 		if (!ft_strncmp(unit->token, ">>", 3))
