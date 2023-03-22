@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_merge.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/21 20:57:04 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/22 14:48:46 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void		wildcard_merge(t_data *data, t_token *now);
 static t_token	*make_merge_node(char *name, t_token *now);
+static t_token *token_now_to_wildcard(t_wildcard *search, t_token *now);
 
 int	merge_wildcard_lst(t_data *data, t_token **now)
 {
@@ -34,24 +35,31 @@ static void	wildcard_merge(t_data *data, t_token *now)
 	while (search)
 	{
 		if (search == data->wildcard)
+			now_right = token_now_to_wildcard(search, now);
+		else
 		{
 			add = make_merge_node(search->name, now);
 			lst_token_last(now)->right = add;
-		}
-		else
-		{
-			if (search->next != 0)
-			{
-				now_right = now->right;
-				now->right = 0;
-			}
-			free(now->token);
-			now->token = ft_strdup(search->name);
 		}
 		search = search->next;
 	}
 	if (add)
 		add->right = now_right;
+}
+
+static t_token *token_now_to_wildcard(t_wildcard *search, t_token *now)
+{
+	t_token	*now_right;
+
+	now_right = 0;
+	if (search->next != 0)
+	{
+		now_right = now->right;
+		now->right = 0;
+	}
+	free(now->token);
+	now->token = ft_strdup(search->name);
+	return (now_right);
 }
 
 static t_token	*make_merge_node(char *name, t_token *now)
