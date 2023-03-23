@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 13:37:10 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 17:44:40 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	run_unit(t_token *unit, t_data *data)
 		return ;
 	data->cmd_arr = set_cmd(unit);
 	if (check_cmd(data, unit) == FAILURE || run_single_builtin(data) == TRUE)
+	{
+		manage_fd(data);
 		return ;
+	}
 	pid = _fork();
 	if (pid == 0)
 		child(data);
@@ -67,7 +70,10 @@ static void	manage_fd(t_data *data)
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd || data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE]))
 		close(data->out_fd);
 	if (data->prev_fd != STDIN_FILENO && data->pipe_count == 0 && data->cmd_count == 0)
+	{
 		close(data->prev_fd);
+		data->prev_fd = STDIN_FILENO;
+	}
 }
 
 static void	child(t_data *data)

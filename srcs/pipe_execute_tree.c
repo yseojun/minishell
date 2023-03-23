@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 12:48:42 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 17:12:05 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static int	execute_and(t_token *top, t_data *data)
 	data->cmd_count++;
 	status = execute_tree(top->left, data);
 	data->cmd_count--;
-	data->prev_fd = STDIN_FILENO;
 	if (status == TRUE && data->is_exit == 0)
 		return (execute_tree(top->right, data));
 	return (FALSE);
@@ -74,7 +73,6 @@ static int	execute_or(t_token *top, t_data *data)
 	data->cmd_count++;
 	status = execute_tree(top->left, data);
 	data->cmd_count--;
-	data->prev_fd = STDIN_FILENO;
 	if (status == FALSE && data->is_exit == 0)
 		return (execute_tree(top->right, data));
 	return (TRUE);
@@ -97,7 +95,11 @@ static int	execute_pipe(t_token *top, t_data *data)
 	data->is_pipe = TRUE;
 	data->pipe_count--;
 	execute_tree(top->right, data);
-	close(data->prev_fd);
+	if (data->prev_fd != STDIN_FILENO && (data->pipe_count != 0 || data->cmd_count != 0))
+	{
+		close(data->prev_fd);
+		data->prev_fd = STDIN_FILENO;
+	}
 	data->is_pipe = FALSE;
 	return (exit_status(LOAD) == SUCCESS);
 }
