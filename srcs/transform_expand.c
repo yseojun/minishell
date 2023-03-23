@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:40:41 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 14:12:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:57:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*get_value(t_data *data, char *key)
 	search = data->env;
 	while (search)
 	{
-		if (ft_strncmp(search->name, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(search->name, key, ft_strlen(key) + 1) == 0)
 			return (ft_strdup(search->value));
 		search = search->next;
 	}
