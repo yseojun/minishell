@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/18 17:43:35 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:39:12 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ int	check_cmd(t_data *data, t_token *unit)
 		return (SUCCESS);
 	if (data->cmd_arr == NULL)
 		return (FAILURE);
-	if (ft_strlen(data->cmd_arr[0]) != 0)
-	{
-		if (is_builtin_func(data) == SUCCESS)
-			return (SUCCESS);
-		if (check_cmd_path(data) == SUCCESS)
-			return (SUCCESS);
-		if (ft_strchr(data->cmd_arr[0], '/')
-			&& access(data->cmd_arr[0], F_OK) == SUCCESS)
-			return (SUCCESS);
-	}
+	if (is_builtin_func(data) == SUCCESS)
+		return (SUCCESS);
+	if (check_cmd_path(data) == SUCCESS)
+		return (SUCCESS);
+	if (ft_strchr(data->cmd_arr[0], '/')
+		&& access(data->cmd_arr[0], F_OK) == SUCCESS)
+		return (SUCCESS);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(data->cmd_arr[0], STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
+	if (get_value(data, "PATH"))
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	else
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 	exit_status(256 * 127);
 	return (FAILURE);
 }
