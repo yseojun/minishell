@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 21:00:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 12:48:42 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	execute_and(t_token *top, t_data *data)
 	data->cmd_count++;
 	status = execute_tree(top->left, data);
 	data->cmd_count--;
+	data->prev_fd = STDIN_FILENO;
 	if (status == TRUE && data->is_exit == 0)
 		return (execute_tree(top->right, data));
 	return (FALSE);
@@ -73,6 +74,7 @@ static int	execute_or(t_token *top, t_data *data)
 	data->cmd_count++;
 	status = execute_tree(top->left, data);
 	data->cmd_count--;
+	data->prev_fd = STDIN_FILENO;
 	if (status == FALSE && data->is_exit == 0)
 		return (execute_tree(top->right, data));
 	return (TRUE);
