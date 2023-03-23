@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 14:08:43 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 14:36:29 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@ int	builtin_env(char **cmd_arr, t_data *data)
 {
 	t_env	*search;
 
-	if (cmd_arr[1])
+	if (ft_strncmp(cmd_arr[0], "env", 4) == 0
+		&& ((!get_value(data, "PATH")) || cmd_arr[1]))
 	{
-		ft_putendl_fd("minishell: env: invaild env arguments", STDERR_FILENO);
+		ft_putendl_fd("minishell: env: No such file or directory", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	search = data->env;
