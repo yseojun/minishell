@@ -3,31 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/19 19:43:37 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 10:29:06 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 #include "util.h"
 
-static void	make_heredoc(t_token *top);
-static void	write_heredoc(int heredoc_fd, char *limiter);
+static int	make_heredoc(t_token *top);
+static int	write_heredoc(int heredoc_fd, char *limiter);
 static void	heredoc_child(int heredoc_fd, char *limiter);
 
-void	find_heredoc(t_token *top)
+int	find_heredoc(t_token *top)
 {
-	if (top == 0 || exit_status(LOAD) != EXIT_SUCCESS)
-		return ;
-	find_heredoc(top->left);
-	find_heredoc(top->right);
+	if (top == 0)
+		return (EXIT_SUCCESS);
+	if (find_heredoc(top->left) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (find_heredoc(top->right) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	if (ft_strncmp(top->token, "<<", 3) == 0)
-		make_heredoc(top);
+	{
+		if (make_heredoc(top) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
-static void	make_heredoc(t_token *top)
+static int	make_heredoc(t_token *top)
 {
 	int		heredoc_fd;
 	char	*heredoc_tmp_name;
@@ -43,14 +49,19 @@ static void	make_heredoc(t_token *top)
 	{
 		free(heredoc_tmp_name);
 		heredoc_tmp_name = 0;
-		return ;
+		return (EXIT_FAILURE);
 	}
 	free(heredoc_tmp_name);
-	write_heredoc(heredoc_fd, top->right->token);
+	if (write_heredoc(heredoc_fd, top->right->token) != EXIT_SUCCESS)
+	{
+		close(heredoc_fd);
+		return (EXIT_FAILURE);
+	}
 	close(heredoc_fd);
+	return (EXIT_SUCCESS);
 }
 
-static void	write_heredoc(int heredoc_fd, char *limiter)
+static int	write_heredoc(int heredoc_fd, char *limiter)
 {
 	pid_t		pid;
 	int			status;
@@ -58,15 +69,13 @@ static void	write_heredoc(int heredoc_fd, char *limiter)
 	pid = _fork();
 	if (pid == 0)
 		heredoc_child(heredoc_fd, limiter);
-	else
-	{
-		signal(SIGINT, heredoc_handler);
-		wait3(&status, 0, 0);
-		exit_status(EXIT_SUCCESS);
-		if (status != EXIT_SUCCESS)
-			exit_status(EXIT_FAILURE * 256);
-		signal(SIGINT, handler);
-	}
+	signal(SIGINT, heredoc_handler);
+	wait3(&status, 0, 0);
+	exit_status(EXIT_SUCCESS);
+	if (status != EXIT_SUCCESS)
+		exit_status(EXIT_FAILURE * 256);
+	signal(SIGINT, handler);
+	return (exit_status(LOAD));
 }
 
 static void	heredoc_child(int heredoc_fd, char *limiter)

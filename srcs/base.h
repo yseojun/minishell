@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 16:59:17 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 10:07:58 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ int			is_brace(char *str);
 
 //heredoc.c
 int			open_heredoc(t_token *search);
-void		find_heredoc(t_token *top);
+int			find_heredoc(t_token *top);
 
 //pipe_set.c / pipe_check_cmd.c
 int			set_fd(t_token *unit, t_data *data);
