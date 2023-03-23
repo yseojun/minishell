@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 16:59:57 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 09:17:55 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	reset_line_data(t_data *data)
 {
 	data->prev_fd = STDIN_FILENO;
 	data->wildcard = 0;
+	data->listfd = 0;
 	data->cmd_arr = 0;
 	data->pids = 0;
 	data->pipe_count = 0;

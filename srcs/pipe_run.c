@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 17:33:32 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 09:53:04 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,10 @@ void	run_unit(t_token *unit, t_data *data)
 
 	if (set_fd(unit, data) == FAILURE)
 		return ;
-	// printf("unit: %s, in: %d, out: %d\n", unit->token, data->in_fd, data->out_fd);
 	data->cmd_arr = set_cmd(unit);
 	if (check_cmd(data, unit) == FAILURE || run_single_builtin(data) == TRUE)
 		return ;
 	pid = _fork();
-	// printf("pid: %d, top: %s\n", pid, unit->token);
 	if (pid == 0)
 		child(data);
 	signal(SIGINT, SIG_IGN);
@@ -65,48 +63,12 @@ static int	run_single_builtin(t_data *data)
 static void	manage_fd(t_data *data)
 {
 	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
-	{
-		// printf("infd: %d\n", data->in_fd);
 		close(data->in_fd);
-	}
 	if (data->out_fd != STDOUT_FILENO && data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])
-	{
-		// printf("outfd: %d\n", data->out_fd);
 		close(data->out_fd);
-	}
 	if (data->prev_fd != STDIN_FILENO && data->pipe_count == 0 && data->cmd_count == 0)
 		close(data->prev_fd);
-	// data->prev_fd = STDIN_FILENO;
-	// if (data->pipe_count > 0)
-	// 	data->prev_fd = lst_pipefd_last(data->listfd)->pipefd[P_READ];
 }
-
-// static void	manage_fd(t_data *data)
-// {
-// 	if (data->in_fd != STDIN_FILENO)
-// 		close(data->in_fd);
-// 	if (data->out_fd != STDOUT_FILENO)
-// 		close(data->out_fd);
-// 	data->prev_fd = STDIN_FILENO;
-// 	if (data->pipe_count > 0)
-// 		data->prev_fd = data->pipefd[P_READ];
-// }
-
-// static void	child(t_data *data)
-// {
-// 	signal(SIGQUIT, SIG_DFL);
-// 	data->term.c_lflag |= ECHOCTL;
-// 	tcsetattr(0, TCSANOW, &data->term);
-// 	if (data->pipe_count > 0)
-// 		close(data->pipefd[P_READ]);
-// 	_dup2(data->in_fd, STDIN_FILENO);
-// 	if (data->in_fd != STDIN_FILENO)
-// 		close(data->in_fd);
-// 	_dup2(data->out_fd, STDOUT_FILENO);
-// 	if (data->out_fd != STDOUT_FILENO)
-// 		close(data->out_fd);
-// 	run_command(data);
-// }
 
 static void	child(t_data *data)
 {
