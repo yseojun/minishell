@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 20:32:09 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 14:08:43 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "parse.h"
 
 static void	export_env(t_data *data, char *str);
-static int	chk_export_valid(char *str);
+static int	check_export_valid(char *str);
 
 int	run_builtin_func(t_data *data)
 {
@@ -67,16 +67,41 @@ int	builtin_export(t_data *data, char **cmd_arr)
 	idx = 1;
 	while (cmd_arr[idx])
 	{
-		if (ft_strchr(cmd_arr[idx], '='))
-		{
-			if (chk_export_valid(cmd_arr[idx]) == SUCCESS)
-				export_env(data, cmd_arr[idx]);
-			else
-				exit_status = EXIT_FAILURE;
-		}
+		if (check_export_valid(cmd_arr[idx]) == SUCCESS)
+			export_env(data, cmd_arr[idx]);
+		else
+			exit_status = EXIT_FAILURE;
 		idx++;
 	}
 	return (exit_status);
+}
+
+static int	check_export_valid(char *str)
+{
+	char	**name_val;
+	int		idx;
+
+	if (ft_isalpha(str[0]) || str[0] == '_')
+	{
+		name_val = ft_split(str, '=');
+		idx = 0;
+		while (name_val[0][idx])
+		{
+			if (!ft_isalnum(name_val[0][idx]) && name_val[0][idx] != '_')
+				break ;
+			idx++;
+		}
+		if (!name_val[0][idx])
+		{
+			free_arr((void **)name_val);
+			return (SUCCESS);
+		}
+		free_arr((void **)name_val);
+	}
+	ft_putstr_fd("minishell: export: '", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	return (FAILURE);
 }
 
 static void	export_env(t_data *data, char *str)
@@ -85,6 +110,8 @@ static void	export_env(t_data *data, char *str)
 	t_env	*env;
 
 	name_val = ft_split(str, '=');
+	if (!name_val[1])
+		return ;
 	env = data->env;
 	while (env)
 	{
@@ -99,33 +126,4 @@ static void	export_env(t_data *data, char *str)
 	if (!env)
 		lst_env_add_back(&data->env, lst_new_env(name_val[0], name_val[1]));
 	free_arr((void **) name_val);
-}
-
-static int	chk_export_valid(char *str)
-{
-	char	**name_val;
-	int		idx;
-
-	if (str[0] == '=')
-	{
-		ft_putstr_fd("minishell: export: '", STDERR_FILENO);
-		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-		return (FAILURE);
-	}
-	name_val = ft_split(str, '=');
-	idx = -1;
-	while (name_val[0][++idx])
-	{
-		if (ft_isalnum(name_val[0][idx]) == 0 && name_val[0][idx] != '_')
-		{
-			ft_putstr_fd("minishell: export: ", STDERR_FILENO);
-			ft_putstr_fd("not valid in this context: ", STDERR_FILENO);
-			ft_putendl_fd(name_val[0], STDERR_FILENO);
-			free_arr((void **)name_val);
-			return (FAILURE);
-		}
-	}
-	free_arr((void **)name_val);
-	return (SUCCESS);
 }

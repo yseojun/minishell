@@ -3,28 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:47:57 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/19 12:35:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:11:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
+static int	check_unset_valid(char *str);
 static void	remove_env(t_data *data, char *str);
 static int	is_number(char *str);
 
 int	builtin_unset(t_data *data, char **cmd_arr)
 {
+	int		exit_status;
 	int		idx;
 
-	if (!cmd_arr[1])
-		return (EXIT_SUCCESS);
+	exit_status = EXIT_SUCCESS;
 	idx = 1;
 	while (cmd_arr[idx])
-		remove_env(data, cmd_arr[idx++]);
-	return (EXIT_SUCCESS);
+	{
+		if (check_unset_valid(cmd_arr[idx]) == SUCCESS)
+			remove_env(data, cmd_arr[idx]);
+		else
+			exit_status = EXIT_FAILURE;
+		idx++;
+	}
+	return (exit_status);
+}
+
+static int	check_unset_valid(char *str)
+{
+	int	idx;
+	
+	if (ft_isalpha(str[0]) || str[0] == '_')
+	{
+		idx = 0;
+		while (str[idx])
+		{
+			if (!ft_isalnum(str[idx]) && str[idx] != '_')
+				break ;
+			idx++;
+		}
+		if (!str[idx])
+			return (SUCCESS);
+	}
+	ft_putstr_fd("minishell: unset: '", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	return (FAILURE);
 }
 
 static void	remove_env(t_data *data, char *str)
@@ -68,7 +97,7 @@ int	builtin_exit(char **cmd_arr)
 		if (cmd_arr[2])
 		{
 			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-			return (EXIT_FAILURE);
+			return (129);
 		}
 		exit((unsigned char)ft_atoi(cmd_arr[1]));
 	}

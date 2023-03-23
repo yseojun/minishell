@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 12:08:45 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/23 13:37:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static int	run_single_builtin(t_data *data)
 	if (data->is_pipe || data->is_built_in == FALSE)
 		return (FALSE);
 	if (data->is_built_in == EXPORT && data->cmd_arr[1])
-		exit_status(builtin_export(data, data->cmd_arr));
+		exit_status(builtin_export(data, data->cmd_arr) * 256);
 	else if (data->is_built_in == UNSET)
-		exit_status(builtin_unset(data, data->cmd_arr));
+		exit_status(builtin_unset(data, data->cmd_arr) * 256);
 	else if (data->is_built_in == EXIT)
-		exit_status(builtin_exit(data->cmd_arr));
+		exit_status(builtin_exit(data->cmd_arr) * 256);
 	else if (data->is_built_in == CD)
-		exit_status(builtin_cd(data, data->cmd_arr[1]));
+		exit_status(builtin_cd(data, data->cmd_arr[1]) * 256);
 	else
 		return (FALSE);
 	return (TRUE);
