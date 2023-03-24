@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/24 18:13:38 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 19:13:10 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	run_unit(t_token *unit, t_data *data)
 
 	if (set_fd(unit, data) == FAILURE)
 		return ;
+	printf("unit: %s, in: %d, out: %d\n", unit->token, data->in_fd, data->out_fd);
 	data->cmd_arr = set_cmd(unit);
 	if (check_cmd(data, unit) == SUCCESS && run_single_builtin(data) == FALSE)
 	{
@@ -57,12 +58,18 @@ static int	run_single_builtin(t_data *data)
 
 static void	manage_fd(t_data *data)
 {
+	// 서브쉘의 마지막 커맨드이면 listfd 마지막 파이프의 READ 닫기?
+	if (data->listfd && data->pipe_count == 0 && data->cmd_count == 0)
+			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
 		close(data->in_fd);
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd || data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE]))
 		close(data->out_fd);
-	if (data->prev_fd != STDIN_FILENO && data->pipe_count == 0 && data->cmd_count == 0)
+	if (data->prev_fd != STDIN_FILENO && data->cmd_count == 0)
 	{
+		ft_putstr_fd("prev_fd : ",2 );
+		ft_putnbr_fd(data->prev_fd, 2);
+		ft_putendl_fd("", 2);
 		close(data->prev_fd);
 		data->prev_fd = STDIN_FILENO;
 	}
