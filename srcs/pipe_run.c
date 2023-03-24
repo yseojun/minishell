@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 17:44:40 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 18:13:38 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,16 @@ void	run_unit(t_token *unit, t_data *data)
 	if (set_fd(unit, data) == FAILURE)
 		return ;
 	data->cmd_arr = set_cmd(unit);
-	if (check_cmd(data, unit) == FAILURE || run_single_builtin(data) == TRUE)
+	if (check_cmd(data, unit) == SUCCESS && run_single_builtin(data) == FALSE)
 	{
-		manage_fd(data);
-		return ;
+		pid = _fork();
+		if (pid == 0)
+			child(data);
+		add_pid(data, pid);
 	}
-	pid = _fork();
-	if (pid == 0)
-		child(data);
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, handler);
-	add_pid(data, pid);
 	manage_fd(data);
 	if (data->pipe_count == 0)
 		wait_all(data);
-	data->term.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &data->term);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 static int	run_single_builtin(t_data *data)
@@ -81,7 +73,7 @@ static void	child(t_data *data)
 	signal(SIGQUIT, SIG_DFL);
 	data->term.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &data->term);
-	if (data->pipe_count > 0)
+	if (data->listfd)
 		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 	_dup2(data->in_fd, STDIN_FILENO);
 	if (data->in_fd != STDIN_FILENO)

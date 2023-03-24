@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 17:12:05 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 18:13:14 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static int	execute_brace(t_token *top, t_data *data)
 	pid = _fork();
 	if (pid == 0)
 	{
+		if (data->listfd)
+			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 		data->pipe_count = 0;
 		data->cmd_count = 0;
 		execute_tree(top->left, data);

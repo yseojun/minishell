@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 09:17:55 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 17:27:50 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	wait_all(t_data *data)
 	t_pid	*to_delete;
 	int		status;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handler);
 	search = data->pids;
 	while (search)
 	{
@@ -99,4 +101,8 @@ void	wait_all(t_data *data)
 		exit_status(status);
 	}
 	data->pids = 0;
+	data->term.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &data->term);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
 }
