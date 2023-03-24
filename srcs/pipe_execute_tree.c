@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/24 18:50:39 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 22:10:59 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,23 @@ static int	execute_brace(t_token *top, t_data *data)
 	pid = _fork();
 	if (pid == 0)
 	{
+		// data->pids = 0;
 		data->pipe_count = 0;
 		data->cmd_count = 0;
 		execute_tree(top->left, data);
 		exit(exit_status(LOAD));
 	}
+	printf("top: %s, %d\n", top->token, pid);
 	add_pid(data, pid);
+	// if (data->pipe_count == 0)
+	// 	wait_all(data);
 	if (data->pipe_count == 0)
-		wait_all(data);
+	{
+		int	status;
+		waitpid(pid, &status, 0);
+		printf("안해주나\n");
+		exit_status(status);
+	}
 	return (exit_status(LOAD) == SUCCESS);
 }
 
@@ -83,7 +92,7 @@ static int	execute_pipe(t_token *top, t_data *data)
 	int	pipefd[2];
 
 	_pipe(pipefd);
-	printf("top : %s, read : %d, wr: %d \n", top->token, pipefd[0], pipefd[1]);
+	// printf("top : %s, read : %d, wr: %d \n", top->token, pipefd[0], pipefd[1]);
 	lst_pipefd_add_back(&data->listfd, lst_new_pipefd(pipefd));
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
@@ -98,7 +107,7 @@ static int	execute_pipe(t_token *top, t_data *data)
 	execute_tree(top->right, data);
 	if (data->prev_fd != STDIN_FILENO)
 	{
-		printf("top: %s, prev_fd: %d\n", top->token, data->prev_fd);
+		// printf("top: %s, prev_fd: %d\n", top->token, data->prev_fd);
 		close(data->prev_fd);
 		data->prev_fd = STDIN_FILENO;
 	}

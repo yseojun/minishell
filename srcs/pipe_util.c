@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/24 17:27:50 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/24 22:06:40 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,9 @@ void	wait_all(t_data *data)
 	search = data->pids;
 	while (search)
 	{
-		waitpid(search->pid, &status, 0);
+		if (waitpid(search->pid, &status, 0) == -1)
+			printf("문제발생\n");
+		printf("%d\n", search->pid);
 		to_delete = search;
 		search = search->next;
 		free(to_delete);
