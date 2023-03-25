@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 10:07:58 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 21:45:16 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ void		wait_all(t_data *data);
 
 //builtin_func
 int			run_builtin_func(t_data *data);
-int			builtin_env(char **cmd_arr, t_data *data);
+int			builtin_env(t_data *data);
 int			builtin_export(t_data *data, char **cmd_arr);
 int			builtin_unset(t_data *data, char **cmd_arr);
 int			builtin_exit(char **cmd_arr);

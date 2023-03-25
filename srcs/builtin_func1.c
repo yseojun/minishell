@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 21:29:24 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 21:46:53 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	run_builtin_func(t_data *data)
 	if (data->is_built_in == EXPORT)
 		return (builtin_export(data, data->cmd_arr));
 	else if (data->is_built_in == ENV)
-		return (builtin_env(data->cmd_arr, data));
+		return (builtin_env(data));
 	else if (data->is_built_in == UNSET)
 		return (builtin_unset(data, data->cmd_arr));
 	else if (data->is_built_in == EXIT)
@@ -35,17 +35,10 @@ int	run_builtin_func(t_data *data)
 		return (builtin_echo(data));
 }
 
-int	builtin_env(char **cmd_arr, t_data *data)
+int	builtin_env(t_data *data)
 {
 	t_env	*search;
 
-	if (ft_strncmp(cmd_arr[0], "env", 4) == 0
-		&& ((!get_value(data, "PATH")) || cmd_arr[1]))
-	{
-		ft_putendl_fd("minishell: env: \
-					No such file or directory", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
 	search = data->env;
 	while (search)
 	{
@@ -64,7 +57,7 @@ int	builtin_export(t_data *data, char **cmd_arr)
 	int		idx;
 
 	if (!cmd_arr[1])
-		return (builtin_env(cmd_arr, data));
+		return (builtin_env(data));
 	exit_status = EXIT_SUCCESS;
 	idx = 1;
 	while (cmd_arr[idx])
