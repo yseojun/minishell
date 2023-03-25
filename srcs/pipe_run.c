@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 19:46:05 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 21:21:17 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ static int	run_single_builtin(t_data *data)
 
 static void	manage_fd(t_data *data)
 {
-	if (data->listfd && data->pipe_count == 0 && data->cmd_count == 0)
-		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
 		close(data->in_fd);
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd
