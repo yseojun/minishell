@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 10:29:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 19:50:00 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	find_heredoc(t_token *top)
 {
 	if (top == 0)
 		return (EXIT_SUCCESS);
-	if (find_heredoc(top->left) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (find_heredoc(top->right) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
 	if (ft_strncmp(top->token, "<<", 3) == 0)
 	{
 		if (make_heredoc(top) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
+	if (find_heredoc(top->left) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (find_heredoc(top->right) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:15:43 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 13:58:07 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 19:50:36 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	finish_line(char *str, t_data *data)
 	unlink_heredoc(data->head);
 	lst_tree_free_all(data->head);
 	data->head = 0;
-	system("leaks --quiet minishell");
 }
 
 static void	lst_tree_free_all(t_token *top)

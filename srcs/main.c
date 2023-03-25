@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 13:58:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 19:50:47 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,6 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	lst_env_free_all(data.env);
 	return (SUCCESS);
-}
-
-void	prt_tree(t_token *top)
-{
-	if (top == 0)
-		return ;
-	printf("%s\n", top->token);
-	prt_tree(top->left);
-	prt_tree(top->right);
 }
 
 static void	run_line(t_data *data)
