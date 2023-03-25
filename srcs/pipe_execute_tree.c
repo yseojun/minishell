@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 19:35:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 21:22:42 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ static int	execute_brace(t_token *top, t_data *data)
 		data->pipe_count = 0;
 		data->is_pipe = 0;
 		data->cmd_count = 0;
+		if (data->listfd)
+			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 		execute_tree(top->left, data);
+		close(data->out_fd);
 		exit(exit_status(LOAD));
 	}
 	add_pid(data, pid);
