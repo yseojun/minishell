@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/24 21:32:54 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 11:49:40 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	run_unit(t_token *unit, t_data *data)
 
 	if (set_fd(unit, data) == FAILURE)
 		return ;
-	//printf("unit: %s, in: %d, out: %d\n", unit->token, data->in_fd, data->out_fd);
 	data->cmd_arr = set_cmd(unit);
 	if (check_cmd(data, unit) == SUCCESS && run_single_builtin(data) == FALSE)
 	{
@@ -32,7 +31,6 @@ void	run_unit(t_token *unit, t_data *data)
 		if (pid == 0)
 			child(data);
 		add_pid(data, pid);
-		printf("token : %s, %d\n", unit->token, pid);
 	}
 	manage_fd(data);
 	if (data->pipe_count == 0)
@@ -56,22 +54,16 @@ static int	run_single_builtin(t_data *data)
 	return (TRUE);
 }
 
-
 static void	manage_fd(t_data *data)
 {
 	if (data->listfd && data->pipe_count == 0 && data->cmd_count == 0)
 		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
-		
 	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
 		close(data->in_fd);
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd || data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE]))
 		close(data->out_fd);
 	if (data->prev_fd != STDIN_FILENO && data->cmd_count == 0)
 	{
-		//printf("cmd: %s, prev_fd: %d\n", data->cmd_arr[0], data->prev_fd);
-		// ft_putstr_fd("cmd: %s, prev_fd : ",2 );
-		// ft_putnbr_fd(data->prev_fd, 2);
-		// ft_putendl_fd("", 2);
 		close(data->prev_fd);
 		data->prev_fd = STDIN_FILENO;
 	}

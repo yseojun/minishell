@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/24 22:10:59 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 11:48:36 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,17 @@ static int	execute_brace(t_token *top, t_data *data)
 	pid = _fork();
 	if (pid == 0)
 	{
-		// data->pids = 0;
+		data->pids = 0;
 		data->pipe_count = 0;
 		data->cmd_count = 0;
 		execute_tree(top->left, data);
 		exit(exit_status(LOAD));
 	}
-	printf("top: %s, %d\n", top->token, pid);
 	add_pid(data, pid);
-	// if (data->pipe_count == 0)
-	// 	wait_all(data);
 	if (data->pipe_count == 0)
 	{
-		int	status;
-		waitpid(pid, &status, 0);
-		printf("안해주나\n");
-		exit_status(status);
+		close(data->prev_fd);
+		wait_all(data);
 	}
 	return (exit_status(LOAD) == SUCCESS);
 }
