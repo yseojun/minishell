@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 11:39:12 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 14:01:38 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	check_cmd_path(t_data *data);
 
 int	check_cmd(t_data *data, t_token *unit)
 {
+	char	*path_value;
+
 	data->is_built_in = 0;
 	if (unit->type == ERROR && unit->right == NULL)
 		return (SUCCESS);
@@ -33,10 +35,12 @@ int	check_cmd(t_data *data, t_token *unit)
 		return (SUCCESS);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(data->cmd_arr[0], STDERR_FILENO);
-	if (get_value(data, "PATH"))
+	path_value = get_value(data, "PATH");
+	if (path_value)
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	else
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	free(path_value);
 	exit_status(256 * 127);
 	return (FAILURE);
 }
