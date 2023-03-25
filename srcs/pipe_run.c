@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 13:48:59 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:16:26 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static int	run_single_builtin(t_data *data)
 
 static void	manage_fd(t_data *data)
 {
-	if (data->listfd && data->pipe_count == 0)
+	if (data->listfd && data->pipe_count == 0 && data->cmd_count == 0) // 서브쉘 뒷파이프
 		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
-	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
+	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd) // in_fd가 prev_fd와 같으면 close하지 않음 - 나중에 해줌
 		close(data->in_fd);
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd
-			|| data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE]))
+			|| data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE])) // out_fd가 pipefd와 같으면 close하지 않음 - 나중에 해줌
 		close(data->out_fd);
-	if (data->prev_fd != STDIN_FILENO && data->cmd_count == 0)
+	if (data->prev_fd != STDIN_FILENO && data->cmd_count == 0) // 서브쉘 앞파이프
 	{
 		close(data->prev_fd);
 		data->prev_fd = STDIN_FILENO;
@@ -72,11 +72,18 @@ static void	manage_fd(t_data *data)
 
 static void	child(t_data *data)
 {
+	t_pipefd	*search;
+
 	signal(SIGQUIT, SIG_DFL);
 	data->term.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &data->term);
 	if (data->listfd)
-		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
+	{
+		search = data->listfd;
+		if (data->in_fd != search->pipefd[P_READ])
+			close(search->pipefd[P_READ]);
+		search = search->next;
+	}
 	_dup2(data->in_fd, STDIN_FILENO);
 	if (data->in_fd != STDIN_FILENO)
 		close(data->in_fd);
