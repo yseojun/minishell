@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 14:36:29 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 13:13:03 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	builtin_env(char **cmd_arr, t_data *data)
 	if (ft_strncmp(cmd_arr[0], "env", 4) == 0
 		&& ((!get_value(data, "PATH")) || cmd_arr[1]))
 	{
-		ft_putendl_fd("minishell: env: No such file or directory", STDERR_FILENO);
+		ft_putendl_fd("minishell: env: \
+					No such file or directory", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	search = data->env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:40:21 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/23 10:31:23 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 13:50:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char *argv[], char *envp[])
 	set_beginning(&data, envp);
 	while (1)
 	{
-		// printf("%d\n", getpid());
 		reset_line_data(&data);
 		str = readline("minishell> ");
 		if (!str)

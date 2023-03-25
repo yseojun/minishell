@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_merge.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/22 14:48:46 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/25 13:15:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 static void		wildcard_merge(t_data *data, t_token *now);
 static t_token	*make_merge_node(char *name, t_token *now);
-static t_token *token_now_to_wildcard(t_wildcard *search, t_token *now);
+static t_token	*token_now_to_wildcard(t_wildcard *search, t_token *now);
 
-int	merge_wildcard_lst(t_data *data, t_token **now)
+void	merge_wildcard_lst(t_data *data, t_token **now)
 {
 	wildcard_merge(data, *now);
 	lst_wildcard_free_all(data->wildcard);
 	data->wildcard = 0;
-	return (SUCCESS);
 }
 
 static void	wildcard_merge(t_data *data, t_token *now)
@@ -47,7 +46,7 @@ static void	wildcard_merge(t_data *data, t_token *now)
 		add->right = now_right;
 }
 
-static t_token *token_now_to_wildcard(t_wildcard *search, t_token *now)
+static t_token	*token_now_to_wildcard(t_wildcard *search, t_token *now)
 {
 	t_token	*now_right;
 

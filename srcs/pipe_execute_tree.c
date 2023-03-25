@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 11:48:36 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 13:49:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 static int	execute_and(t_token *top, t_data *data);
 static int	execute_or(t_token *top, t_data *data);
 static int	execute_pipe(t_token *top, t_data *data);
-static int	excute_unit(t_token *top, t_data *data);
 static int	execute_brace(t_token *top, t_data *data);
 
 int	execute_tree(t_token *top, t_data *data)
@@ -33,7 +32,16 @@ int	execute_tree(t_token *top, t_data *data)
 	else if (top->type == PIPE)
 		return (execute_pipe(top, data));
 	else
-		return (excute_unit(top, data));
+	{
+		free_arr((void **)data->cmd_arr);
+		data->cmd_arr = 0;
+		if (transform(data, top) == FAILURE)
+			return (FAILURE);
+		run_unit(top, data);
+		if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
+			data->is_exit = 1;
+		return (exit_status(LOAD) == SUCCESS);
+	}
 }
 
 static int	execute_brace(t_token *top, t_data *data)
@@ -50,9 +58,10 @@ static int	execute_brace(t_token *top, t_data *data)
 		exit(exit_status(LOAD));
 	}
 	add_pid(data, pid);
-	if (data->pipe_count == 0)
+	if (data->pipe_count == 0 && data->cmd_count == 0)
 	{
-		close(data->prev_fd);
+		if (data->prev_fd != STDIN_FILENO)
+			close(data->prev_fd);
 		wait_all(data);
 	}
 	return (exit_status(LOAD) == SUCCESS);
@@ -87,7 +96,6 @@ static int	execute_pipe(t_token *top, t_data *data)
 	int	pipefd[2];
 
 	_pipe(pipefd);
-	// printf("top : %s, read : %d, wr: %d \n", top->token, pipefd[0], pipefd[1]);
 	lst_pipefd_add_back(&data->listfd, lst_new_pipefd(pipefd));
 	data->is_exit = 0;
 	data->is_pipe = TRUE;
@@ -102,22 +110,9 @@ static int	execute_pipe(t_token *top, t_data *data)
 	execute_tree(top->right, data);
 	if (data->prev_fd != STDIN_FILENO)
 	{
-		// printf("top: %s, prev_fd: %d\n", top->token, data->prev_fd);
 		close(data->prev_fd);
 		data->prev_fd = STDIN_FILENO;
 	}
 	data->is_pipe = FALSE;
-	return (exit_status(LOAD) == SUCCESS);
-}
-
-static int	excute_unit(t_token *top, t_data *data)
-{
-	free_arr((void **)data->cmd_arr);
-	data->cmd_arr = 0;
-	if (transform(data, top) == FAILURE)
-		return (FAILURE);
-	run_unit(top, data);
-	if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
-		data->is_exit = 1;
 	return (exit_status(LOAD) == SUCCESS);
 }

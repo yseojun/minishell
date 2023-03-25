@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:47:57 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/23 14:11:38 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 13:13:20 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	builtin_unset(t_data *data, char **cmd_arr)
 static int	check_unset_valid(char *str)
 {
 	int	idx;
-	
+
 	if (ft_isalpha(str[0]) || str[0] == '_')
 	{
 		idx = 0;

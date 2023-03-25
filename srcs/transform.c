@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transform.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 20:34:30 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 13:17:37 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,7 @@ int	transform(t_data *data, t_token *top)
 	top->token = expand(data, top->token, &is_expanded);
 	if (is_todo_wildcard(top->token))
 	{
-		if (wildcard(data, &top) == FAILURE)
-		{
-			exit_status(1);
-			return (FAILURE);
-		}
+		wildcard(data, &top);
 		return (SUCCESS);
 	}
 	top->token = remove_quote(top->token);

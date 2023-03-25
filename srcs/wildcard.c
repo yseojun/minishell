@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 21:56:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 19:53:35 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 13:17:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 
 static void	make_wildcard_lst(t_data *data, t_token *now);
 
-int	wildcard(t_data *data, t_token **search)
+void	wildcard(t_data *data, t_token **search)
 {
 	make_wildcard_lst(data, *search);
 	if (data->wildcard)
-	{
-		if (merge_wildcard_lst(data, search) == FAILURE)
-			return (FAILURE);
-	}
+		merge_wildcard_lst(data, search);
 	else
 		(*search)->token = remove_quote((*search)->token);
-	return (SUCCESS);
 }
 
 static void	make_wildcard_lst(t_data *data, t_token *now)
