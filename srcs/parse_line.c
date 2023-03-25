@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 19:26:56 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 20:23:50 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ int	parse_line(char *str, t_data *data)
 	return (SUCCESS);
 }
 
+void	prt_tree(t_token *head)
+{
+	if (!head)
+		return ;
+	prt_tree(head->left);
+	prt_tree(head->right);
+	printf("token: %s, type: %d\n", head->token, head->type);
+}
+
 static int	chk_grammer_valid(t_data *data)
 {
 	t_token	*search;
@@ -55,7 +64,7 @@ static int	chk_grammer_valid(t_data *data)
 	}
 	if (brace_opened > 0)
 	{
-		token_error("(");
+		ft_putendl_fd("minishell: brace unclosed", 2);
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -66,7 +75,8 @@ static int	chk_condition(t_token *now, int *brace_opened)
 	if (now->type == BRACE && now->token[0] == '(')
 		(*brace_opened)++;
 	if ((now->type == PIPE || now->type == AND || now->type == OR)
-		&& (!now->left || !now->right || is_symbol(now->left->token)))
+		&& (!now->left || !now->right || is_symbol(now->left->token)
+			|| now->left->type == AND || now->left->type == OR))
 		return (FAILURE);
 	else if (now->type == REDIRECTION
 		&& (!now->right || is_symbol(now->right->token)))
@@ -79,6 +89,9 @@ static int	chk_condition(t_token *now, int *brace_opened)
 		return (--(*brace_opened));
 	}
 	else if (!ft_strncmp(now->token, "&", 2))
+		return (FAILURE);
+	else if (now->type == CMD && (now->left && now->left->type == BRACE
+			&& now->left->token[0] == ')'))
 		return (FAILURE);
 	return (SUCCESS);
 }
