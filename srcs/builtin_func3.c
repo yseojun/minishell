@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/21 17:17:28 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/25 21:31:52 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	builtin_cd(t_data *data, char *dir)
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
+		free(dir);
 	}
 	if (chdir(dir) == FAILURE)
 	{
