@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 13:49:54 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:38:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	execute_brace(t_token *top, t_data *data)
 	{
 		data->pids = 0;
 		data->pipe_count = 0;
+		data->is_pipe = 0;
 		data->cmd_count = 0;
 		execute_tree(top->left, data);
 		exit(exit_status(LOAD));
