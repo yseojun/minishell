@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 20:23:50 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 20:35:48 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ static void	token_error(char *token);
 static int	chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_data *data);
 
+void	prt_tree(t_token *head)
+{
+	if (!head)
+		return ;
+	prt_tree(head->left);
+	prt_tree(head->right);
+	printf("token: %s, type: %d\n", head->token, head->type);
+}
+
 int	parse_line(char *str, t_data *data)
 {
 	remove_comment(str);
@@ -29,16 +38,8 @@ int	parse_line(char *str, t_data *data)
 		return (FAILURE);
 	}
 	data->head = make_tree(lst_token_last(data->head));
+	prt_tree(data->head);
 	return (SUCCESS);
-}
-
-void	prt_tree(t_token *head)
-{
-	if (!head)
-		return ;
-	prt_tree(head->left);
-	prt_tree(head->right);
-	printf("token: %s, type: %d\n", head->token, head->type);
 }
 
 static int	chk_grammer_valid(t_data *data)
@@ -88,6 +89,10 @@ static int	chk_condition(t_token *now, int *brace_opened)
 			return (FAILURE);
 		return (--(*brace_opened));
 	}
+	else if (now->type == BRACE && now->token[0] == '('
+		&& (now->left && (!is_symbol(now->left->token)
+				|| now->left->type != AND || now->left->type != OR)))
+		return (FAILURE);
 	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	else if (now->type == CMD && (now->left && now->left->type == BRACE
