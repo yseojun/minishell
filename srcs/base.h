@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 21:45:16 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 22:00:40 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_data
 	int				out_fd;
 	int				is_pipe;
 	int				pipe_count;
+	int				last_fd;
 	int				cmd_count;
 	int				is_exit;
 	struct s_pid	*pids;

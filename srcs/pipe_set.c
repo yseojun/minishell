@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/21 21:00:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/25 22:02:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ static int	count_cmd(t_token *unit)
 int	set_fd(t_token *unit, t_data *data)
 {
 	data->in_fd = data->prev_fd;
-	if (data->listfd)
+	if (data->last_fd != STDOUT_FILENO && data->pipe_count == 0)
+		data->out_fd = data->last_fd;
+	else if (data->listfd)
 		data->out_fd = lst_pipefd_last(data->listfd)->pipefd[P_WRITE];
 	else
 		data->out_fd = STDOUT_FILENO;
