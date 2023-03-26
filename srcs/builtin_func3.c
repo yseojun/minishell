@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 21:04:00 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 21:18:51 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,18 @@ int	builtin_cd(t_data *data, char *dir)
 		if (!dir)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+			free(dir);
 			return (EXIT_FAILURE);
 		}
-		free(dir);
 	}
-	if (chdir(dir) == FAILURE)
+	else
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		perror(dir);
-		return (EXIT_FAILURE);
+		if (chdir(dir) == FAILURE)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			perror(dir);
+			return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
