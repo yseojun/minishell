@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 17:12:19 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 21:12:01 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static int	set_in_fd(t_token *unit, t_data *data)
 	if (!ft_strncmp(unit->token, "<<", 3)
 		|| !ft_strncmp(unit->token, "<", 2))
 	{
-		if (unit->right && unit->right->right)
+		if (unit->right && (unit->right->right || unit->right->type == ERROR))
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
@@ -117,7 +117,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 	if (!ft_strncmp(unit->token, ">>", 3)
 		|| !ft_strncmp(unit->token, ">", 2))
 	{
-		if (unit->right->right)
+		if (unit->right && (unit->right->right || unit->right->type == ERROR))
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
