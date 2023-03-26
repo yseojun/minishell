@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 21:31:52 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 21:04:00 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parse.h"
 #include "util.h"
 
-static int	is_n_option(char *str);
+static int	is_n_option(char **str);
 
 int	builtin_cd(t_data *data, char *dir)
 {
@@ -54,11 +54,8 @@ int	builtin_echo(t_data *data)
 	int	remove_nl;
 	int	idx;
 
-	remove_nl = is_n_option(data->cmd_arr[1]);
-	if (remove_nl == TRUE)
-		idx = 2;
-	else
-		idx = 1;
+	remove_nl = is_n_option(data->cmd_arr);
+	idx = remove_nl + 1;
 	while (data->cmd_arr[idx])
 	{
 		ft_putstr_fd(data->cmd_arr[idx], STDOUT_FILENO);
@@ -71,20 +68,26 @@ int	builtin_echo(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int	is_n_option(char *str)
+static int	is_n_option(char **str)
 {
 	int	idx;
+	int	count;
 
-	if (!str)
-		return (FALSE);
-	if (str[0] != '-')
-		return (FALSE);
-	idx = 1;
-	while (str[idx])
+	count = 0;
+	while (str[count + 1])
 	{
-		if (str[idx] != 'n')
-			return (FALSE);
-		idx++;
+		if (!str[count + 1])
+			return (count);
+		if (str[count + 1][0] != '-')
+			return (count);
+		idx = 1;
+		while (str[count + 1][idx])
+		{
+			if (str[count + 1][idx] != 'n')
+				return (count);
+			idx++;
+		}
+		count++;
 	}
-	return (TRUE);
+	return (count);
 }
