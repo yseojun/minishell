@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 12:51:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 13:21:33 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	chk_if_open_brace(t_token *now, int *brace_opened)
 			if (now->left->type == CMD)
 				return (FAILURE);
 			else if (now->left->type == PIPE)
+				return (FAILURE);
+			else if (now->left->type == REDIRECTION)
 				return (FAILURE);
 		}
 	}
@@ -71,20 +73,28 @@ int	chk_if_redirection(t_token *now)
 	{
 		if (!now->right || is_redirection(now->right->token))
 			return (FAILURE);
-		else if (now->left->type == BRACE && now->left->token[0] == ')')
-			return (FAILURE);
 	}
 	return (SUCCESS);
 }
 
 int	chk_if_cmd(t_token *now)
 {
+	t_token	*search;
+
 	if (now->type == CMD)
 	{
 		if (now->left)
 		{
-			if (now->left->type == BRACE && now->left->token[0] == ')')
-				return (FAILURE);
+			search = now->left;
+			while (search)
+			{
+				if (search->type == PIPE
+					|| search->type == OR || search->type == AND)
+					break ;
+				if (search->type == BRACE && search->token[0] == ')')
+					return (FAILURE);
+				search = search->left;
+			}
 		}
 	}
 	return (SUCCESS);
