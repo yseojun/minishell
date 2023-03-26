@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 16:58:20 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:47:04 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,21 @@ static void	manage_fd(t_data *data)
 
 static void	child(t_data *data)
 {
+	t_pipefd	*search;
+
 	signal(SIGQUIT, SIG_DFL);
 	data->term.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &data->term);
 	if (data->listfd && data->pipe_count)
-		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
+	{
+		search = data->listfd;
+		while (search)
+		{
+			if (data->prev_fd != search->pipefd[P_READ])
+				close(search->pipefd[P_READ]);
+			search = search->next;
+		}
+	}
 	_dup2(data->in_fd, STDIN_FILENO);
 	if (data->in_fd != STDIN_FILENO)
 		close(data->in_fd);

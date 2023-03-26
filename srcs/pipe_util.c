@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 16:55:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:46:50 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ void	reset_line_data(t_data *data)
 	data->pids = 0;
 	data->pipe_count = 0;
 	data->is_pipe = 0;
-	data->cmd_count = 0;
 	data->head = 0;
-	data->is_exit = 0;
 	data->last_fd = 0;
 }
 
@@ -95,8 +93,7 @@ void	wait_all(t_data *data)
 	search = data->pids;
 	while (search)
 	{
-		if (waitpid(search->pid, &status, 0) == -1)
-			printf("문제발생\n");
+		waitpid(search->pid, &status, 0);
 		to_delete = search;
 		search = search->next;
 		free(to_delete);

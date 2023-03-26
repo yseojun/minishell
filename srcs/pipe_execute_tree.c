@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 17:14:57 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 19:08:44 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	execute_tree(t_token *top, t_data *data)
 		return ;
 	if (top->type == BRACE)
 		execute_brace(top, data);
-	if (top->type == AND)
+	else if (top->type == AND)
 		execute_and(top, data);
 	else if (top->type == OR)
 		execute_or(top, data);
@@ -35,8 +35,6 @@ void	execute_tree(t_token *top, t_data *data)
 		data->cmd_arr = 0;
 		transform(data, top);
 		run_unit(top, data);
-		if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
-			data->is_exit = 1;
 	}
 }
 
@@ -50,11 +48,11 @@ static void	execute_brace(t_token *top, t_data *data)
 		data->pids = 0;
 		data->pipe_count = 0;
 		data->is_pipe = 0;
-		data->cmd_count = 0;
 		data->last_fd = data->prev_fd;
 		if (data->listfd)
 			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 		execute_tree(top->left, data);
+		close(data->last_fd);
 		wait_all(data);
 		exit(exit_status(LOAD));
 	}
@@ -67,14 +65,12 @@ static void	execute_pipe(t_token *top, t_data *data)
 
 	_pipe(pipefd);
 	lst_pipefd_add_back(&data->listfd, lst_new_pipefd(pipefd));
-	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count++;
 	execute_tree(top->left, data);
 	data->prev_fd = pipefd[P_READ];
 	close(pipefd[P_WRITE]);
 	lst_pipefd_remove_last(&data->listfd);
-	data->is_exit = 0;
 	data->is_pipe = TRUE;
 	data->pipe_count--;
 	execute_tree(top->right, data);

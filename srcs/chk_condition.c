@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 14:42:23 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 18:42:49 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ int	chk_if_pipe_logic(t_token *now)
 
 int	chk_if_redirection(t_token *now)
 {
-	if (now->type == REDIRECTION)
+	if (now->type == REDIRECTION && is_redirection(now->token))
 	{
-		if (!now->right || is_redirection(now->right->token))
+		if (now->left && is_redirection(now->left->token))
 			return (FAILURE);
 	}
 	return (SUCCESS);
