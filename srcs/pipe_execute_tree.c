@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 22:03:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 11:35:33 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ static int	execute_brace(t_token *top, t_data *data)
 		data->is_pipe = 0;
 		data->cmd_count = 0;
 		if (data->listfd)
+		{
 			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
+		}
 		execute_tree(top->left, data);
 		close(data->out_fd);
 		exit(exit_status(LOAD));

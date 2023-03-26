@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 22:06:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 11:40:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	child(t_data *data)
 	signal(SIGQUIT, SIG_DFL);
 	data->term.c_lflag |= ECHOCTL;
 	tcsetattr(0, TCSANOW, &data->term);
-	if (data->listfd)
+	if (data->listfd && data->pipe_count)
 		close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 	_dup2(data->in_fd, STDIN_FILENO);
 	if (data->in_fd != STDIN_FILENO)
