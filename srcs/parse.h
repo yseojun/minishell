@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 13:17:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 12:34:05 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 
 // parse.c
 int			parse_line(char *str, t_data *data);
+
+//chk_condition.c
+int			chk_if_open_brace(t_token *now, int *brace_opened);
+int			chk_if_close_brace(t_token *now, int *brace_opened);
+int			chk_if_pipe_logic(t_token *now);
+int			chk_if_redirection(t_token *now);
+int			chk_if_cmd(t_token *now);
 
 // tokenize.c
 int			tokenize(char *str, t_data *data);

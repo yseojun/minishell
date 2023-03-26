@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 20:55:11 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 12:40:25 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,40 +68,19 @@ static int	chk_grammer_valid(t_data *data)
 	return (SUCCESS);
 }
 
-int	chk_condition2(t_token *now)
-{
-	if (now->type == BRACE && now->token[0] == '('
-		&& (now->left && (now->left->type != PIPE
-				&& now->left->type != AND && now->left->type != OR
-				&& (now->left->type == BRACE && now->left->token[0] != '('))))
-		return (FAILURE);
-	else if (!ft_strncmp(now->token, "&", 2))
-		return (FAILURE);
-	else if (now->type == CMD && (now->left && now->left->type == BRACE
-			&& now->left->token[0] == ')'))
-		return (FAILURE);
-	return (SUCCESS);
-}
-
 static int	chk_condition(t_token *now, int *brace_opened)
 {
-	if (now->type == BRACE && now->token[0] == '(')
-		(*brace_opened)++;
-	if ((now->type == PIPE || now->type == AND || now->type == OR)
-		&& (!now->left || !now->right || is_symbol(now->left->token)
-			|| now->left->type == AND || now->left->type == OR))
+	if (chk_if_open_brace(now, brace_opened) == FAILURE)
 		return (FAILURE);
-	else if (now->type == REDIRECTION
-		&& (!now->right || is_symbol(now->right->token)))
+	else if (chk_if_close_brace(now, brace_opened) == FAILURE)
 		return (FAILURE);
-	else if (now->type == BRACE && now->token[0] == ')')
-	{
-		if ((now->left && now->left->type == BRACE
-				&& now->left->token[0] == '(') || *brace_opened <= 0)
-			return (FAILURE);
-		return (--(*brace_opened));
-	}
-	else if (chk_condition2(now) == FAILURE)
+	else if (chk_if_pipe_logic(now) == FAILURE)
+		return (FAILURE);
+	else if (chk_if_redirection(now) == FAILURE)
+		return (FAILURE);
+	else if (chk_if_cmd(now) == FAILURE)
+		return (FAILURE);
+	else if (!ft_strncmp(now->token, "&", 2))
 		return (FAILURE);
 	return (SUCCESS);
 }
