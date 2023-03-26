@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:07:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 13:33:55 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:31 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 static t_token	*find_logical_operator(t_token *tail);
 static t_token	*find_pipe(t_token *tail);
-static t_token	*find_braces(t_token *tail);
 static t_token	*ignore_brace(t_token *search);
 
 t_token	*make_tree(t_token *tail)
@@ -75,41 +74,6 @@ static t_token	*find_pipe(t_token *tail)
 			search->right->left = NULL;
 			search->right = make_tree(tail);
 			return (search);
-		}
-		search = search->left;
-	}
-	return (0);
-}
-
-static t_token	*find_braces(t_token *tail)
-{
-	t_token	*search;
-	t_token	*brace_top;
-
-	search = tail;
-	while (search)
-	{
-		if (search->type == BRACE && search->token[0] == ')')
-		{
-			brace_top = search;
-			if (search->right)
-			{
-				search->left->right = search->right;
-				search->right->left = search->left;
-			}
-			else
-			{
-				search = search->left;
-				search->right = 0;
-			}
-			while (search->left)
-				search = search->left;
-			search = search->right;
-			lst_token_free(search->left);
-			search->left = NULL;
-			brace_top->left = make_tree(lst_token_last(search));
-			brace_top->right = 0;
-			return (brace_top);
 		}
 		search = search->left;
 	}

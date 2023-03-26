@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 12:34:05 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 14:47:04 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ t_wildcard	*make_to_find_head(char *s);
 // tree_make
 t_token		*make_tree(t_token *tail);
 t_token		*find_command(t_token *tail);
+t_token		*find_braces(t_token *tail);
 
 #endif

@@ -26,6 +26,7 @@ wildcard_merge.c \
 wildcard_tofind.c \
 tree_make1.c \
 tree_make2.c \
+tree_make3.c \
 heredoc.c \
 pipe_set.c \
 pipe_check_cmd.c \
