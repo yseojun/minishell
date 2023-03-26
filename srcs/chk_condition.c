@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 14:25:59 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 14:42:23 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	chk_if_pipe_logic(t_token *now)
 			return (FAILURE);
 		else if (now->left->type == AND || now->left->type == OR)
 			return (FAILURE);
-		else if (is_brace(now->left->token))
+		else if (now->left->type == BRACE && now->left->token[0] == '(')
 			return (FAILURE);
 	}
 	return (SUCCESS);

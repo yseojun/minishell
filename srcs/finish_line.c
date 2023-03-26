@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:15:43 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 19:50:36 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 14:31:06 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void	lst_tree_free_all(t_token *top)
 static void	unlink_heredoc(t_token *top)
 {
 	char	*heredoc_tmp_name;
+	char	*tmp;
 
 	if (top == 0)
 		return ;
@@ -44,7 +45,9 @@ static void	unlink_heredoc(t_token *top)
 	unlink_heredoc(top->right);
 	if (ft_strncmp(top->token, "<<", 3) == 0)
 	{
-		heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
+		tmp = ft_itoa((unsigned long long) &top->token);
+		heredoc_tmp_name = ft_strjoin("/tmp/", tmp);
+		free(tmp);
 		unlink(heredoc_tmp_name);
 		free(heredoc_tmp_name);
 	}
