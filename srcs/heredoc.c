@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 19:50:00 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 14:34:57 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int	make_heredoc(t_token *top)
 	char	*heredoc_tmp_name;
 	char	*tmp;
 
-	execve("bin/mkdir", (char *[]){"mkdir", "-p", "/tmp", 0}, 0);
 	heredoc_tmp_name = ft_itoa((unsigned long long) &top->token);
 	tmp = heredoc_tmp_name;
 	heredoc_tmp_name = ft_strjoin("/tmp/", heredoc_tmp_name);
