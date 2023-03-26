@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   finish_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:15:43 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 14:31:06 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 16:24:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	unlink_heredoc(t_token *top);
 
 void	finish_line(char *str, t_data *data)
 {
+	wait_all(data);
 	free(str);
 	free_arr((void **)data->cmd_arr);
 	unlink_heredoc(data->head);

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 14:47:04 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:08:06 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char		*put_token(char *str, int *idx);
 int			set_type(char *token);
 
 // transform
-int			transform(t_data *data, t_token *top);
+void		transform(t_data *data, t_token *top);
 char		*remove_quote(char *str);
 int			get_quote_size(char *str, int idx);
 

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:38:32 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 11:41:29 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:12:19 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ int	set_fd(t_token *unit, t_data *data)
 		data->out_fd = STDOUT_FILENO;
 	while (unit)
 	{
-		set_in_fd(unit, data);
-		set_out_fd(unit, data);
+		if (set_in_fd(unit, data) == FAILURE
+			|| set_out_fd(unit, data) == FAILURE)
+			return (FAILURE);
 		if (data->in_fd == FAILURE || data->out_fd == FAILURE)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -96,6 +97,7 @@ static int	set_in_fd(t_token *unit, t_data *data)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
+			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
 		}
 		if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
@@ -119,6 +121,7 @@ static int	set_out_fd(t_token *unit, t_data *data)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putendl_fd("ambiguous redirect", STDERR_FILENO);
+			exit_status(256 * EXIT_FAILURE);
 			return (FAILURE);
 		}
 		if (data->out_fd != STDOUT_FILENO

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 11:40:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 16:58:20 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	run_unit(t_token *unit, t_data *data)
 		add_pid(data, pid);
 	}
 	manage_fd(data);
-	if (data->pipe_count == 0)
-		wait_all(data);
 }
 
 static int	run_single_builtin(t_data *data)
@@ -56,16 +54,12 @@ static int	run_single_builtin(t_data *data)
 
 static void	manage_fd(t_data *data)
 {
-	if (data->in_fd != STDIN_FILENO && data->in_fd != data->prev_fd)
+	if (data->in_fd != STDIN_FILENO
+		&& data->in_fd != data->prev_fd && data->in_fd != data->last_fd)
 		close(data->in_fd);
 	if (data->out_fd != STDOUT_FILENO && (!data->listfd
 			|| data->out_fd != lst_pipefd_last(data->listfd)->pipefd[P_WRITE]))
 		close(data->out_fd);
-	if (data->prev_fd != STDIN_FILENO && data->cmd_count == 0)
-	{
-		close(data->prev_fd);
-		data->prev_fd = STDIN_FILENO;
-	}
 }
 
 static void	child(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 11:51:05 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:14:57 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,33 @@
 #include "util.h"
 #include "parse.h"
 
-static int	execute_and(t_token *top, t_data *data);
-static int	execute_or(t_token *top, t_data *data);
-static int	execute_pipe(t_token *top, t_data *data);
-static int	execute_brace(t_token *top, t_data *data);
+static void	execute_pipe(t_token *top, t_data *data);
+static void	execute_brace(t_token *top, t_data *data);
 
-int	execute_tree(t_token *top, t_data *data)
+void	execute_tree(t_token *top, t_data *data)
 {
 	if (top == NULL)
-		return (TRUE);
+		return ;
 	if (top->type == BRACE)
-		return (execute_brace(top, data));
+		execute_brace(top, data);
 	if (top->type == AND)
-		return (execute_and(top, data));
+		execute_and(top, data);
 	else if (top->type == OR)
-		return (execute_or(top, data));
+		execute_or(top, data);
 	else if (top->type == PIPE)
-		return (execute_pipe(top, data));
+		execute_pipe(top, data);
 	else
 	{
 		free_arr((void **)data->cmd_arr);
 		data->cmd_arr = 0;
-		if (transform(data, top) == FAILURE)
-			return (FAILURE);
+		transform(data, top);
 		run_unit(top, data);
 		if (data->cmd_arr && ft_strncmp(data->cmd_arr[0], "exit", 5) == 0)
 			data->is_exit = 1;
-		return (exit_status(LOAD) == SUCCESS);
 	}
 }
 
-static int	execute_brace(t_token *top, t_data *data)
+static void	execute_brace(t_token *top, t_data *data)
 {
 	pid_t	pid;
 
@@ -55,47 +51,17 @@ static int	execute_brace(t_token *top, t_data *data)
 		data->pipe_count = 0;
 		data->is_pipe = 0;
 		data->cmd_count = 0;
+		data->last_fd = data->prev_fd;
 		if (data->listfd)
 			close(lst_pipefd_last(data->listfd)->pipefd[P_READ]);
 		execute_tree(top->left, data);
-		// close(data->out_fd);
+		wait_all(data);
 		exit(exit_status(LOAD));
 	}
 	add_pid(data, pid);
-	if (data->pipe_count == 0)
-	{
-		if (data->prev_fd != STDIN_FILENO)
-			close(data->prev_fd);
-		wait_all(data);
-	}
-	return (exit_status(LOAD) == SUCCESS);
 }
 
-static int	execute_and(t_token *top, t_data *data)
-{
-	int	status;
-
-	data->cmd_count++;
-	status = execute_tree(top->left, data);
-	data->cmd_count--;
-	if (status == TRUE && data->is_exit == 0)
-		return (execute_tree(top->right, data));
-	return (FALSE);
-}
-
-static int	execute_or(t_token *top, t_data *data)
-{
-	int	status;
-
-	data->cmd_count++;
-	status = execute_tree(top->left, data);
-	data->cmd_count--;
-	if (status == FALSE && data->is_exit == 0)
-		return (execute_tree(top->right, data));
-	return (TRUE);
-}
-
-static int	execute_pipe(t_token *top, t_data *data)
+static void	execute_pipe(t_token *top, t_data *data)
 {
 	int	pipefd[2];
 
@@ -118,5 +84,4 @@ static int	execute_pipe(t_token *top, t_data *data)
 		data->prev_fd = STDIN_FILENO;
 	}
 	data->is_pipe = FALSE;
-	return (exit_status(LOAD) == SUCCESS);
 }

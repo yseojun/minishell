@@ -31,6 +31,7 @@ heredoc.c \
 pipe_set.c \
 pipe_check_cmd.c \
 pipe_execute_tree.c \
+pipe_execute_tree2.c \
 pipe_run.c \
 pipe_util.c \
 builtin_func1.c \

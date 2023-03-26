@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 22:00:40 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:15:29 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,9 @@ char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 
 //pipe_execute_tree.c / pipe_run.c
-int			execute_tree(t_token *top, t_data *data);
+void		execute_tree(t_token *top, t_data *data);
+void		execute_and(t_token *top, t_data *data);
+void		execute_or(t_token *top, t_data *data);
 void		run_unit(t_token *unit, t_data *data);
 
 //pipe_util.c
