@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chk_condition.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 18:42:49 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 20:41:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	chk_if_close_brace(t_token *now, int *brace_opened)
 {
 	if (now->type == BRACE && now->token[0] == ')')
 	{
+		if (*brace_opened == 0)
+			return (FAILURE);
 		(*brace_opened)--;
 		if (now->left)
 		{
