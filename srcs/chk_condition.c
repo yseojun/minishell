@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chk_condition.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 13:21:33 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 14:25:59 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	chk_if_open_brace(t_token *now, int *brace_opened)
 		if (now->left)
 		{
 			if (now->left->type == CMD)
-				return (FAILURE);
-			else if (now->left->type == PIPE)
 				return (FAILURE);
 			else if (now->left->type == REDIRECTION)
 				return (FAILURE);
@@ -59,9 +57,7 @@ int	chk_if_pipe_logic(t_token *now)
 			return (FAILURE);
 		else if (now->left->type == AND || now->left->type == OR)
 			return (FAILURE);
-		else if (now->left->type == BRACE && now->left->token[0] == '(')
-			return (FAILURE);
-		else if (now->right->type == BRACE && now->right->token[0] == ')')
+		else if (is_brace(now->left->token))
 			return (FAILURE);
 	}
 	return (SUCCESS);
