@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 19:08:44 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/26 19:58:01 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	execute_brace(t_token *top, t_data *data)
 	if (pid == 0)
 	{
 		data->pids = 0;
-		data->pipe_count = 0;
 		data->is_pipe = 0;
 		data->last_fd = data->prev_fd;
 		if (data->listfd)
@@ -66,13 +65,11 @@ static void	execute_pipe(t_token *top, t_data *data)
 	_pipe(pipefd);
 	lst_pipefd_add_back(&data->listfd, lst_new_pipefd(pipefd));
 	data->is_pipe = TRUE;
-	data->pipe_count++;
 	execute_tree(top->left, data);
 	data->prev_fd = pipefd[P_READ];
 	close(pipefd[P_WRITE]);
 	lst_pipefd_remove_last(&data->listfd);
 	data->is_pipe = TRUE;
-	data->pipe_count--;
 	execute_tree(top->right, data);
 	if (data->prev_fd != STDIN_FILENO)
 	{
