@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execute_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 20:33:43 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/26 20:47:19 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ static void	execute_pipe(t_token *top, t_data *data)
 	lst_pipefd_remove_last(&data->listfd);
 	data->is_pipe = TRUE;
 	execute_tree(top->right, data);
-	if (data->prev_fd != STDIN_FILENO)
-	{
-		close(data->prev_fd);
-		data->prev_fd = STDIN_FILENO;
-	}
+	close(data->prev_fd);
+	data->prev_fd = STDIN_FILENO;
 	data->is_pipe = FALSE;
 }

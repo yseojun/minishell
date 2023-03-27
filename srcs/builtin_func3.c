@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 21:18:51 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 12:07:20 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ static int	is_n_option(char **str)
 	count = 0;
 	while (str[count + 1])
 	{
-		if (!str[count + 1])
-			return (count);
 		if (str[count + 1][0] != '-')
 			return (count);
 		idx = 1;
