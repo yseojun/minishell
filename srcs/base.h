@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 20:16:45 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:55:02 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int			find_heredoc(t_token *top);
 int			set_fd(t_token *unit, t_data *data);
 char		**set_cmd(t_token *unit);
 int			check_cmd(t_data *data, t_token *unit);
-int			is_builtin_func(t_data *data);
+void		is_builtin_func(t_data *data);
 char		*make_real_path(char *path, char *command);
 char		**get_paths(t_data *data);
 

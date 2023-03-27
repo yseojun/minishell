@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 14:24:53 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 20:55:46 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	check_cmd(t_data *data, t_token *unit)
 {
 	char	*path_value;
 
-	data->is_built_in = 0;
 	if (data->cmd_arr == 0)
 		exit (SUCCESS);
 	if (unit->type == ERROR && unit->right == NULL)
@@ -42,10 +41,10 @@ int	check_cmd(t_data *data, t_token *unit)
 	return (FAILURE);
 }
 
-int	is_builtin_func(t_data *data)
+void	is_builtin_func(t_data *data)
 {
 	if (data->cmd_arr == 0)
-		return (FAILURE);
+		return ;
 	if (ft_strncmp(data->cmd_arr[0], "export", 7) == 0)
 		data->is_built_in = EXPORT;
 	else if (ft_strncmp(data->cmd_arr[0], "env", 4) == 0)
@@ -61,8 +60,7 @@ int	is_builtin_func(t_data *data)
 	else if (ft_strncmp(data->cmd_arr[0], "echo", 5) == 0)
 		data->is_built_in = _ECHO;
 	else
-		return (FAILURE);
-	return (SUCCESS);
+		data->is_built_in = 0;
 }
 
 static int	check_cmd_path(t_data *data)
