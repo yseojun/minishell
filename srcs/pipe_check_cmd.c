@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 13:46:55 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 14:03:20 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	check_cmd(t_data *data, t_token *unit)
 	data->is_built_in = 0;
 	if (unit->type == ERROR && unit->right == NULL)
 		return (SUCCESS);
-	if (data->cmd_arr == NULL)
-		return (FAILURE);
 	if (check_cmd_path(data) == SUCCESS)
 		return (SUCCESS);
 	if (ft_strchr(data->cmd_arr[0], '/')
