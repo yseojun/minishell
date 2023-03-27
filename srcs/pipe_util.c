@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 19:49:37 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:37:52 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	reset_line_data(t_data *data)
 	data->is_pipe = 0;
 	data->head = 0;
 	data->last_fd = 0;
+	data->is_subshell = 0;
 }
 
 int	run_single_builtin(t_data *data)

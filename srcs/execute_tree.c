@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_execute_tree.c                                :+:      :+:    :+:   */
+/*   execute_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 20:47:19 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 21:35:30 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ void	execute_tree(t_token *top, t_data *data)
 	}
 }
 
+void	subshell_handler(int signo)
+{
+	if (signo == SIGINT)
+		exit(EXIT_FAILURE);
+}
+
 static void	execute_brace(t_token *top, t_data *data)
 {
 	pid_t	pid;
@@ -45,6 +51,7 @@ static void	execute_brace(t_token *top, t_data *data)
 	pid = _fork();
 	if (pid == 0)
 	{
+		data->is_subshell = 1;
 		data->pids = 0;
 		data->is_pipe = 0;
 		data->last_fd = data->prev_fd;

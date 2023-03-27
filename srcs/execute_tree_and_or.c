@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_execute_tree2.c                               :+:      :+:    :+:   */
+/*   execute_tree_and_or.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:14:04 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 18:59:59 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 21:37:34 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	execute_and(t_token *top, t_data *data)
 {
 	execute_tree(top->left, data);
 	wait_and_set_prev_fd(data);
+	if (exit_status(LOAD) == 130 && data->is_subshell)
+		exit(130);
 	if (exit_status(LOAD) == EXIT_SUCCESS)
 	{
 		execute_tree(top->right, data);
@@ -31,6 +33,8 @@ void	execute_or(t_token *top, t_data *data)
 {
 	execute_tree(top->left, data);
 	wait_and_set_prev_fd(data);
+	if (exit_status(LOAD) == 130 && data->is_subshell)
+		exit(130);
 	if (exit_status(LOAD) != EXIT_SUCCESS)
 	{
 		execute_tree(top->right, data);
