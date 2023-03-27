@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 14:14:55 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 20:28:31 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 13:46:49 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ void	run_unit(t_token *unit, t_data *data)
 	if (set_fd(unit, data) == FAILURE)
 		return ;
 	data->cmd_arr = set_cmd(unit);
-	if (check_cmd(data, unit) == SUCCESS && run_single_builtin(data) == FALSE)
+	is_builtin_func(data);
+	if (run_single_builtin(data) == FALSE)
 	{
 		pid = _fork();
 		if (pid == 0)
-			child(data);
+		{
+			if (check_cmd(data, unit) == SUCCESS)
+				child(data);
+		}
 		add_pid(data, pid);
 	}
 	manage_fd(data);

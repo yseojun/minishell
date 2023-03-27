@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 14:01:38 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 13:46:55 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "parse.h"
 #include "util.h"
 
-static int	is_builtin_func(t_data *data);
 static int	check_cmd_path(t_data *data);
 
 int	check_cmd(t_data *data, t_token *unit)
@@ -26,8 +25,6 @@ int	check_cmd(t_data *data, t_token *unit)
 		return (SUCCESS);
 	if (data->cmd_arr == NULL)
 		return (FAILURE);
-	if (is_builtin_func(data) == SUCCESS)
-		return (SUCCESS);
 	if (check_cmd_path(data) == SUCCESS)
 		return (SUCCESS);
 	if (ft_strchr(data->cmd_arr[0], '/')
@@ -41,11 +38,11 @@ int	check_cmd(t_data *data, t_token *unit)
 	else
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 	free(path_value);
-	exit_status(256 * 127);
+	exit(127);
 	return (FAILURE);
 }
 
-static int	is_builtin_func(t_data *data)
+int	is_builtin_func(t_data *data)
 {
 	if (ft_strncmp(data->cmd_arr[0], "export", 7) == 0)
 		data->is_built_in = EXPORT;
