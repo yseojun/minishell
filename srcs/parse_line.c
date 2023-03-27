@@ -6,7 +6,7 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 12:43:08 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 13:48:21 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	chk_grammer_valid(t_data *data)
 	if (brace_opened > 0)
 	{
 		ft_putendl_fd("minishell: brace unclosed", 2);
+		exit_status(258);
 		return (FAILURE);
 	}
 	return (SUCCESS);
