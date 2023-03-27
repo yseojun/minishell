@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 14:41:03 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 20:12:47 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "util.h"
 
 static int	is_n_option(char **str);
+static int	_chdir(char *dir);
 
 int	builtin_cd(t_data *data, char *dir)
 {
@@ -26,23 +27,26 @@ int	builtin_cd(t_data *data, char *dir)
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
-		if (chdir(dir) == FAILURE)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			perror(dir);
-			free(dir);
+		if (_chdir(dir) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		}
 		free(dir);
 	}
 	else
 	{
-		if (chdir(dir) == FAILURE)
-		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			perror(dir);
+		if (_chdir(dir) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	_chdir(char *dir)
+{
+	if (chdir(dir) == FAILURE)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		perror(dir);
+		free(dir);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

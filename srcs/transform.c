@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 09:01:28 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/26 17:08:26 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 19:52:54 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	transform(t_data *data, t_token *top)
 	is_expanded = 0;
 	top->token = expand(data, top->token, &is_expanded);
 	if (is_todo_wildcard(top->token))
-	{
 		wildcard(data, &top);
-		return ;
+	else
+	{
+		top->token = remove_quote(top->token);
+		if (is_expanded && ft_strlen(top->token) == 0)
+			top->type = ERROR;
 	}
-	top->token = remove_quote(top->token);
-	if (is_expanded && ft_strlen(top->token) == 0)
-		top->type = ERROR;
 }
 
 static int	is_todo_wildcard(char *token)

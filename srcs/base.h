@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 14:26:25 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 13:47:12 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 20:16:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,11 @@ void		run_unit(t_token *unit, t_data *data);
 
 //pipe_util.c
 void		reset_line_data(t_data *data);
+int			run_single_builtin(t_data *data);
 char		*find_command_in_path(char *command, t_data *data);
 int			chk_stat(char *path_command);
+
+//pipe_pid.c
 void		add_pid(t_data *data, pid_t	pid);
 void		wait_all(t_data *data);
 
@@ -175,5 +178,6 @@ int			builtin_exit(char **cmd_arr);
 int			builtin_cd(t_data *data, char *dir);
 int			builtin_pwd(void);
 int			builtin_echo(t_data *data);
+int			is_number(char *str);
 
 #endif

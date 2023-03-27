@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:36:07 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 19:58:05 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 19:49:37 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@ void	reset_line_data(t_data *data)
 	data->is_pipe = 0;
 	data->head = 0;
 	data->last_fd = 0;
+}
+
+int	run_single_builtin(t_data *data)
+{
+	if (data->is_pipe || data->is_built_in == FALSE)
+		return (FALSE);
+	if (data->is_built_in == EXPORT && data->cmd_arr[1])
+		exit_status(builtin_export(data, data->cmd_arr) * 256);
+	else if (data->is_built_in == UNSET)
+		exit_status(builtin_unset(data, data->cmd_arr) * 256);
+	else if (data->is_built_in == EXIT)
+		exit_status(builtin_exit(data->cmd_arr) * 256);
+	else if (data->is_built_in == CD)
+		exit_status(builtin_cd(data, data->cmd_arr[1]) * 256);
+	else
+		return (FALSE);
+	return (TRUE);
 }
 
 char	*find_command_in_path(char *command, t_data *data)
@@ -58,49 +75,4 @@ int	chk_stat(char *path_command)
 	if (S_ISDIR(sp.st_mode))
 		return (FAILURE);
 	return (SUCCESS);
-}
-
-void	add_pid(t_data *data, pid_t	pid)
-{
-	t_pid	*last;
-	t_pid	*new;
-
-	new = (t_pid *)malloc(sizeof(t_pid));
-	if (!new)
-		exit(EXIT_FAILURE);
-	new->pid = pid;
-	new->next = 0;
-	if (data->pids)
-	{
-		last = data->pids;
-		while (last->next)
-			last = last->next;
-		last->next = new;
-	}
-	else
-		data->pids = new;
-}
-
-void	wait_all(t_data *data)
-{
-	t_pid	*search;
-	t_pid	*to_delete;
-	int		status;
-
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, handler);
-	search = data->pids;
-	while (search)
-	{
-		waitpid(search->pid, &status, 0);
-		to_delete = search;
-		search = search->next;
-		free(to_delete);
-		exit_status(status);
-	}
-	data->pids = 0;
-	data->term.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &data->term);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
 }

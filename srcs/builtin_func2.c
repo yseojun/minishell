@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:47:57 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/25 13:13:20 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:16:19 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	check_unset_valid(char *str);
 static void	remove_env(t_data *data, char *str);
-static int	is_number(char *str);
 
 int	builtin_unset(t_data *data, char **cmd_arr)
 {
@@ -104,7 +103,7 @@ int	builtin_exit(char **cmd_arr)
 	exit(EXIT_SUCCESS);
 }
 
-static int	is_number(char *str)
+int	is_number(char *str)
 {
 	int	idx;
 
