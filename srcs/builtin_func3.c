@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 20:12:47 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:29:33 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	builtin_cd(t_data *data, char *dir)
 			return (EXIT_FAILURE);
 		}
 		if (_chdir(dir) == EXIT_FAILURE)
+		{
+			free(dir);
 			return (EXIT_FAILURE);
+		}
 		free(dir);
 	}
 	else
@@ -45,7 +48,6 @@ static int	_chdir(char *dir)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		perror(dir);
-		free(dir);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

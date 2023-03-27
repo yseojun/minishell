@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 20:18:16 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:27:44 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char		*handle_double_quote(t_data *data, char *str, int *idx);
 // transform - wildcard
 void		wildcard(t_data *data, t_token **search);
 void		cmp_wildcard(t_data *data, t_wildcard *to_find, t_token *now);
-void		merge_wildcard_lst(t_data *data, t_token **now);
+void		wildcard_merge(t_data *data, t_token *now);
 t_wildcard	*make_to_find_head(char *s);
 
 // tree_make

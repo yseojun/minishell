@@ -6,24 +6,16 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 13:00:21 by lru0409           #+#    #+#             */
-/*   Updated: 2023/03/25 13:15:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:27:01 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
 
-static void		wildcard_merge(t_data *data, t_token *now);
 static t_token	*make_merge_node(char *name, t_token *now);
 static t_token	*token_now_to_wildcard(t_wildcard *search, t_token *now);
 
-void	merge_wildcard_lst(t_data *data, t_token **now)
-{
-	wildcard_merge(data, *now);
-	lst_wildcard_free_all(data->wildcard);
-	data->wildcard = 0;
-}
-
-static void	wildcard_merge(t_data *data, t_token *now)
+void	wildcard_merge(t_data *data, t_token *now)
 {
 	t_token		*now_right;
 	t_token		*add;

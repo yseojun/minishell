@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 21:56:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 20:18:15 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:26:45 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	wildcard(t_data *data, t_token **search)
 {
 	make_wildcard_lst(data, *search);
 	if (data->wildcard)
-		merge_wildcard_lst(data, search);
+	{
+		wildcard_merge(data, *search);
+		lst_wildcard_free_all(data->wildcard);
+		data->wildcard = 0;
+	}
 	else
 		(*search)->token = remove_quote((*search)->token);
 }
