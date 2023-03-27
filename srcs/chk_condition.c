@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chk_condition.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 12:15:14 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 20:41:58 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 12:56:00 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	chk_if_redirection(t_token *now)
 	if (now->type == REDIRECTION && is_redirection(now->token))
 	{
 		if (now->left && is_redirection(now->left->token))
+			return (FAILURE);
+		if (!now->right)
 			return (FAILURE);
 	}
 	return (SUCCESS);

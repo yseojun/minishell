@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 21:32:09 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 12:43:08 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	parse_line(char *str, t_data *data)
 	idx = 0;
 	while (str[idx])
 	{
-		if (str[idx] == '#')
+		if (str[idx] == '#' && (idx == 0 || (idx != 0 && str[idx - 1] == ' ')))
 			str[idx] = 0;
 		idx++;
 	}
