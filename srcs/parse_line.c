@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 20:47:06 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 13:48:21 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 14:33:02 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,13 @@
 static void	token_error(char *token);
 static int	chk_condition(t_token *now, int *brace_opened);
 static int	chk_grammer_valid(t_data *data);
+static void	remove_comment(char *str);
 
 int	parse_line(char *str, t_data *data)
 {
-	int	idx;
-
-	idx = 0;
-	while (str[idx])
-	{
-		if (str[idx] == '#' && (idx == 0 || (idx != 0 && str[idx - 1] == ' ')))
-			str[idx] = 0;
-		idx++;
-	}
-	if (tokenize(str, data) == FAILURE || chk_grammer_valid(data) == FAILURE)
+	remove_comment(str);
+	tokenize(str, data);
+	if (chk_grammer_valid(data) == FAILURE)
 	{
 		lst_token_free_all(data->head);
 		data->head = 0;
@@ -89,4 +83,17 @@ static void	token_error(char *token)
 	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 	ft_putstr_fd(token, 2);
 	ft_putendl_fd("'", 2);
+}
+
+static void	remove_comment(char *str)
+{
+	int	idx;
+
+	idx = 0;
+	while (str[idx])
+	{
+		if (str[idx] == '#' && (idx == 0 || (idx != 0 && str[idx - 1] == ' ')))
+			str[idx] = 0;
+		idx++;
+	}
 }

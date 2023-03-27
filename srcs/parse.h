@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:26:53 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 17:08:06 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:31:24 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			chk_if_redirection(t_token *now);
 int			chk_if_cmd(t_token *now);
 
 // tokenize.c
-int			tokenize(char *str, t_data *data);
+void		tokenize(char *str, t_data *data);
 char		*put_token(char *str, int *idx);
 int			set_type(char *token);
 

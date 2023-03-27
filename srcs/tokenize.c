@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:14:42 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/18 21:08:58 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/27 14:31:04 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void		get_token_size(char *str, int *idx);
 
-int	tokenize(char *str, t_data *data)
+void	tokenize(char *str, t_data *data)
 {
 	t_token	*new;
 	int		idx;
@@ -38,7 +38,6 @@ int	tokenize(char *str, t_data *data)
 			}
 		}
 	}
-	return (SUCCESS);
 }
 
 char	*put_token(char *str, int *idx)
