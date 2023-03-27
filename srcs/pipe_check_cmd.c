@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 14:03:20 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 14:24:53 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	check_cmd(t_data *data, t_token *unit)
 	char	*path_value;
 
 	data->is_built_in = 0;
+	if (data->cmd_arr == 0)
+		exit (SUCCESS);
 	if (unit->type == ERROR && unit->right == NULL)
 		return (SUCCESS);
 	if (check_cmd_path(data) == SUCCESS)
@@ -42,6 +44,8 @@ int	check_cmd(t_data *data, t_token *unit)
 
 int	is_builtin_func(t_data *data)
 {
+	if (data->cmd_arr == 0)
+		return (FAILURE);
 	if (ft_strncmp(data->cmd_arr[0], "export", 7) == 0)
 		data->is_built_in = EXPORT;
 	else if (ft_strncmp(data->cmd_arr[0], "env", 4) == 0)
