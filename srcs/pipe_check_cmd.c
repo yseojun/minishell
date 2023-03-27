@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:06:05 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 20:55:46 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:13:43 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	check_cmd(t_data *data, t_token *unit)
 	char	*path_value;
 
 	if (data->cmd_arr == 0)
-		exit (SUCCESS);
+		exit(SUCCESS);
+	if (data->is_built_in)
+		return (SUCCESS);
 	if (unit->type == ERROR && unit->right == NULL)
 		return (SUCCESS);
 	if (check_cmd_path(data) == SUCCESS)
