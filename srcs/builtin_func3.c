@@ -6,7 +6,7 @@
 /*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:51:38 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 14:36:49 by seojun           ###   ########.fr       */
+/*   Updated: 2023/03/27 14:41:03 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ int	builtin_cd(t_data *data, char *dir)
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
-		chdir(dir);
+		if (chdir(dir) == FAILURE)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			perror(dir);
+			free(dir);
+			return (EXIT_FAILURE);
+		}
 		free(dir);
 	}
 	else
