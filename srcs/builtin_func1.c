@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:07:22 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/25 21:50:23 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/28 09:33:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,6 @@ static void	export_env(t_data *data, char *str)
 	t_env	*env;
 
 	name_val = ft_split(str, '=');
-	if (!name_val[1])
-	{
-		free_arr((void **) name_val);
-		return ;
-	}
 	env = data->env;
 	while (env)
 	{
