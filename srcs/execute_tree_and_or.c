@@ -6,7 +6,7 @@
 /*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:14:04 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/27 21:37:34 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:27:58 by seojyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	execute_and(t_token *top, t_data *data)
 {
 	execute_tree(top->left, data);
 	wait_and_set_prev_fd(data);
-	if (exit_status(LOAD) == 130 && data->is_subshell)
+	if (data->is_subshell && exit_status(LOAD) == 130)
 		exit(130);
 	if (exit_status(LOAD) == EXIT_SUCCESS)
 	{
@@ -33,7 +33,7 @@ void	execute_or(t_token *top, t_data *data)
 {
 	execute_tree(top->left, data);
 	wait_and_set_prev_fd(data);
-	if (exit_status(LOAD) == 130 && data->is_subshell)
+	if (data->is_subshell && exit_status(LOAD) == 130)
 		exit(130);
 	if (exit_status(LOAD) != EXIT_SUCCESS)
 	{
