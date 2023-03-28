@@ -6,11 +6,12 @@
 /*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 20:21:24 by seojyang          #+#    #+#             */
-/*   Updated: 2023/03/26 14:34:57 by rolee            ###   ########.fr       */
+/*   Updated: 2023/03/28 10:18:09 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "base.h"
+#include "parse.h"
 #include "util.h"
 
 static int	make_heredoc(t_token *top);
@@ -23,6 +24,7 @@ int	find_heredoc(t_token *top)
 		return (EXIT_SUCCESS);
 	if (ft_strncmp(top->token, "<<", 3) == 0)
 	{
+		top->right->token = remove_quote(top->right->token);
 		if (make_heredoc(top) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}

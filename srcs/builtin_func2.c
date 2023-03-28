@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_func2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rolee <rolee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 17:47:57 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 20:16:19 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/28 09:34:37 by rolee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	builtin_exit(char **cmd_arr)
 		if (cmd_arr[2])
 		{
 			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-			return (129);
+			return (EXIT_FAILURE);
 		}
 		exit((unsigned char)ft_atoi(cmd_arr[1]));
 	}
