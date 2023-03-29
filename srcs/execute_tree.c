@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seojyang <seojyang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: seojun <seojun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 16:25:31 by rolee             #+#    #+#             */
-/*   Updated: 2023/03/27 21:35:30 by seojyang         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:57:25 by seojun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ void	execute_tree(t_token *top, t_data *data)
 		transform(data, top);
 		run_unit(top, data);
 	}
-}
-
-void	subshell_handler(int signo)
-{
-	if (signo == SIGINT)
-		exit(EXIT_FAILURE);
 }
 
 static void	execute_brace(t_token *top, t_data *data)
